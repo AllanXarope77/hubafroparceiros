@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Building2, Check, Clock3, GraduationCap, Users } from "lucide-react";
-import { SiteShell } from "@/components/site-shell";
-import { ButtonLink, FinalCta, PageHero, SectionHeading } from "@/components/ui";
-import { Reveal } from "@/components/reveal";
+import { SiteShell } from "@/components/layout/site-shell";
+import { ButtonLink, FinalCta, PageHero, SectionHeading } from "@/components/shared/ui";
+import { Reveal } from "@/components/shared/reveal";
 
 export const metadata: Metadata = { title: "Palestras | Hub Afro", description: "Palestras e experiências para transformar equipes, escolas e eventos." };
 
@@ -50,4 +50,3 @@ export default function PalestrasPage() {
     </SiteShell>
   );
 }
-

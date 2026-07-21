@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { ArrowUpRight, Mail, MapPin, MessageCircle } from "lucide-react";
-import { SiteShell } from "@/components/site-shell";
-import { PageHero } from "@/components/ui";
-import { Reveal } from "@/components/reveal";
+import { SiteShell } from "@/components/layout/site-shell";
+import { PageHero } from "@/components/shared/ui";
+import { Reveal } from "@/components/shared/reveal";
 
 export const metadata: Metadata = { title: "Contato | Hub Afro", description: "Entre em contato com o Hub Afro." };
 
@@ -21,4 +21,3 @@ export default function ContatoPage() {
     </SiteShell>
   );
 }
-

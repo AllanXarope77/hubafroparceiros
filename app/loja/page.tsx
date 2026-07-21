@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { ShoppingBag, SlidersHorizontal } from "lucide-react";
-import { SiteShell } from "@/components/site-shell";
-import { ButtonLink, FinalCta, PageHero, SectionHeading } from "@/components/ui";
-import { Reveal } from "@/components/reveal";
+import { SiteShell } from "@/components/layout/site-shell";
+import { ButtonLink, FinalCta, PageHero, SectionHeading } from "@/components/shared/ui";
+import { Reveal } from "@/components/shared/reveal";
 
 export const metadata: Metadata = { title: "Loja | Hub Afro", description: "Moda, livros e objetos autorais do Hub Afro." };
 
@@ -51,4 +51,3 @@ export default function LojaPage() {
     </SiteShell>
   );
 }
-

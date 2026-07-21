@@ -1,9 +1,9 @@
 import Link from "next/link";
 import { ArrowDown, ArrowRight, Quote } from "lucide-react";
-import { SiteShell } from "@/components/site-shell";
-import { ButtonLink, Eyebrow, FinalCta, SectionHeading } from "@/components/ui";
-import { Reveal } from "@/components/reveal";
-import { projects } from "@/data/site";
+import { SiteShell } from "@/components/layout/site-shell";
+import { ButtonLink, Eyebrow, FinalCta, SectionHeading } from "@/components/shared/ui";
+import { Reveal } from "@/components/shared/reveal";
+import { projects } from "@/content/site";
 
 const stats = [
   ["10+", "anos construindo pontes"],
@@ -138,4 +138,3 @@ export default function Home() {
     </SiteShell>
   );
 }
-

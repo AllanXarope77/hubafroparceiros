@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { BookHeart, CalendarDays, MessageCircle, Users } from "lucide-react";
-import { SiteShell } from "@/components/site-shell";
-import { ButtonLink, FinalCta, PageHero, SectionHeading } from "@/components/ui";
-import { Reveal } from "@/components/reveal";
+import { SiteShell } from "@/components/layout/site-shell";
+import { ButtonLink, FinalCta, PageHero, SectionHeading } from "@/components/shared/ui";
+import { Reveal } from "@/components/shared/reveal";
 
 export const metadata: Metadata = { title: "Clube do Livro | Hub Afro", description: "Uma comunidade de leitura, conversa e transformação." };
 

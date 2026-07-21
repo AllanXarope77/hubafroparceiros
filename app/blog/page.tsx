@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, Search } from "lucide-react";
-import { SiteShell } from "@/components/site-shell";
-import { FinalCta, PageHero, SectionHeading } from "@/components/ui";
-import { Reveal } from "@/components/reveal";
+import { SiteShell } from "@/components/layout/site-shell";
+import { FinalCta, PageHero, SectionHeading } from "@/components/shared/ui";
+import { Reveal } from "@/components/shared/reveal";
 
 export const metadata: Metadata = { title: "Blog | Hub Afro", description: "Ideias, análises e histórias para ampliar repertórios." };
 
@@ -51,4 +51,3 @@ export default function BlogPage() {
     </SiteShell>
   );
 }
-

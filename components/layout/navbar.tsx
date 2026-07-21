@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import { useEffect, useState } from "react";
-import { navItems } from "@/data/site";
+import { navItems } from "@/content/site";
 
 export function Navbar() {
   const pathname = usePathname();
@@ -67,4 +67,3 @@ export function Navbar() {
     </header>
   );
 }
-

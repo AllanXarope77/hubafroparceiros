@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
-import { navItems, socials } from "@/data/site";
+import { navItems, socials } from "@/content/site";
 
 export function Footer() {
   return (
@@ -54,4 +54,3 @@ export function Footer() {
     </footer>
   );
 }
-
