@@ -207,27 +207,68 @@ main { overflow: hidden; }
 .sidebar-newsletter input { width: 100%; border: 0; border-bottom: 1px solid rgba(0,0,0,.5); background: none; padding: 12px 0; outline: 0; font-size: 12px; }
 .sidebar-newsletter button { width: 100%; margin-top: 12px; background: #090909; color: var(--white); border: 0; padding: 12px; font-size: 11px; }
 
-.talks-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 65px; }
-.talk-card { min-height: 460px; padding: 35px; background: var(--surface); border: 1px solid var(--line); display: flex; flex-direction: column; }
-.talk-card-top { display: flex; align-items: center; justify-content: space-between; color: var(--gold); }
-.talk-card-top > span { font-family: Georgia, serif; font-size: 34px; color: #4c4840; }
-.talk-card h3 { font-size: 26px; letter-spacing: -.04em; line-height: 1.18; margin: 55px 0 18px; }
-.talk-card > p { color: var(--muted); font-size: 14px; line-height: 1.7; flex: 1; }
-.talk-meta { display: flex; flex-wrap: wrap; gap: 15px; border-top: 1px solid var(--line); padding-top: 20px; margin-bottom: 20px; }
-.talk-meta span { display: flex; gap: 6px; align-items: center; color: #c1bdb5; font-size: 10px; }
-.experience-section { background: var(--gold); color: #090909; }
-.experience-grid { display: grid; grid-template-columns: 1.2fr .8fr; gap: 100px; align-items: center; }
-.giant-quote { font-family: Georgia,serif; font-size: 120px; line-height: .4; opacity: .28; }
-.experience-grid h2 { font-size: clamp(34px, 4vw, 57px); margin-top: 35px; }
-.benefit-list { border-top: 1px solid rgba(0,0,0,.3); }
-.benefit-list div { display: flex; align-items: center; gap: 13px; padding: 18px 0; border-bottom: 1px solid rgba(0,0,0,.3); }
-.faq-grid { display: grid; grid-template-columns: .8fr 1.2fr; gap: 100px; }
-.faq-grid details { border-top: 1px solid var(--line); }
-.faq-grid details:last-child { border-bottom: 1px solid var(--line); }
-.faq-grid summary { list-style: none; padding: 25px 0; display: flex; justify-content: space-between; gap: 20px; font-size: 16px; cursor: pointer; }
-.faq-grid summary::-webkit-details-marker { display:none; }
-.faq-grid summary span { color: var(--gold); }
-.faq-grid details p { color: var(--muted); line-height: 1.7; padding: 0 40px 25px 0; }
+.corporate-talks-page { background: #080808; }
+.corporate-talks-hero { min-height: 850px; position: relative; display: flex; align-items: center; overflow: hidden; border-bottom: 1px solid var(--line); }
+.corporate-talks-grid { position: absolute; inset: 0; opacity: .14; background-image: linear-gradient(rgba(255,255,255,.08) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.08) 1px, transparent 1px); background-size: 78px 78px; mask-image: linear-gradient(to right, transparent 2%, black 55%, transparent 100%); }
+.corporate-talks-glow { position: absolute; width: 620px; height: 620px; border-radius: 50%; right: -120px; top: 80px; background: radial-gradient(circle, rgba(165,31,40,.28), rgba(212,175,55,.08) 38%, transparent 70%); }
+.corporate-talks-glow::before, .corporate-talks-glow::after { content: ""; position: absolute; border-radius: 50%; border: 1px solid rgba(212,175,55,.22); }
+.corporate-talks-glow::before { inset: 55px; }
+.corporate-talks-glow::after { inset: 160px; border-color: rgba(165,31,40,.4); }
+.talks-brand { position: absolute; top: 38px; display: flex; align-items: center; gap: 13px; z-index: 2; }
+.talks-brand > span:last-child { display: grid; gap: 2px; }
+.talks-brand strong { font-size: 13px; letter-spacing: .17em; }
+.talks-brand small { color: var(--muted); font-size: 8px; text-transform: uppercase; letter-spacing: .14em; }
+.corporate-hero-layout { position: relative; z-index: 1; display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 100px; align-items: end; padding: 145px 0 90px; }
+.corporate-talks-hero h1 { max-width: 900px; font-size: clamp(58px, 7.2vw, 104px); line-height: .92; letter-spacing: -.068em; margin: 34px 0 30px; }
+.corporate-talks-hero h1 span { color: var(--gold); }
+.corporate-talks-hero p { max-width: 690px; color: #bdb9b1; font-size: 17px; line-height: 1.75; }
+.corporate-hero-note { padding: 32px 0 0; border-top: 1px solid var(--gold); }
+.corporate-hero-note svg { color: var(--gold); }
+.corporate-hero-note blockquote { margin: 24px 0 0; font-family: Georgia, serif; font-size: 23px; line-height: 1.5; color: #e4dfd5; }
+.corporate-audience-strip { padding-block: 82px; background: var(--gold); color: #090909; }
+.corporate-audience-grid { display: grid; grid-template-columns: .9fr 1.1fr; gap: 110px; align-items: center; }
+.corporate-audience-grid > div:first-child > span { font-size: 9px; text-transform: uppercase; letter-spacing: .2em; opacity: .64; }
+.corporate-audience-grid h2 { font-size: clamp(31px, 3.4vw, 48px); line-height: 1.05; letter-spacing: -.045em; margin-top: 17px; }
+.corporate-audience-grid > div:last-child { border-top: 1px solid rgba(0,0,0,.32); }
+.audience-item { display: grid; grid-template-columns: 42px 1fr auto; gap: 18px; align-items: center; border-bottom: 1px solid rgba(0,0,0,.32); padding: 18px 0; }
+.audience-item > span { font-family: Georgia, serif; opacity: .55; }
+.audience-item strong { font-size: 14px; }
+.corporate-formations { background: #0c0c0c; }
+.corporate-formations-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 68px; }
+.corporate-formation-card { min-height: 550px; padding: 36px; background: var(--surface); border: 1px solid var(--line); display: flex; flex-direction: column; transition: transform .3s ease, border-color .3s ease; }
+.corporate-formation-card:hover { transform: translateY(-6px); border-color: rgba(212,175,55,.5); }
+.formation-card-head { display: flex; align-items: center; justify-content: space-between; color: var(--gold); }
+.formation-card-head > span { font-family: Georgia, serif; font-size: 42px; color: #514d44; }
+.corporate-formation-card h3 { font-size: 29px; letter-spacing: -.045em; line-height: 1.14; margin: 58px 0 20px; text-transform: none; }
+.corporate-formation-card > p { color: var(--muted); font-size: 14px; line-height: 1.78; flex: 1; }
+.formation-audience { display: flex; align-items: center; gap: 9px; padding: 19px 0; margin: 25px 0 20px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); color: #d3cec4; font-size: 10px; text-transform: uppercase; letter-spacing: .08em; }
+.specialist-section { background: var(--surface); }
+.specialist-grid { display: grid; grid-template-columns: minmax(360px, .88fr) minmax(0, 1.12fr); gap: 105px; align-items: center; }
+.specialist-photo { min-height: 720px; position: relative; overflow: hidden; background: #20252a; }
+.specialist-photo::after { content: ""; position: absolute; inset: 0; box-shadow: inset 0 -180px 120px rgba(0,0,0,.46); pointer-events: none; }
+.specialist-photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 20%; }
+.specialist-photo > span { position: absolute; z-index: 1; left: 28px; bottom: 27px; color: var(--gold-soft); font-size: 9px; text-transform: uppercase; letter-spacing: .19em; }
+.specialist-copy h2 { font-size: clamp(54px, 6.2vw, 88px); line-height: .92; letter-spacing: -.065em; margin: 28px 0 30px; }
+.specialist-copy p { color: var(--muted); font-size: 14px; line-height: 1.82; max-width: 700px; }
+.specialist-copy .specialist-lead { color: var(--white); font-size: 22px; line-height: 1.5; }
+.specialist-copy em { color: var(--gold); font-family: Georgia, serif; }
+.specialist-tags { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 34px; }
+.specialist-tags span { border: 1px solid var(--line); color: #d1cdc5; padding: 10px 13px; font-size: 9px; text-transform: uppercase; letter-spacing: .1em; }
+.corporate-outcomes { background: #090909; }
+.outcomes-grid { display: grid; grid-template-columns: repeat(4, 1fr); margin-top: 68px; border-top: 1px solid var(--line); border-left: 1px solid var(--line); }
+.outcome-card { min-height: 300px; padding: 34px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.outcome-card svg { color: var(--gold); }
+.outcome-card h3 { font-size: 20px; margin: 74px 0 12px; }
+.outcome-card p { color: var(--muted); font-size: 13px; line-height: 1.65; }
+.corporate-closing-cta { padding: 112px 0; background: var(--gold); color: #090909; position: relative; overflow: hidden; }
+.corporate-closing-cta::after { content: "03"; position: absolute; right: -40px; bottom: -95px; color: rgba(0,0,0,.07); font-family: Georgia, serif; font-size: 340px; line-height: 1; }
+.corporate-closing-grid { position: relative; z-index: 1; display: grid; grid-template-columns: 1fr 310px; gap: 100px; align-items: end; }
+.corporate-closing-cta .eyebrow { color: rgba(0,0,0,.63); }
+.corporate-closing-cta .eyebrow i { background: #090909; }
+.corporate-closing-cta h2 { max-width: 890px; font-size: clamp(45px, 5.2vw, 75px); line-height: .98; letter-spacing: -.055em; margin: 28px 0 20px; }
+.corporate-closing-cta p { max-width: 700px; color: rgba(0,0,0,.66); line-height: 1.7; }
+.closing-action { display: grid; justify-items: start; gap: 30px; }
+.closing-action .button { background: #090909; color: var(--white); }
 
 .book-month-section { background: var(--surface); }
 .book-month-grid { display: grid; grid-template-columns: 420px 1fr; gap: 110px; align-items: center; }
@@ -306,8 +347,12 @@ main { overflow: hidden; }
   .about-grid { grid-template-columns: 90px 1fr; }
   .about-manifesto { grid-column: 2; max-width: 430px; }
   .product-grid { grid-template-columns: repeat(2, 1fr); }
-  .talks-grid { grid-template-columns: 1fr; }
-  .talk-card { min-height: auto; }
+  .corporate-hero-layout { grid-template-columns: 1fr; gap: 55px; }
+  .corporate-hero-note { max-width: 620px; }
+  .corporate-formations-grid { grid-template-columns: 1fr; }
+  .corporate-formation-card { min-height: 410px; }
+  .specialist-grid { gap: 60px; }
+  .outcomes-grid { grid-template-columns: 1fr 1fr; }
   .book-month-grid { grid-template-columns: 340px 1fr; gap: 70px; }
   .episodes-grid { grid-template-columns: repeat(2, 1fr); }
   .footer-grid { grid-template-columns: 1fr 1fr; }
@@ -361,6 +406,14 @@ main { overflow: hidden; }
   .player-cover { min-height: 330px; }
   .player-copy { padding: 40px 30px; }
   .platform-strip { gap: 20px 30px; padding: 28px 20px; }
+  .corporate-talks-hero { min-height: 760px; }
+  .talks-brand { top: 24px; }
+  .corporate-hero-layout { padding: 130px 0 75px; }
+  .corporate-talks-hero h1 { font-size: clamp(52px, 13vw, 78px); }
+  .corporate-audience-grid, .specialist-grid, .corporate-closing-grid { grid-template-columns: 1fr; gap: 55px; }
+  .specialist-photo { min-height: 620px; }
+  .specialist-copy h2 { font-size: 65px; }
+  .closing-action { gap: 22px; }
 }
 
 @media (max-width: 520px) {
@@ -384,9 +437,18 @@ main { overflow: hidden; }
   .calendar-row > span { grid-column: 2; }
   .contact-form-wrap { padding: 28px 20px; }
   .field-row { grid-template-columns: 1fr; }
+  .corporate-talks-hero h1 { font-size: 50px; }
+  .corporate-talks-hero p { font-size: 15px; }
+  .corporate-talks-glow { right: -390px; }
+  .corporate-formation-card { min-height: 0; padding: 28px 24px; }
+  .corporate-formation-card h3 { margin-top: 42px; }
+  .specialist-photo { min-height: 500px; }
+  .outcomes-grid { grid-template-columns: 1fr; }
+  .outcome-card { min-height: 245px; }
+  .outcome-card h3 { margin-top: 48px; }
+  .corporate-closing-cta { padding: 85px 0; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }
-

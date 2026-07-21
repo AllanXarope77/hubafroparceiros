@@ -39,7 +39,7 @@ test("mantém todas as áreas principais acessíveis", async () => {
   const routes = [
     ["/loja", /Vista a ideia/],
     ["/blog", /Pensamento/],
-    ["/palestras", /Ideias que/],
+    ["/palestras", /Transforme a cultura/],
     ["/clube-do-livro", /Ler junto muda/],
     ["/podcast", /Vozes que/],
     ["/contato", /Toda parceria começa/],
@@ -51,4 +51,3 @@ test("mantém todas as áreas principais acessíveis", async () => {
     assert.match(await response.text(), expectedText, pathname);
   }
 });
-
