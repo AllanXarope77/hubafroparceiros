@@ -23,12 +23,12 @@ export function Navbar() {
   return (
     <header className={`navbar ${scrolled ? "navbar--scrolled" : ""}`}>
       <div className="nav-inner">
-        <Link href="/" className="brand" aria-label="Hub Afro — início">
-          <span className="brand-mark">HA</span>
-          <span className="brand-copy">
-            <strong>HUB AFRO</strong>
-            <small>Cultura em movimento</small>
-          </span>
+        <Link href="/" className="brand" aria-label="Hub Afroparceiros — início">
+          <img
+            className="brand-logo"
+            src="/images/logo-hub-afroparceiros.png"
+            alt="HUB Afroparceiros"
+          />
         </Link>
 
         <nav className="desktop-nav" aria-label="Navegação principal">

@@ -36,11 +36,9 @@ main { overflow: hidden; }
 .navbar { position: fixed; inset: 0 0 auto; z-index: 50; height: 90px; border-bottom: 1px solid transparent; transition: .35s ease; }
 .navbar--scrolled { height: 74px; background: rgba(8,8,8,.88); border-color: var(--line); backdrop-filter: blur(18px); }
 .nav-inner { width: min(calc(100% - 48px), 1380px); height: 100%; margin: auto; display: flex; align-items: center; justify-content: space-between; }
-.brand { display: inline-flex; align-items: center; gap: 12px; }
-.brand-mark { width: 42px; height: 42px; display: grid; place-items: center; border: 1px solid var(--gold); color: var(--gold); font-weight: 700; font-size: 13px; letter-spacing: -.04em; transform: rotate(-4deg); }
-.brand-copy { display: grid; gap: 1px; }
-.brand-copy strong { font-size: 14px; letter-spacing: .15em; }
-.brand-copy small { color: var(--muted); font-size: 9px; letter-spacing: .08em; text-transform: uppercase; }
+.brand { display: inline-flex; align-items: center; }
+.brand-logo { display: block; width: 146px; height: auto; max-height: 56px; object-fit: contain; object-position: left center; transition: width .3s ease, max-height .3s ease; }
+.navbar--scrolled .brand-logo { width: 126px; max-height: 46px; }
 .desktop-nav { display: flex; align-items: center; gap: 27px; }
 .desktop-nav a { color: #cbc8c1; font-size: 12px; letter-spacing: .04em; position: relative; padding: 10px 0; transition: color .25s; }
 .desktop-nav a::after { content: ""; position: absolute; left: 0; right: 100%; bottom: 3px; height: 1px; background: var(--gold); transition: right .25s; }
@@ -131,6 +129,7 @@ main { overflow: hidden; }
 .footer { padding: 90px 0 30px; background: #060606; border-top: 1px solid var(--line); }
 .footer-grid { display: grid; grid-template-columns: 1.5fr .7fr .8fr 1.1fr; gap: 60px; }
 .brand--footer { margin-bottom: 26px; }
+.brand-logo--footer { width: 210px; max-height: none; }
 .footer-intro, .footer-note { color: var(--muted); font-size: 13px; line-height: 1.7; max-width: 310px; }
 .footer-label { color: var(--gold); text-transform: uppercase; font-size: 9px; letter-spacing: .2em; display: block; margin-bottom: 24px; }
 .footer-links { display: grid; gap: 12px; }
@@ -351,7 +350,7 @@ main { overflow: hidden; }
   .section { padding: 90px 0; }
   .navbar, .navbar--scrolled { height: 72px; }
   .nav-inner { width: calc(100% - 32px); }
-  .brand-copy { display: none; }
+  .navbar .brand-logo { width: 118px; max-height: 44px; }
   .home-hero--banner { height: 440px; padding-top: 72px; }
   .home-banner-image { height: 100%; object-fit: cover; object-position: center; }
   .about-grid { grid-template-columns: 1fr; gap: 10px; }

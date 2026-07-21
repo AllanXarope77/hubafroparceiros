@@ -7,12 +7,12 @@ export function Footer() {
     <footer className="footer">
       <div className="container footer-grid">
         <div>
-          <Link href="/" className="brand brand--footer">
-            <span className="brand-mark">HA</span>
-            <span className="brand-copy">
-              <strong>HUB AFRO</strong>
-              <small>Cultura em movimento</small>
-            </span>
+          <Link href="/" className="brand brand--footer" aria-label="Hub Afroparceiros — início">
+            <img
+              className="brand-logo brand-logo--footer"
+              src="/images/logo-hub-afroparceiros.png"
+              alt="HUB Afroparceiros"
+            />
           </Link>
           <p className="footer-intro">
             Um ecossistema de projetos que transforma repertório em presença,
@@ -31,7 +31,7 @@ export function Footer() {
           <span className="footer-label">Siga o movimento</span>
           <div className="footer-links">
             {socials.map((social) => (
-              <a key={social} href="#" aria-label={`${social} do Hub Afro`}>
+              <a key={social} href="#" aria-label={`${social} do Hub Afroparceiros`}>
                 {social} <ArrowUpRight size={14} />
               </a>
             ))}
@@ -48,7 +48,7 @@ export function Footer() {
         </div>
       </div>
       <div className="container footer-bottom">
-        <span>© 2026 HUB AFRO</span>
+        <span>© 2026 HUB AFROPARCEIROS</span>
         <span>Feito para mover ideias.</span>
       </div>
     </footer>
