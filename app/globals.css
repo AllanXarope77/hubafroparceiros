@@ -90,8 +90,8 @@ main { overflow: hidden; }
 .project-visual--blog::before, .project-visual--blog::after { display: none; }
 .project-visual--talks { background: radial-gradient(circle at 50% 55%, #6d161d, #120b0c 65%); }
 .project-visual--talks::before { width: 180px; height: 180px; border: 1px solid rgba(212,175,55,.5); }
-.project-visual--books { background: repeating-linear-gradient(100deg, #131313 0 42px, #7f1b22 43px 54px, #171717 55px 95px); }
-.project-visual--books::before { width: 120px; height: 180px; background: #d4af37; border-radius: 0; transform: rotate(6deg); opacity: .25; }
+.project-visual--books { background: #050505 url('/images/projects/clube-do-livro.png') center / cover no-repeat; }
+.project-visual--books::before, .project-visual--books::after { display: none; }
 .project-visual--podcast { background: #0b0904 url('/images/projects/afroparceiros-podcast.png') center / cover no-repeat; }
 .project-visual--podcast::before, .project-visual--podcast::after { display: none; }
 .project-card-body { padding: 29px; flex: 1; }
