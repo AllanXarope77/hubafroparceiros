@@ -77,7 +77,7 @@ export default function Home() {
                 <Reveal key={project.href} className={`project-card project-card--${index + 1}`} delay={index * 0.05}>
                   <Link href={project.href} aria-label={`Conhecer ${project.title}`}>
                     <div className={`project-visual ${project.className}`} role="img" aria-label={`Identidade visual do projeto ${project.title}`}>
-                      {index === 0 ? null : <Icon size={54} strokeWidth={1.2} />}
+                      {index < 2 ? null : <Icon size={54} strokeWidth={1.2} />}
                       <span>0{index + 1}</span>
                     </div>
                     <div className="project-card-body">

@@ -86,8 +86,8 @@ main { overflow: hidden; }
 .project-visual > span { position: absolute; top: 20px; right: 22px; color: rgba(255,255,255,.5); font-size: 10px; letter-spacing: .15em; }
 .project-visual--shop { background: #050505 url('/images/projects/dna-guetos.png') center / cover no-repeat; }
 .project-visual--shop::before, .project-visual--shop::after { display: none; }
-.project-visual--blog { background: linear-gradient(135deg, #b9982f 0 28%, #201e17 28% 62%, #0d0d0d 62%); }
-.project-visual--blog::before { width: 170px; height: 210px; background: rgba(255,255,255,.08); border-radius: 0; transform: rotate(-9deg); }
+.project-visual--blog { background: #0b0f0c url('/images/projects/blog.png') center / cover no-repeat; }
+.project-visual--blog::before, .project-visual--blog::after { display: none; }
 .project-visual--talks { background: radial-gradient(circle at 50% 55%, #6d161d, #120b0c 65%); }
 .project-visual--talks::before { width: 180px; height: 180px; border: 1px solid rgba(212,175,55,.5); }
 .project-visual--books { background: repeating-linear-gradient(100deg, #131313 0 42px, #7f1b22 43px 54px, #171717 55px 95px); }
