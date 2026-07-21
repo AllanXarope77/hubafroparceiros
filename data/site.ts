@@ -1,0 +1,63 @@
+import {
+  BookOpen,
+  Headphones,
+  Mic2,
+  Newspaper,
+  ShoppingBag,
+} from "lucide-react";
+
+export const navItems = [
+  { label: "Home", href: "/" },
+  { label: "Loja", href: "/loja" },
+  { label: "Blog", href: "/blog" },
+  { label: "Palestras", href: "/palestras" },
+  { label: "Clube do Livro", href: "/clube-do-livro" },
+  { label: "Podcast", href: "/podcast" },
+  { label: "Contato", href: "/contato" },
+] as const;
+
+export const projects = [
+  {
+    title: "Loja",
+    eyebrow: "Vista a ideia",
+    description: "Peças autorais, livros e objetos que carregam memória, identidade e futuro.",
+    href: "/loja",
+    icon: ShoppingBag,
+    className: "project-visual--shop",
+  },
+  {
+    title: "Blog",
+    eyebrow: "Pensamento em movimento",
+    description: "Análises, histórias e perspectivas para ampliar repertórios e conversas.",
+    href: "/blog",
+    icon: Newspaper,
+    className: "project-visual--blog",
+  },
+  {
+    title: "Palestras",
+    eyebrow: "Ideias que mobilizam",
+    description: "Encontros potentes para empresas, escolas, coletivos e eventos.",
+    href: "/palestras",
+    icon: Mic2,
+    className: "project-visual--talks",
+  },
+  {
+    title: "Clube do Livro",
+    eyebrow: "Leitura compartilhada",
+    description: "Uma comunidade para ler, conversar e transformar páginas em vínculos.",
+    href: "/clube-do-livro",
+    icon: BookOpen,
+    className: "project-visual--books",
+  },
+  {
+    title: "Podcast",
+    eyebrow: "Vozes que ecoam",
+    description: "Conversas profundas com quem está redesenhando cultura e sociedade.",
+    href: "/podcast",
+    icon: Headphones,
+    className: "project-visual--podcast",
+  },
+] as const;
+
+export const socials = ["Instagram", "YouTube", "LinkedIn", "Spotify"];
+
