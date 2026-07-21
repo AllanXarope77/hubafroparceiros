@@ -29,9 +29,9 @@ test("renderiza a home com a identidade do Hub Afro", async () => {
 
   const html = await response.text();
   assert.match(html, /Hub Afro/i);
-  assert.match(html, /Ideias que/);
-  assert.match(html, /movem/);
-  assert.match(html, /Conheça o ecossistema/);
+  assert.match(html, /HUB Afroparceiros/);
+  assert.match(html, /resistência não é moda/i);
+  assert.match(html, /banner-principal\.png/);
   assert.doesNotMatch(html, /codex-preview|Your site is taking shape/i);
 });
 

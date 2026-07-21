@@ -1,7 +1,7 @@
 import Link from "next/link";
-import { ArrowDown, ArrowRight, Quote } from "lucide-react";
+import { ArrowRight, Quote } from "lucide-react";
 import { SiteShell } from "@/components/layout/site-shell";
-import { ButtonLink, Eyebrow, FinalCta, SectionHeading } from "@/components/shared/ui";
+import { FinalCta, SectionHeading } from "@/components/shared/ui";
 import { Reveal } from "@/components/shared/reveal";
 import { projects } from "@/content/site";
 
@@ -28,27 +28,12 @@ const testimonials = [
 export default function Home() {
   return (
     <SiteShell>
-      <section className="home-hero" id="inicio">
-        <div className="hero-image" role="img" aria-label="Criadores negros reunidos entre moda, literatura e podcast" />
-        <div className="hero-overlay" />
-        <div className="container home-hero-content">
-          <Reveal>
-            <Eyebrow>Cultura · Conhecimento · Impacto</Eyebrow>
-            <h1>Ideias que<br /><em>movem</em> mundos.</h1>
-            <p>
-              Um ecossistema criativo que conecta moda, literatura, educação,
-              comunicação e voz para ampliar futuros possíveis.
-            </p>
-            <div className="hero-actions">
-              <ButtonLink href="#ecossistema">Conheça o ecossistema</ButtonLink>
-              <ButtonLink href="/contato" variant="ghost">Fale com a gente</ButtonLink>
-            </div>
-          </Reveal>
-        </div>
-        <a href="#sobre" className="scroll-cue" aria-label="Rolar para a próxima seção">
-          <span>Descubra</span><ArrowDown size={18} />
-        </a>
-        <span className="hero-side-label">HUB AFRO · DESDE 2016</span>
+      <section className="home-hero home-hero--banner" id="inicio">
+        <img
+          className="home-banner-image"
+          src="/images/banner-principal.png"
+          alt="HUB Afroparceiros — Pois resistência não é moda, é meio de sobrevivência"
+        />
       </section>
 
       <section className="section about-section" id="sobre">
