@@ -92,9 +92,8 @@ main { overflow: hidden; }
 .project-visual--talks::before { width: 180px; height: 180px; border: 1px solid rgba(212,175,55,.5); }
 .project-visual--books { background: repeating-linear-gradient(100deg, #131313 0 42px, #7f1b22 43px 54px, #171717 55px 95px); }
 .project-visual--books::before { width: 120px; height: 180px; background: #d4af37; border-radius: 0; transform: rotate(6deg); opacity: .25; }
-.project-visual--podcast { background: linear-gradient(135deg, #171717, #342717); }
-.project-visual--podcast::before { width: 200px; height: 200px; border: 30px solid rgba(212,175,55,.15); }
-.project-visual--podcast::after { width: 80px; height: 80px; border: 1px solid var(--red); }
+.project-visual--podcast { background: #0b0904 url('/images/projects/afroparceiros-podcast.png') center / cover no-repeat; }
+.project-visual--podcast::before, .project-visual--podcast::after { display: none; }
 .project-card-body { padding: 29px; flex: 1; }
 .project-card-body small, .product-info small, .featured-copy small, .article-card small, .player-copy small, .episode-card small { color: var(--gold); text-transform: uppercase; font-size: 9px; letter-spacing: .16em; }
 .project-card-body h3 { font-size: 30px; letter-spacing: -.04em; margin: 9px 0 13px; }
