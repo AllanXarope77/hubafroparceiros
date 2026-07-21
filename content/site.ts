@@ -8,7 +8,7 @@ import {
 
 export const navItems = [
   { label: "Home", href: "/" },
-  { label: "Loja", href: "/loja" },
+  { label: "DNA Guetos", href: "/loja" },
   { label: "Blog", href: "/blog" },
   { label: "Palestras", href: "/palestras" },
   { label: "Clube do Livro", href: "/clube-do-livro" },
@@ -18,7 +18,7 @@ export const navItems = [
 
 export const projects = [
   {
-    title: "Loja",
+    title: "DNA Guetos",
     eyebrow: "Vista a ideia",
     description: "Peças autorais, livros e objetos que carregam memória, identidade e futuro.",
     href: "/loja",
@@ -60,4 +60,3 @@ export const projects = [
 ] as const;
 
 export const socials = ["Instagram", "YouTube", "LinkedIn", "Spotify"];
-
