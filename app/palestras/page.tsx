@@ -11,7 +11,7 @@ import {
   Sparkles,
   Users,
 } from "lucide-react";
-import { Footer } from "@/components/layout/footer";
+import { SiteShell } from "@/components/layout/site-shell";
 import { ButtonLink, Eyebrow, SectionHeading } from "@/components/shared/ui";
 import { Reveal } from "@/components/shared/reveal";
 
@@ -70,20 +70,12 @@ const outcomes = [
 
 export default function PalestrasPage() {
   return (
-    <>
-      <main className="corporate-talks-page">
+    <SiteShell>
+      <div className="corporate-talks-page">
         <section className="corporate-talks-hero">
           <div className="corporate-talks-grid" />
           <div className="corporate-talks-glow" />
           <div className="container">
-            <div className="talks-brand" aria-label="Hub Afro">
-              <span className="brand-mark">HA</span>
-              <span>
-                <strong>HUB AFRO</strong>
-                <small>Palestras corporativas</small>
-              </span>
-            </div>
-
             <div className="corporate-hero-layout">
               <Reveal>
                 <Eyebrow>Educação corporativa · ESG · Diversidade</Eyebrow>
@@ -262,8 +254,7 @@ export default function PalestrasPage() {
             </Reveal>
           </div>
         </section>
-      </main>
-      <Footer />
-    </>
+      </div>
+    </SiteShell>
   );
 }

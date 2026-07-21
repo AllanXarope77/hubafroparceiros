@@ -214,10 +214,6 @@ main { overflow: hidden; }
 .corporate-talks-glow::before, .corporate-talks-glow::after { content: ""; position: absolute; border-radius: 50%; border: 1px solid rgba(212,175,55,.22); }
 .corporate-talks-glow::before { inset: 55px; }
 .corporate-talks-glow::after { inset: 160px; border-color: rgba(165,31,40,.4); }
-.talks-brand { position: absolute; top: 38px; display: flex; align-items: center; gap: 13px; z-index: 2; }
-.talks-brand > span:last-child { display: grid; gap: 2px; }
-.talks-brand strong { font-size: 13px; letter-spacing: .17em; }
-.talks-brand small { color: var(--muted); font-size: 8px; text-transform: uppercase; letter-spacing: .14em; }
 .corporate-hero-layout { position: relative; z-index: 1; display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 100px; align-items: end; padding: 145px 0 90px; }
 .corporate-talks-hero h1 { max-width: 900px; font-size: clamp(58px, 7.2vw, 104px); line-height: .92; letter-spacing: -.068em; margin: 34px 0 30px; }
 .corporate-talks-hero h1 span { color: var(--gold); }
@@ -407,7 +403,6 @@ main { overflow: hidden; }
   .player-copy { padding: 40px 30px; }
   .platform-strip { gap: 20px 30px; padding: 28px 20px; }
   .corporate-talks-hero { min-height: 760px; }
-  .talks-brand { top: 24px; }
   .corporate-hero-layout { padding: 130px 0 75px; }
   .corporate-talks-hero h1 { font-size: clamp(52px, 13vw, 78px); }
   .corporate-audience-grid, .specialist-grid, .corporate-closing-grid { grid-template-columns: 1fr; gap: 55px; }
