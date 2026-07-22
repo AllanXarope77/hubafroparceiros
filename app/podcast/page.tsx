@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ArrowUpRight, Play, Radio, Video } from "lucide-react";
+import { ArrowUpRight, Play, Video } from "lucide-react";
 import { SiteShell } from "@/components/layout/site-shell";
 import { ButtonLink, FinalCta, PageHero, SectionHeading } from "@/components/shared/ui";
 import { Reveal } from "@/components/shared/reveal";
@@ -15,7 +15,7 @@ const episodes = [
 
 const podcastPlatforms = [
   { label: "YouTube", href: "https://www.youtube.com/playlist?list=PLq3ISSRYFWH1q7CimRNeZPYOHP5EaOy_u" },
-  { label: "Spotify", href: "https://open.spotify.com/show/1RqN2gzgY4EKKA3V8tWrtX0" },
+  { label: "Spotify", href: "https://open.spotify.com/show/1RqN2gzgY4EKKA3V8tWrtX" },
   { label: "Prime Music", href: "https://music.amazon.com.br/podcasts/82c7f26f-2b52-4ede-b8bf-54a6d0c81aaf/afroparceiros-podcast-oficial" },
 ] as const;
 
@@ -23,10 +23,10 @@ export default function PodcastPage() {
   return (
     <SiteShell>
       <PageHero index="05" eyebrow="Podcast Hub Afro" title={<>Vozes que<br /><span className="gold-text">fazem eco.</span></>} copy="Conversas sem pressa com pessoas que transformam cultura, negócios, educação e sociedade a partir de novas perspectivas.">
-        <ButtonLink href="#episodios">Ouvir agora</ButtonLink>
+        <ButtonLink href="#previa-spotify">Ouvir agora</ButtonLink>
       </PageHero>
       <section className="platform-strip" aria-label="Plataformas oficiais do Afroparceiros Podcast"><span>Ouça no</span>{podcastPlatforms.map(platform => <a href={platform.href} key={platform.label} target="_blank" rel="noreferrer">{platform.label}<ArrowUpRight size={15} /></a>)}</section>
-      <section className="section now-playing"><div className="container"><Reveal className="player-card"><div className="player-cover"><Radio size={42} strokeWidth={1.2} /><span>NOVO<br />EPISÓDIO</span></div><div className="player-copy"><small>EP. 48 · Cultura & Futuro</small><h2>Quem tem direito ao futuro?</h2><p>Uma conversa com Aline Odara sobre imaginação política, tecnologia e os futuros que já estão sendo construídos nas bordas.</p><div className="player-controls"><button aria-label="Reproduzir episódio"><Play size={20} fill="currentColor" /></button><div className="player-track"><i /></div><span>52:14</span></div></div></Reveal></div></section>
+      <section className="section now-playing" id="previa-spotify"><div className="container"><Reveal className="spotify-preview-card"><div className="spotify-preview-copy"><span className="eyebrow"><i />Prévia no Spotify</span><h2>Gabriel Machado no AfroParceiros Podcast</h2><p>Ouça a prévia oficial do episódio da segunda temporada e continue a reprodução diretamente no Spotify.</p><a href="https://open.spotify.com/episode/0VUpvYEQl7Loti8I2ZyJiF" target="_blank" rel="noreferrer">Abrir episódio no Spotify <ArrowUpRight size={17} /></a></div><div className="spotify-embed"><iframe title="2ª T - Gabriel Machado - AfroParceiros Podcast #003" src="https://open.spotify.com/embed/episode/0VUpvYEQl7Loti8I2ZyJiF?utm_source=generator&theme=0" width="100%" height="352" frameBorder="0" allowFullScreen allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" /></div></Reveal></div></section>
       <section className="section" id="episodios"><div className="container"><SectionHeading eyebrow="Últimos episódios" title={<>Conversas para<br />levar com você.</>} /><div className="episodes-grid">
         {episodes.map(([number,title,guest,time,art], index) => <Reveal className="episode-card" key={number} delay={(index % 2)*.06}><div className={`episode-art ${art}`} role="img" aria-label={`Capa do episódio ${title}`}><span>{number}</span><button aria-label={`Ouvir ${title}`}><Play size={18} fill="currentColor" /></button></div><small>{time}</small><h3>{title}</h3><p>{guest}</p></Reveal>)}
       </div></div></section>
