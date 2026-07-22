@@ -66,8 +66,28 @@ test("exibe os produtos reais da DNA Guetos", async () => {
   assert.match(html, /Boné DNA GUETOS/);
   assert.match(html, /Camisa Thug Life/);
   assert.match(html, /camisa-dna-guetos\.png/);
-  assert.match(html, /afroparceiros\.com\/camisa-dna-guetos\/p/);
+  assert.match(html, /\/loja\/43721859/);
   assert.doesNotMatch(html, /Loja demonstrativa|Camiseta Centro/);
+});
+
+test("oferece filtros, páginas de produto e carrinho", async () => {
+  const shopResponse = await render("/loja");
+  const shopHtml = await shopResponse.text();
+  assert.match(shopHtml, /Masculino/);
+  assert.match(shopHtml, /Feminino/);
+  assert.match(shopHtml, /Moletom/);
+  assert.match(shopHtml, /Livro Guetos - Apartheid Urbano/);
+
+  const productResponse = await render("/loja/43721859");
+  assert.equal(productResponse.status, 200);
+  const productHtml = await productResponse.text();
+  assert.match(productHtml, /Camisa DNA GUETOS/);
+  assert.match(productHtml, /Adicionar ao carrinho/);
+  assert.match(productHtml, /Escolher tamanho e cor na loja oficial/);
+
+  const cartResponse = await render("/carrinho");
+  assert.equal(cartResponse.status, 200);
+  assert.match(await cartResponse.text(), /Seu carrinho está vazio/);
 });
 
 test("mantém o editor oculto na página pública do Blog", async () => {
