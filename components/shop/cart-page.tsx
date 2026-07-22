@@ -2,13 +2,24 @@
 
 import { ExternalLink, Minus, Plus, ShoppingBag, Trash2 } from "lucide-react";
 import Link from "next/link";
-import { formatPrice, getProduct } from "@/lib/products";
+import { useEffect, useState } from "react";
+import { formatPrice, getProduct, savedProductToProduct, type Product, type SavedProduct } from "@/lib/products";
 import { useCart } from "./cart-provider";
 
 export function CartPage() {
   const { items, updateQuantity, removeItem, clearCart } = useCart();
+  const [savedProducts, setSavedProducts] = useState<Product[]>([]);
+
+  useEffect(() => {
+    if (!items.some(item => item.id.startsWith("custom-"))) return;
+    fetch("/api/products", { cache: "no-store" })
+      .then(response => response.json())
+      .then((data: { products?: SavedProduct[] }) => setSavedProducts((data.products ?? []).map(savedProductToProduct)))
+      .catch(() => { /* os produtos originais continuam disponíveis */ });
+  }, [items]);
+
   const entries = items.flatMap((item) => {
-    const product = getProduct(item.id);
+    const product = getProduct(item.id) ?? savedProducts.find(saved => saved.id === item.id);
     return product ? [{ ...item, product }] : [];
   });
   const subtotal = entries.reduce((total, item) => total + item.product.priceCents * item.quantity, 0);
@@ -34,7 +45,7 @@ export function CartPage() {
               <article className="cart-item" key={product.id}>
                 <Link href={`/loja/${product.id}`} className="cart-item-image"><img src={product.image} alt={product.name} /></Link>
                 <div className="cart-item-copy"><Link href={`/loja/${product.id}`}><h2>{product.name}</h2></Link><strong>{product.price}</strong>
-                  <a href={product.officialUrl} target="_blank" rel="noreferrer">Escolher tamanho e cor <ExternalLink size={13} /></a>
+                  {product.officialUrl && <a href={product.officialUrl} target="_blank" rel="noreferrer">Escolher tamanho e cor <ExternalLink size={13} /></a>}
                 </div>
                 <div className="quantity-control">
                   <button type="button" aria-label="Diminuir" onClick={() => quantity === 1 ? removeItem(product.id) : updateQuantity(product.id, quantity - 1)}><Minus size={15} /></button>
@@ -51,7 +62,9 @@ export function CartPage() {
             <div><p>Produtos</p><strong>{items.reduce((sum, item) => sum + item.quantity, 0)}</strong></div>
             <div className="cart-total"><p>Subtotal</p><strong>{formatPrice(subtotal)}</strong></div>
             <p className="cart-summary-note">Para confirmar tamanho, cor, frete e pagamento, abra cada produto na loja oficial. A Yampi reúne os itens no carrinho oficial durante a escolha.</p>
-            <a className="button button--gold" href={entries[0].product.officialUrl} target="_blank" rel="noreferrer">Continuar na Yampi <ExternalLink size={16} /></a>
+            {entries[0].product.officialUrl
+              ? <a className="button button--gold" href={entries[0].product.officialUrl} target="_blank" rel="noreferrer">Continuar na Yampi <ExternalLink size={16} /></a>
+              : <Link className="button button--gold" href={`/loja/${entries[0].product.id}`}>Revisar produto</Link>}
             <Link className="continue-shopping" href="/loja">Continuar comprando</Link>
           </aside>
         </div>
@@ -59,4 +72,3 @@ export function CartPage() {
     </section>
   );
 }
-

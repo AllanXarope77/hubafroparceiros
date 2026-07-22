@@ -38,6 +38,7 @@ test("renderiza a home com a identidade do Hub Afro", async () => {
 test("mantém todas as áreas principais acessíveis", async () => {
   const routes = [
     ["/loja", /Vista identidade/],
+    ["/loja/editar", /Cadastrar produto/],
     ["/blog", /Pensamento/],
     ["/blog/editar", /Transforme ideias/],
     ["/palestras", /Transforme a cultura/],
@@ -88,6 +89,18 @@ test("oferece filtros, páginas de produto e carrinho", async () => {
   const cartResponse = await render("/carrinho");
   assert.equal(cartResponse.status, 200);
   assert.match(await cartResponse.text(), /Seu carrinho está vazio/);
+});
+
+test("mantém o editor de produtos oculto e acessível pelo caminho direto", async () => {
+  const editorResponse = await render("/loja/editar");
+  assert.equal(editorResponse.status, 200);
+  const editorHtml = await editorResponse.text();
+  assert.match(editorHtml, /Informações principais/);
+  assert.match(editorHtml, /Preço e estoque/);
+  assert.match(editorHtml, /Produtos cadastrados/);
+
+  const shopResponse = await render("/loja");
+  assert.doesNotMatch(await shopResponse.text(), /\/loja\/editar/);
 });
 
 test("mantém o editor oculto na página pública do Blog", async () => {

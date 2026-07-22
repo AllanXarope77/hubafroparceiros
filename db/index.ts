@@ -29,3 +29,24 @@ export async function ensureBlogSchema() {
     d1.prepare("CREATE INDEX IF NOT EXISTS blog_posts_created_at_idx ON blog_posts (created_at)"),
   ]);
 }
+
+export async function ensureShopSchema() {
+  const d1 = await getD1();
+  await d1.batch([
+    d1.prepare(`CREATE TABLE IF NOT EXISTS shop_products (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      name TEXT NOT NULL,
+      description TEXT NOT NULL DEFAULT '',
+      price_cents INTEGER NOT NULL,
+      stock INTEGER NOT NULL DEFAULT 0,
+      image TEXT NOT NULL,
+      official_url TEXT NOT NULL DEFAULT '',
+      product_type TEXT NOT NULL,
+      audience TEXT NOT NULL DEFAULT 'unissex',
+      status TEXT NOT NULL DEFAULT 'active',
+      created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+    )`),
+    d1.prepare("CREATE INDEX IF NOT EXISTS shop_products_status_idx ON shop_products (status)"),
+    d1.prepare("CREATE INDEX IF NOT EXISTS shop_products_created_at_idx ON shop_products (created_at)"),
+  ]);
+}

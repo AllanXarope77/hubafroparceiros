@@ -19,6 +19,22 @@ export type Product = RawProduct & {
   priceCents: number;
   price: string;
   officialUrl: string;
+  description?: string;
+  status?: "active" | "draft";
+};
+
+export type SavedProduct = {
+  id: number;
+  name: string;
+  description: string;
+  priceCents: number;
+  stock: number;
+  image: string;
+  officialUrl: string;
+  productType: "camisa" | "bone" | "moletom" | "livro";
+  audience: "masculino" | "feminino" | "unissex" | "infantil";
+  status: "active" | "draft";
+  createdAt: string;
 };
 
 const localImages: Record<string, string> = {
@@ -77,4 +93,23 @@ export const products: Product[] = catalog.products.map((product) => {
 
 export function getProduct(id: string) {
   return products.find((product) => product.id === id);
+}
+
+export function savedProductToProduct(saved: SavedProduct): Product {
+  const categories: ShopCategory[] = [saved.productType];
+  if (saved.audience === "unissex") categories.push("masculino", "feminino");
+  if (saved.audience === "masculino" || saved.audience === "feminino") categories.push(saved.audience);
+  return {
+    id: `custom-${saved.id}`,
+    name: saved.name,
+    description: saved.description,
+    stock: saved.stock,
+    image: saved.image,
+    publicUrl: saved.officialUrl,
+    officialUrl: saved.officialUrl,
+    categories,
+    priceCents: saved.priceCents,
+    price: formatPrice(saved.priceCents),
+    status: saved.status,
+  };
 }

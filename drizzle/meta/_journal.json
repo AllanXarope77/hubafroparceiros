@@ -8,6 +8,13 @@
       "when": 1784742148692,
       "tag": "0000_redundant_molecule_man",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1784755705671,
+      "tag": "0001_little_boom_boom",
+      "breakpoints": true
     }
   ]
 }

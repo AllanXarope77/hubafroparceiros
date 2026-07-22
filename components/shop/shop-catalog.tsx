@@ -1,19 +1,30 @@
 "use client";
 
 import { Search } from "lucide-react";
-import { useMemo, useState } from "react";
-import { products, shopCategories, type ShopCategory } from "@/lib/products";
+import { useEffect, useMemo, useState } from "react";
+import { products, savedProductToProduct, shopCategories, type Product, type SavedProduct, type ShopCategory } from "@/lib/products";
 import { ProductCard } from "./product-card";
 
 export function ShopCatalog() {
   const [category, setCategory] = useState<ShopCategory>("todos");
   const [query, setQuery] = useState("");
+  const [catalogProducts, setCatalogProducts] = useState<Product[]>(products);
 
-  const filtered = useMemo(() => products.filter((product) => {
+  useEffect(() => {
+    fetch("/api/products?status=active", { cache: "no-store" })
+      .then(async response => {
+        if (!response.ok) throw new Error();
+        const data = await response.json() as { products?: SavedProduct[] };
+        setCatalogProducts([...(data.products ?? []).map(savedProductToProduct), ...products]);
+      })
+      .catch(() => { /* mantém o catálogo importado da Yampi */ });
+  }, []);
+
+  const filtered = useMemo(() => catalogProducts.filter((product) => {
     const matchesCategory = category === "todos" || product.categories.includes(category);
     const matchesQuery = product.name.toLowerCase().includes(query.trim().toLowerCase());
     return matchesCategory && matchesQuery;
-  }), [category, query]);
+  }), [catalogProducts, category, query]);
 
   return (
     <>
@@ -40,4 +51,3 @@ export function ShopCatalog() {
     </>
   );
 }
-

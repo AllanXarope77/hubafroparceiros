@@ -19,7 +19,7 @@ export function ProductDetail({ product }: { product: Product }) {
             <span className="eyebrow"><i />Produto DNA Guetos</span>
             <h1>{product.name}</h1>
             <div className="product-detail-price"><strong>{product.price}</strong><span>no Pix</span></div>
-            <p>Uma peça que transforma identidade, memória e resistência em presença.</p>
+            <p>{product.description || "Uma peça que transforma identidade, memória e resistência em presença."}</p>
             <div className="quantity-row">
               <span>Quantidade</span>
               <div className="quantity-control">
@@ -29,9 +29,9 @@ export function ProductDetail({ product }: { product: Product }) {
               </div>
             </div>
             <AddToCartButton id={product.id} quantity={quantity} />
-            <a className="official-options" href={product.officialUrl} target="_blank" rel="noreferrer">
+            {product.officialUrl && <a className="official-options" href={product.officialUrl} target="_blank" rel="noreferrer">
               Escolher tamanho e cor na loja oficial <ExternalLink size={15} />
-            </a>
+            </a>}
             <div className="secure-note"><ShieldCheck size={20} /><span>Tamanhos, cores e pagamento são confirmados com segurança no checkout oficial da Yampi.</span></div>
           </div>
         </div>
@@ -39,4 +39,3 @@ export function ProductDetail({ product }: { product: Product }) {
     </section>
   );
 }
-
