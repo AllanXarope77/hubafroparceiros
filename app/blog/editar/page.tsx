@@ -3,7 +3,11 @@ import { BlogEditor } from "@/components/blog/blog-editor";
 import { SiteShell } from "@/components/layout/site-shell";
 import { PageHero } from "@/components/shared/ui";
 
-export const metadata: Metadata = { title: "Editar Blog | Hub Afro", description: "Publique novos posts no Blog do Hub Afro." };
+export const metadata: Metadata = {
+  title: "Editar Blog | Hub Afro",
+  description: "Publique novos posts no Blog do Hub Afro.",
+  robots: { index: false, follow: false },
+};
 
 export default function EditarBlogPage() {
   return (

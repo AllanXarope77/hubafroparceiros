@@ -52,3 +52,10 @@ test("mantém todas as áreas principais acessíveis", async () => {
     assert.match(await response.text(), expectedText, pathname);
   }
 });
+
+test("mantém o editor oculto na página pública do Blog", async () => {
+  const response = await render("/blog");
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  assert.doesNotMatch(html, /Editar blog|\/blog\/editar/i);
+});
