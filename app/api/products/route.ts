@@ -5,6 +5,12 @@ import { shopProducts } from "@/db/schema";
 const productTypes = new Set(["camisa", "bone", "moletom", "livro"]);
 const audiences = new Set(["masculino", "feminino", "unissex", "infantil"]);
 const statuses = new Set(["active", "draft"]);
+const categoryNames = new Set(["masculino", "feminino", "bone", "camisa", "moletom", "livro"]);
+
+function textList(value: unknown, maximum = 20) {
+  if (!Array.isArray(value)) return [];
+  return [...new Set(value.map(item => String(item).trim()).filter(item => item && item.length <= 30))].slice(0, maximum);
+}
 
 function message(error: unknown) {
   return error instanceof Error ? error.message : "Não foi possível acessar os produtos.";
@@ -43,6 +49,9 @@ export async function POST(request: Request) {
     const productType = String(payload.productType ?? "");
     const audience = String(payload.audience ?? "unissex");
     const status = String(payload.status ?? "active");
+    const sizes = textList(payload.sizes);
+    const colors = textList(payload.colors);
+    const extraCategories = textList(payload.extraCategories).filter(category => categoryNames.has(category));
     const priceCents = Number(payload.priceCents);
     const stock = Number(payload.stock);
 
@@ -66,7 +75,7 @@ export async function POST(request: Request) {
     await ensureShopSchema();
     const db = await getDb();
     const [product] = await db.insert(shopProducts).values({
-      name, description, image, officialUrl, productType, audience, status, priceCents, stock,
+      name, description, image, officialUrl, productType, audience, sizes, colors, extraCategories, status, priceCents, stock,
     }).returning();
     return Response.json({ product }, { status: 201 });
   } catch (error) {

@@ -15,6 +15,13 @@
       "when": 1784755705671,
       "tag": "0001_little_boom_boom",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1784759835157,
+      "tag": "0002_clever_leo",
+      "breakpoints": true
     }
   ]
 }

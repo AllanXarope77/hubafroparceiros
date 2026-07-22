@@ -8,6 +8,8 @@ import { AddToCartButton } from "./add-to-cart-button";
 
 export function ProductDetail({ product }: { product: Product }) {
   const [quantity, setQuantity] = useState(1);
+  const [selectedSize, setSelectedSize] = useState(product.sizes?.[0] ?? "");
+  const [selectedColor, setSelectedColor] = useState(product.colors?.[0] ?? "");
 
   return (
     <section className="product-detail-section">
@@ -20,6 +22,8 @@ export function ProductDetail({ product }: { product: Product }) {
             <h1>{product.name}</h1>
             <div className="product-detail-price"><strong>{product.price}</strong><span>no Pix</span></div>
             <p>{product.description || "Uma peça que transforma identidade, memória e resistência em presença."}</p>
+            {!!product.sizes?.length && <div className="product-variant-group"><span>Tamanho</span><div>{product.sizes.map(size => <button type="button" key={size} className={selectedSize === size ? "selected" : ""} aria-pressed={selectedSize === size} onClick={() => setSelectedSize(size)}>{size}</button>)}</div></div>}
+            {!!product.colors?.length && <div className="product-variant-group"><span>Cor</span><div>{product.colors.map(color => <button type="button" key={color} className={selectedColor === color ? "selected" : ""} aria-pressed={selectedColor === color} onClick={() => setSelectedColor(color)}>{color}</button>)}</div></div>}
             <div className="quantity-row">
               <span>Quantidade</span>
               <div className="quantity-control">

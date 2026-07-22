@@ -23,6 +23,9 @@ export const shopProducts = sqliteTable("shop_products", {
   officialUrl: text("official_url").notNull().default(""),
   productType: text("product_type").notNull(),
   audience: text("audience").notNull().default("unissex"),
+  sizes: text("sizes", { mode: "json" }).$type<string[]>().notNull().default("[]"),
+  colors: text("colors", { mode: "json" }).$type<string[]>().notNull().default("[]"),
+  extraCategories: text("extra_categories", { mode: "json" }).$type<string[]>().notNull().default("[]"),
   status: text("status").notNull().default("active"),
   createdAt: text("created_at").notNull().default(sql`CURRENT_TIMESTAMP`),
 });

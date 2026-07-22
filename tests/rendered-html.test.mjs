@@ -97,6 +97,9 @@ test("mantém o editor de produtos oculto e acessível pelo caminho direto", asy
   const editorHtml = await editorResponse.text();
   assert.match(editorHtml, /Informações principais/);
   assert.match(editorHtml, /Preço e estoque/);
+  assert.match(editorHtml, /Variações/);
+  assert.match(editorHtml, /Tamanhos/);
+  assert.match(editorHtml, /Categorias adicionais/);
   assert.match(editorHtml, /Produtos cadastrados/);
 
   const shopResponse = await render("/loja");

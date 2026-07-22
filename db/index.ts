@@ -43,6 +43,9 @@ export async function ensureShopSchema() {
       official_url TEXT NOT NULL DEFAULT '',
       product_type TEXT NOT NULL,
       audience TEXT NOT NULL DEFAULT 'unissex',
+      sizes TEXT NOT NULL DEFAULT '[]',
+      colors TEXT NOT NULL DEFAULT '[]',
+      extra_categories TEXT NOT NULL DEFAULT '[]',
       status TEXT NOT NULL DEFAULT 'active',
       created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
     )`),
