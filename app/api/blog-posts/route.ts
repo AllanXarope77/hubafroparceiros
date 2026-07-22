@@ -73,3 +73,21 @@ export async function POST(request: Request) {
     return Response.json({ error: errorMessage(error) }, { status: 500 });
   }
 }
+
+export async function DELETE(request: Request) {
+  try {
+    const id = Number(new URL(request.url).searchParams.get("id"));
+    if (!Number.isInteger(id) || id <= 0) {
+      return Response.json({ error: "Post inválido." }, { status: 400 });
+    }
+
+    await ensureBlogSchema();
+    const db = await getDb();
+    const [deleted] = await db.delete(blogPosts).where(eq(blogPosts.id, id)).returning({ id: blogPosts.id });
+
+    if (!deleted) return Response.json({ error: "Post não encontrado." }, { status: 404 });
+    return Response.json({ deleted });
+  } catch (error) {
+    return Response.json({ error: errorMessage(error) }, { status: 500 });
+  }
+}

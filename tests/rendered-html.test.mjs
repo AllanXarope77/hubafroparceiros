@@ -53,6 +53,12 @@ test("mantém todas as áreas principais acessíveis", async () => {
   }
 });
 
+test("oferece gerenciamento dos posts no editor", async () => {
+  const response = await render("/blog/editar");
+  assert.equal(response.status, 200);
+  assert.match(await response.text(), /Posts publicados/);
+});
+
 test("mantém o editor oculto na página pública do Blog", async () => {
   const response = await render("/blog");
   assert.equal(response.status, 200);
