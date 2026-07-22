@@ -42,7 +42,7 @@ function productCategories(product: RawProduct): ShopCategory[] {
   const isMale = /-m\/p|continuo-negro|panafricano/.test(value);
   const isChild = /-i\/p|criança/.test(value);
 
-  if (!isChild) {
+  if (!isChild && !categories.includes("livro")) {
     if (isFemale) categories.push("feminino");
     if (isMale) categories.push("masculino");
     if (!isFemale && !isMale) categories.push("masculino", "feminino");
@@ -78,4 +78,3 @@ export const products: Product[] = catalog.products.map((product) => {
 export function getProduct(id: string) {
   return products.find((product) => product.id === id);
 }
-
