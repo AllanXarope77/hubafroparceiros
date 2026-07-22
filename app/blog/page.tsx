@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, Search } from "lucide-react";
+import { ArrowRight, PenLine, Search } from "lucide-react";
+import { BlogPostFeed } from "@/components/blog/blog-post-feed";
 import { SiteShell } from "@/components/layout/site-shell";
 import { FinalCta, PageHero, SectionHeading } from "@/components/shared/ui";
 import { Reveal } from "@/components/shared/reveal";
@@ -24,12 +25,13 @@ export default function BlogPage() {
         <div className="container">
           <div className="blog-toolbar">
             <SectionHeading eyebrow="Leituras recentes" title={<>Curadoria para<br />ampliar o olhar.</>} />
-            <label className="search-field"><Search size={18} /><input type="search" placeholder="Buscar no blog" /></label>
+            <div className="blog-toolbar-actions"><label className="search-field"><Search size={18} /><input type="search" placeholder="Buscar no blog" /></label><Link href="/blog/editar" className="button button--ghost">Editar blog <PenLine size={16} /></Link></div>
           </div>
           <Reveal className="featured-article">
             <div className="featured-art" role="img" aria-label="Composição editorial dourada e vermelha"><span>MANIFESTO<br />DO AGORA</span></div>
             <div className="featured-copy"><small>Em destaque · Cultura</small><h2>Não pedimos licença para imaginar novos centros</h2><p>Como artistas, educadores e criadores transformam ausência de espaço em linguagem, comunidade e futuro.</p><Link href="#">Ler artigo <ArrowRight size={16} /></Link></div>
           </Reveal>
+          <BlogPostFeed />
           <div className="article-layout">
             <div className="article-grid">
               {articles.map(([category, title, time, art], index) => (

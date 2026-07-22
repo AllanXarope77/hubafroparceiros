@@ -39,6 +39,7 @@ test("mantém todas as áreas principais acessíveis", async () => {
   const routes = [
     ["/loja", /Vista a ideia/],
     ["/blog", /Pensamento/],
+    ["/blog/editar", /Transforme ideias/],
     ["/palestras", /Transforme a cultura/],
     ["/clube-do-livro", /Ler junto muda/],
     ["/podcast", /Vozes que/],
