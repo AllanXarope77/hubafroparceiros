@@ -309,7 +309,8 @@ main { overflow: hidden; }
 .video-frame button { position: absolute; bottom: 27px; right: 27px; }
 .platform-strip { min-height: 110px; display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 45px; border-block: 1px solid var(--line); }
 .platform-strip span { color: var(--muted); font-size: 10px; text-transform: uppercase; letter-spacing: .2em; }
-.platform-strip a { font-weight: 650; }
+.platform-strip a { display: inline-flex; align-items: center; gap: 7px; font-weight: 650; transition: color .2s ease; }
+.platform-strip a:hover { color: var(--gold); }
 
 .contact-grid { display: grid; grid-template-columns: .75fr 1.25fr; gap: 110px; }
 .contact-info > p { color: var(--muted); line-height: 1.7; margin-bottom: 45px; }
