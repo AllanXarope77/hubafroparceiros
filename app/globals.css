@@ -294,7 +294,7 @@ main { overflow: hidden; }
 .player-copy h2 { font-size: clamp(37px, 4vw, 58px); line-height: 1; letter-spacing: -.055em; margin: 20px 0; }
 .player-copy p { color: var(--muted); line-height: 1.7; }
 .player-controls { display: flex; align-items: center; gap: 18px; margin-top: 35px; }
-.player-controls button, .episode-art button, .video-frame button { width: 52px; height: 52px; border-radius: 50%; border: 0; background: var(--gold); color: #080808; display: grid; place-items: center; flex: 0 0 auto; }
+.player-controls button, .episode-art button { width: 52px; height: 52px; border-radius: 50%; border: 0; background: var(--gold); color: #080808; display: grid; place-items: center; flex: 0 0 auto; }
 .player-track { height: 2px; background: #3d3b37; flex: 1; }
 .player-track i { display: block; width: 32%; height: 100%; background: var(--gold); }
 .player-controls > span { color: var(--muted); font-size: 10px; }
@@ -309,10 +309,8 @@ main { overflow: hidden; }
 .watch-section { background: var(--surface); }
 .watch-grid { display: grid; grid-template-columns: .8fr 1.2fr; gap: 100px; align-items: center; }
 .watch-grid p { color: var(--muted); line-height: 1.7; }
-.video-frame { min-height: 420px; background: linear-gradient(135deg, #0c0c0c, #6d171e); display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; gap: 20px; }
-.video-frame > svg { color: var(--gold); }
-.video-frame > span { font-size: 34px; font-weight: 700; line-height: .9; text-align: center; }
-.video-frame button { position: absolute; bottom: 27px; right: 27px; }
+.youtube-video { aspect-ratio: 16 / 9; min-width: 0; overflow: hidden; background: #050505; border: 1px solid var(--line); }
+.youtube-video iframe { display: block; width: 100%; height: 100%; border: 0; }
 .platform-strip { min-height: 110px; display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 45px; border-block: 1px solid var(--line); }
 .platform-strip span { color: var(--muted); font-size: 10px; text-transform: uppercase; letter-spacing: .2em; }
 .platform-strip a { display: inline-flex; align-items: center; gap: 7px; font-weight: 650; transition: color .2s ease; }

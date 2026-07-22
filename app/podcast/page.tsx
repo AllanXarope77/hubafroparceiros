@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ArrowUpRight, Play, Video } from "lucide-react";
+import { ArrowUpRight, Play } from "lucide-react";
 import { SiteShell } from "@/components/layout/site-shell";
 import { ButtonLink, FinalCta, PageHero, SectionHeading } from "@/components/shared/ui";
 import { Reveal } from "@/components/shared/reveal";
@@ -30,7 +30,7 @@ export default function PodcastPage() {
       <section className="section" id="episodios"><div className="container"><SectionHeading eyebrow="Últimos episódios" title={<>Conversas para<br />levar com você.</>} /><div className="episodes-grid">
         {episodes.map(([number,title,guest,time,art], index) => <Reveal className="episode-card" key={number} delay={(index % 2)*.06}><div className={`episode-art ${art}`} role="img" aria-label={`Capa do episódio ${title}`}><span>{number}</span><button aria-label={`Ouvir ${title}`}><Play size={18} fill="currentColor" /></button></div><small>{time}</small><h3>{title}</h3><p>{guest}</p></Reveal>)}
       </div></div></section>
-      <section className="section watch-section"><div className="container watch-grid"><Reveal><span className="eyebrow"><i />Assista também</span><h2>Presença, gesto e conversa — agora em vídeo.</h2><p>Os episódios completos e conteúdos extras estão disponíveis no nosso canal.</p><a className="button button--ghost" href="https://www.youtube.com/playlist?list=PLq3ISSRYFWH1q7CimRNeZPYOHP5EaOy_u" target="_blank" rel="noreferrer">Ir para o YouTube <ArrowUpRight size={17} /></a></Reveal><Reveal className="video-frame" delay={.1}><Video size={48} /><span>HUB AFRO<br />NO YOUTUBE</span><button aria-label="Assistir vídeo"><Play size={24} fill="currentColor" /></button></Reveal></div></section>
+      <section className="section watch-section"><div className="container watch-grid"><Reveal><span className="eyebrow"><i />Último episódio no YouTube</span><h2>ARAYE, Jorge Wallace e Cara de Cobra</h2><p>Assista ao episódio mais recente da playlist oficial do AfroParceiros Podcast.</p><a className="button button--ghost" href="https://www.youtube.com/watch?v=gdCREaNq_yU" target="_blank" rel="noreferrer">Abrir no YouTube <ArrowUpRight size={17} /></a></Reveal><Reveal className="youtube-video" delay={.1}><iframe title="2ª T - ARAYE, JORGE WALLACE e CARA DE COBRA - AfroParceiros Podcast #005" src="https://www.youtube.com/embed/gdCREaNq_yU?rel=0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen loading="lazy" /></Reveal></div></section>
       <FinalCta title="Sua voz também importa" copy="Sugira uma pauta, indique uma pessoa ou venha sentar à mesa com a gente." />
     </SiteShell>
   );
