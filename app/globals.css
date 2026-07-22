@@ -166,9 +166,15 @@ main { overflow: hidden; }
 .product-art--bag { background: linear-gradient(135deg, #a79570, #332d25); }
 .product-art--notebook { background: linear-gradient(135deg, #171717, #612027); }
 .product-art--print { background: linear-gradient(30deg, #b29434 0 30%, #7f1a22 30% 58%, #111 58%); }
+.product-art--image { background: #f4f2ed; border: 1px solid rgba(255,255,255,.08); }
+.product-art--image::before { display: none; }
+.product-art-image { width: 100%; height: 100%; object-fit: contain; transition: transform .45s ease; }
+.product-card:hover .product-art-image { transform: scale(1.035); }
 .product-info { display: flex; align-items: end; justify-content: space-between; gap: 15px; }
 .product-info h3 { margin: 6px 0 0; font-size: 16px; }
 .product-info strong { color: var(--gold); font-size: 13px; white-space: nowrap; }
+.product-price { display: grid; justify-items: end; gap: 5px; text-align: right; }
+.product-price span { color: var(--muted); font-size: 9px; white-space: nowrap; }
 .add-button { width: 100%; margin-top: 18px; padding: 12px; display: flex; align-items: center; justify-content: center; gap: 9px; color: var(--white); background: #151515; border: 1px solid var(--line); transition: .25s; }
 .add-button:hover { background: var(--gold); color: #080808; }
 .integration-note { color: #67645e; font-size: 10px; text-align: center; margin-top: 40px; }

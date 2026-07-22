@@ -1,53 +1,48 @@
 import type { Metadata } from "next";
-import { ShoppingBag, SlidersHorizontal } from "lucide-react";
+import { ShoppingBag } from "lucide-react";
 import { SiteShell } from "@/components/layout/site-shell";
 import { ButtonLink, FinalCta, PageHero, SectionHeading } from "@/components/shared/ui";
 import { Reveal } from "@/components/shared/reveal";
 
-export const metadata: Metadata = { title: "Loja | Hub Afro", description: "Moda, livros e objetos autorais do Hub Afro." };
+export const metadata: Metadata = { title: "DNA Guetos | Hub Afro", description: "Conheça os produtos da DNA Guetos." };
 
 const products = [
-  ["Camiseta Centro", "Vestuário", "R$ 149", "product-art--shirt"],
-  ["Livro Vozes do Agora", "Livros", "R$ 72", "product-art--book"],
-  ["Boné Futuro Ancestral", "Acessórios", "R$ 119", "product-art--cap"],
-  ["Ecobag Movimento", "Acessórios", "R$ 69", "product-art--bag"],
-  ["Caderno Encruzilhadas", "Papelaria", "R$ 54", "product-art--notebook"],
-  ["Print Novos Centros", "Arte", "R$ 89", "product-art--print"],
+  { name: "Boné DNA GUETOS", category: "Bonés", price: "R$ 99,90 no Pix", installments: "12x de R$ 10,17", image: "/images/dna-guetos/bone-dna-guetos.png", href: "https://www.afroparceiros.com/bone-dna-guetos-preto/p" },
+  { name: "Moletom DNA GUETOS", category: "Vestuário", price: "R$ 200,00 no Pix", installments: "12x de R$ 20,35", image: "/images/dna-guetos/moletom-dna-guetos.png", href: "https://www.afroparceiros.com/moletom-dna-guetos/p" },
+  { name: "Camisa MINIMALISTA DNA GUETOS", category: "Camisetas", price: "R$ 150,00 no Pix", installments: "12x de R$ 15,26", image: "/images/dna-guetos/camisa-minimalista-dna-guetos.png", href: "https://www.afroparceiros.com/camisa-minimalista-dna-guetos/p" },
+  { name: "Camisa Thug Life", category: "Camisetas", price: "R$ 150,00 no Pix", installments: "12x de R$ 15,26", image: "/images/dna-guetos/camisa-thug-life.png", href: "https://www.afroparceiros.com/camisa-thug-life/p" },
+  { name: "Camisa DNA GUETOS", category: "Camisetas", price: "R$ 150,00 no Pix", installments: "12x de R$ 15,26", image: "/images/dna-guetos/camisa-dna-guetos.png", href: "https://www.afroparceiros.com/camisa-dna-guetos/p" },
 ];
 
 export default function LojaPage() {
   return (
     <SiteShell>
-      <PageHero index="01" eyebrow="Loja do Hub" title={<>Vista a ideia.<br /><span className="gold-text">Carregue a história.</span></>} copy="Produtos autorais que atravessam memória, design e identidade — feitos em pequenas tiragens, com propósito e presença.">
+      <PageHero index="01" eyebrow="DNA Guetos" title={<>Vista identidade.<br /><span className="gold-text">Carregue resistência.</span></>} copy="Moda autoral criada para transformar memória, luta e presença em linguagem — do gueto para o mundo.">
         <ButtonLink href="#produtos">Ver coleção</ButtonLink>
       </PageHero>
       <section className="section" id="produtos">
         <div className="container">
           <div className="shop-heading">
-            <SectionHeading eyebrow="Coleção essencial" title={<>Objetos com<br />significado.</>} />
-            <button className="filter-button"><SlidersHorizontal size={16} /> Filtrar</button>
-          </div>
-          <div className="category-pills" aria-label="Categorias da loja">
-            {['Todos', 'Camisetas', 'Bonés', 'Livros', 'Acessórios', 'Coleções'].map((item, i) => <button className={i === 0 ? 'selected' : ''} key={item}>{item}</button>)}
+            <SectionHeading eyebrow="Coleção atual" title={<>DNA que se veste<br />e se afirma.</>} copy="Produtos disponíveis na loja oficial Afroparceiros." />
           </div>
           <div className="product-grid">
-            {products.map(([name, category, price, art], index) => (
-              <Reveal key={name} className="product-card" delay={(index % 3) * 0.05}>
-                <div className={`product-art ${art}`} role="img" aria-label={name}>
-                  <span>HA</span>
+            {products.map((product, index) => (
+              <Reveal key={product.name} className="product-card" delay={(index % 3) * 0.05}>
+                <div className="product-art product-art--image">
+                  <img className="product-art-image" src={product.image} alt={product.name} loading={index > 2 ? "lazy" : "eager"} />
                 </div>
                 <div className="product-info">
-                  <div><small>{category}</small><h3>{name}</h3></div>
-                  <strong>{price}</strong>
+                  <div><small>{product.category}</small><h3>{product.name}</h3></div>
+                  <div className="product-price"><strong>{product.price}</strong><span>{product.installments}</span></div>
                 </div>
-                <button className="add-button"><ShoppingBag size={16} /> Adicionar</button>
+                <a className="add-button" href={product.href} target="_blank" rel="noreferrer"><ShoppingBag size={16} /> Comprar na loja</a>
               </Reveal>
             ))}
           </div>
-          <p className="integration-note">Loja demonstrativa preparada para futura integração com Shopify ou WooCommerce.</p>
+          <p className="integration-note">A compra e a escolha de tamanho são finalizadas com segurança na loja oficial Afroparceiros.</p>
         </div>
       </section>
-      <FinalCta title="Leve o movimento com você" copy="Cada escolha fortalece uma cadeia de criação independente." />
+      <FinalCta title="Leve o movimento com você" copy="Cada peça afirma identidade, memória e criação independente." />
     </SiteShell>
   );
 }

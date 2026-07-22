@@ -37,7 +37,7 @@ test("renderiza a home com a identidade do Hub Afro", async () => {
 
 test("mantém todas as áreas principais acessíveis", async () => {
   const routes = [
-    ["/loja", /Vista a ideia/],
+    ["/loja", /Vista identidade/],
     ["/blog", /Pensamento/],
     ["/blog/editar", /Transforme ideias/],
     ["/palestras", /Transforme a cultura/],
@@ -57,6 +57,17 @@ test("oferece gerenciamento dos posts no editor", async () => {
   const response = await render("/blog/editar");
   assert.equal(response.status, 200);
   assert.match(await response.text(), /Posts publicados/);
+});
+
+test("exibe os produtos reais da DNA Guetos", async () => {
+  const response = await render("/loja");
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  assert.match(html, /Boné DNA GUETOS/);
+  assert.match(html, /Camisa Thug Life/);
+  assert.match(html, /camisa-dna-guetos\.png/);
+  assert.match(html, /afroparceiros\.com\/camisa-dna-guetos\/p/);
+  assert.doesNotMatch(html, /Loja demonstrativa|Camiseta Centro/);
 });
 
 test("mantém o editor oculto na página pública do Blog", async () => {
