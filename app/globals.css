@@ -299,13 +299,11 @@ main { overflow: hidden; }
 .player-track i { display: block; width: 32%; height: 100%; background: var(--gold); }
 .player-controls > span { color: var(--muted); font-size: 10px; }
 .episodes-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-top: 60px; }
-.episode-art { height: 280px; margin-bottom: 22px; padding: 20px; position: relative; display: flex; align-items: end; overflow: hidden; }
-.episode-art::before { content: ""; position: absolute; inset: 17%; border: 1px solid rgba(255,255,255,.28); border-radius: 50%; }
-.episode-art > span { position: relative; color: rgba(255,255,255,.8); font-size: 11px; letter-spacing: .15em; }
-.episode-art button { width: 44px; height: 44px; position: absolute; right: 18px; bottom: 18px; }
-.episode-art--one { background: #851d24; } .episode-art--two { background: #8d762d; } .episode-art--three { background: #272727; } .episode-art--four { background: #51331d; }
-.episode-card h3 { font-size: 19px; line-height: 1.3; margin: 11px 0 6px; }
-.episode-card p { color: var(--muted); font-size: 12px; }
+.spotify-episode-card { min-width: 0; padding: 12px; background: #111; border: 1px solid var(--line); }
+.spotify-episode-card iframe { display: block; border-radius: 10px; }
+.spotify-episode-meta { display: flex; justify-content: space-between; align-items: center; gap: 15px; padding: 14px 5px 3px; }
+.spotify-episode-meta small { color: var(--gold); font-size: 9px; text-transform: uppercase; letter-spacing: .13em; }
+.spotify-episode-meta a { display: inline-flex; align-items: center; gap: 5px; color: #e7e3da; font-size: 9px; text-transform: uppercase; letter-spacing: .1em; }
 .watch-section { background: var(--surface); }
 .watch-grid { display: grid; grid-template-columns: .8fr 1.2fr; gap: 100px; align-items: center; }
 .watch-grid p { color: var(--muted); line-height: 1.7; }
