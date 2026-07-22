@@ -298,7 +298,7 @@ main { overflow: hidden; }
 .player-track { height: 2px; background: #3d3b37; flex: 1; }
 .player-track i { display: block; width: 32%; height: 100%; background: var(--gold); }
 .player-controls > span { color: var(--muted); font-size: 10px; }
-.episodes-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-top: 60px; }
+.episodes-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin-top: 60px; }
 .spotify-episode-card { min-width: 0; padding: 12px; background: #111; border: 1px solid var(--line); }
 .spotify-episode-card iframe { display: block; border-radius: 10px; }
 .spotify-episode-meta { display: flex; justify-content: space-between; align-items: center; gap: 15px; padding: 14px 5px 3px; }
