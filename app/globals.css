@@ -195,6 +195,7 @@ main { overflow: hidden; }
 .published-post-card p { color: var(--muted); line-height: 1.65; font-size: 13px; }
 .published-post-card a { display: inline-flex; align-items: center; gap: 8px; color: #e7e3da; text-transform: uppercase; font-size: 9px; letter-spacing: .12em; margin-top: auto; padding-top: 25px; }
 .article-layout { display: grid; grid-template-columns: 1fr 245px; gap: 70px; }
+.blog-posts-only { margin-top: 70px; }
 .article-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 55px 24px; }
 .article-art { height: 280px; margin-bottom: 21px; display: grid; place-items: center; position: relative; overflow: hidden; }
 .article-art::before { content: ""; width: 150px; height: 150px; border: 1px solid rgba(255,255,255,.3); transform: rotate(45deg); }

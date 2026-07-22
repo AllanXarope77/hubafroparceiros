@@ -58,4 +58,5 @@ test("mantém o editor oculto na página pública do Blog", async () => {
   assert.equal(response.status, 200);
   const html = await response.text();
   assert.doesNotMatch(html, /Editar blog|\/blog\/editar/i);
+  assert.doesNotMatch(html, /MANIFESTO DO AGORA|O futuro também se escreve|Assuntos/i);
 });
