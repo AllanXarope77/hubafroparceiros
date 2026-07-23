@@ -27,6 +27,41 @@ export type Product = {
   colorImages?: Array<{ color: string; image: string }>;
 };
 
+export type CatalogVariant = {
+  key: string;
+  size: string;
+  color: string;
+  sku: string;
+  barcode: string;
+  stock: number;
+};
+
+export type ProductCatalogData = {
+  brand: string;
+  baseSku: string;
+  barcode: string;
+  material: string;
+  condition: "new" | "used";
+  weightGrams: number;
+  lengthCm: number;
+  widthCm: number;
+  heightCm: number;
+  variants: CatalogVariant[];
+};
+
+export const emptyProductCatalogData: ProductCatalogData = {
+  brand: "DNA Guetos",
+  baseSku: "",
+  barcode: "",
+  material: "",
+  condition: "new",
+  weightGrams: 0,
+  lengthCm: 0,
+  widthCm: 0,
+  heightCm: 0,
+  variants: [],
+};
+
 export type SavedProduct = {
   id: number;
   name: string;
@@ -41,6 +76,7 @@ export type SavedProduct = {
   colors: string[];
   extraCategories: string[];
   colorImages: Array<{ color: string; image: string }>;
+  catalogData: ProductCatalogData;
   status: "active" | "draft";
   createdAt: string;
 };

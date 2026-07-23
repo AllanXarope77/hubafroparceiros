@@ -1,6 +1,7 @@
 import { desc, eq } from "drizzle-orm";
 import { ensureShopCatalogSeeded, getDb } from "@/db";
 import { shopProducts } from "@/db/schema";
+import { emptyProductCatalogData, type CatalogVariant, type ProductCatalogData } from "@/lib/products";
 
 const productTypes = new Set(["camisa", "bone", "moletom", "livro"]);
 const audiences = new Set(["masculino", "feminino", "unissex", "infantil"]);
@@ -28,6 +29,52 @@ function isSafeImage(value: string) {
   try { return new URL(value).protocol === "https:"; } catch { return false; }
 }
 
+function shortText(value: unknown, maximum: number) {
+  return String(value ?? "").trim().slice(0, maximum);
+}
+
+function nonNegativeInteger(value: unknown) {
+  const number = Number(value);
+  return Number.isInteger(number) && number >= 0 ? number : 0;
+}
+
+function catalogDataValue(value: unknown, sizes: string[], colors: string[]): ProductCatalogData {
+  const data = value && typeof value === "object" ? value as Record<string, unknown> : {};
+  const condition = data.condition === "used" ? "used" : "new";
+  const allowedSizes = new Set(sizes);
+  const allowedColors = new Set(colors);
+  const variants = Array.isArray(data.variants) ? data.variants.flatMap(item => {
+    if (!item || typeof item !== "object") return [];
+    const row = item as Record<string, unknown>;
+    const size = shortText(row.size, 30);
+    const color = shortText(row.color, 30);
+    if ((size && !allowedSizes.has(size)) || (color && !allowedColors.has(color))) return [];
+    const key = shortText(row.key, 80) || `${size || "unico"}::${color || "padrao"}`;
+    return [{
+      key,
+      size,
+      color,
+      sku: shortText(row.sku, 80),
+      barcode: shortText(row.barcode, 40),
+      stock: nonNegativeInteger(row.stock),
+    } satisfies CatalogVariant];
+  }).slice(0, 200) : [];
+
+  return {
+    ...emptyProductCatalogData,
+    brand: shortText(data.brand, 80) || emptyProductCatalogData.brand,
+    baseSku: shortText(data.baseSku, 80),
+    barcode: shortText(data.barcode, 40),
+    material: shortText(data.material, 120),
+    condition,
+    weightGrams: nonNegativeInteger(data.weightGrams),
+    lengthCm: nonNegativeInteger(data.lengthCm),
+    widthCm: nonNegativeInteger(data.widthCm),
+    heightCm: nonNegativeInteger(data.heightCm),
+    variants,
+  };
+}
+
 function message(error: unknown) {
   return error instanceof Error ? error.message : "Não foi possível acessar os produtos.";
 }
@@ -44,6 +91,7 @@ function productValues(payload: Record<string, unknown>) {
   const colors = textList(payload.colors);
   const extraCategories = textList(payload.extraCategories).filter(category => categoryNames.has(category));
   const colorImages = colorImageList(payload.colorImages, colors);
+  const catalogData = catalogDataValue(payload.catalogData, sizes, colors);
   const priceCents = Number(payload.priceCents);
   const stock = Number(payload.stock);
 
@@ -63,7 +111,7 @@ function productValues(payload: Record<string, unknown>) {
   if (name.length > 140 || description.length > 1200 || image.length > 1500 || officialUrl.length > 1500) {
     return { error: "Revise o tamanho dos textos e links." } as const;
   }
-  return { values: { name, description, image, officialUrl, productType, audience, sizes, colors, extraCategories, colorImages, status, priceCents, stock } } as const;
+  return { values: { name, description, image, officialUrl, productType, audience, sizes, colors, extraCategories, colorImages, catalogData, status, priceCents, stock } } as const;
 }
 
 export async function GET(request: Request) {

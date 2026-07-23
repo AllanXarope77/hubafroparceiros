@@ -1,0 +1,1 @@
+ALTER TABLE `shop_products` ADD `catalog_data` text DEFAULT '{}' NOT NULL;

@@ -54,6 +54,7 @@ export async function ensureShopSchema() {
       colors TEXT NOT NULL DEFAULT '[]',
       extra_categories TEXT NOT NULL DEFAULT '[]',
       color_images TEXT NOT NULL DEFAULT '[]',
+      catalog_data TEXT NOT NULL DEFAULT '{}',
       status TEXT NOT NULL DEFAULT 'active',
       created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
     )`),

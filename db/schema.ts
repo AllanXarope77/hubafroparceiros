@@ -1,5 +1,6 @@
 import { sql } from "drizzle-orm";
 import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
+import type { ProductCatalogData } from "@/lib/products";
 
 export const blogPosts = sqliteTable("blog_posts", {
   id: integer("id").primaryKey({ autoIncrement: true }),
@@ -23,10 +24,11 @@ export const shopProducts = sqliteTable("shop_products", {
   officialUrl: text("official_url").notNull().default(""),
   productType: text("product_type").notNull(),
   audience: text("audience").notNull().default("unissex"),
-  sizes: text("sizes", { mode: "json" }).$type<string[]>().notNull().default("[]"),
-  colors: text("colors", { mode: "json" }).$type<string[]>().notNull().default("[]"),
-  extraCategories: text("extra_categories", { mode: "json" }).$type<string[]>().notNull().default("[]"),
-  colorImages: text("color_images", { mode: "json" }).$type<Array<{ color: string; image: string }>>().notNull().default("[]"),
+  sizes: text("sizes", { mode: "json" }).$type<string[]>().notNull().default(sql`'[]'`),
+  colors: text("colors", { mode: "json" }).$type<string[]>().notNull().default(sql`'[]'`),
+  extraCategories: text("extra_categories", { mode: "json" }).$type<string[]>().notNull().default(sql`'[]'`),
+  colorImages: text("color_images", { mode: "json" }).$type<Array<{ color: string; image: string }>>().notNull().default(sql`'[]'`),
+  catalogData: text("catalog_data", { mode: "json" }).$type<ProductCatalogData>().notNull().default(sql`'{}'`),
   status: text("status").notNull().default("active"),
   createdAt: text("created_at").notNull().default(sql`CURRENT_TIMESTAMP`),
 });
