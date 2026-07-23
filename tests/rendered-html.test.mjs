@@ -60,14 +60,13 @@ test("oferece gerenciamento dos posts no editor", async () => {
   assert.match(await response.text(), /Posts publicados/);
 });
 
-test("exibe os produtos reais da DNA Guetos", async () => {
+test("carrega o catálogo editável da DNA Guetos", async () => {
   const response = await render("/loja");
   assert.equal(response.status, 200);
   const html = await response.text();
-  assert.match(html, /Boné DNA GUETOS/);
-  assert.match(html, /Camisa Thug Life/);
-  assert.match(html, /camisa-dna-guetos\.png/);
-  assert.match(html, /\/loja\/43721859/);
+  assert.match(html, /Carregando catálogo/);
+  assert.match(html, /Buscar produto/);
+  assert.doesNotMatch(html, /Camisa Thug Life/);
   assert.doesNotMatch(html, /Loja demonstrativa|Camiseta Centro/);
 });
 
@@ -77,14 +76,12 @@ test("oferece filtros, páginas de produto e carrinho", async () => {
   assert.match(shopHtml, /Masculino/);
   assert.match(shopHtml, /Feminino/);
   assert.match(shopHtml, /Moletom/);
-  assert.match(shopHtml, /Livro Guetos - Apartheid Urbano/);
+  assert.match(shopHtml, /Carregando catálogo/);
 
   const productResponse = await render("/loja/43721859");
   assert.equal(productResponse.status, 200);
   const productHtml = await productResponse.text();
-  assert.match(productHtml, /Camisa DNA GUETOS/);
-  assert.match(productHtml, /Adicionar ao carrinho/);
-  assert.match(productHtml, /Escolher tamanho e cor na loja oficial/);
+  assert.match(productHtml, /Carregando produto/);
 
   const cartResponse = await render("/carrinho");
   assert.equal(cartResponse.status, 200);

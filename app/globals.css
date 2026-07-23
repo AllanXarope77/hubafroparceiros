@@ -527,10 +527,12 @@ main { overflow: hidden; }
 .editor-panel .editor-upload-button { min-height: 34px; padding: 0 11px; display: inline-flex; align-items: center; justify-content: center; gap: 7px; margin: 0; color: var(--editor-purple); background: #f5f2ff; border: 1px solid #d6cbf3; border-radius: 5px; cursor: pointer; font-size: 9px; }
 .editor-upload-button input { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
 .editor-uploaded-status { display: inline-flex; align-items: center; gap: 5px; color: #2d8559; font-size: 9px; }
-.product-editor-submit { display: flex; justify-content: flex-end; }
+.product-editor-submit { display: flex; justify-content: flex-end; gap: 10px; }
 .product-editor-submit button { min-height: 46px; padding: 0 22px; display: inline-flex; align-items: center; gap: 9px; color: #fff; background: var(--editor-purple); border: 0; border-radius: 7px; font-size: 12px; font-weight: 700; }
 .product-editor-submit button:hover { background: #5d37c5; }
 .product-editor-submit button:disabled { opacity: .6; cursor: wait; }
+.product-editor-submit .editor-cancel { color: #5d5866; background: #fff; border: 1px solid #d7d2dc; }
+.product-editor-submit .editor-cancel:hover { background: #f5f2f7; }
 .editor-product-message { margin: 0; padding: 13px 15px; display: flex; align-items: center; gap: 9px; border-radius: 7px; font-size: 11px; }
 .editor-product-message.error { color: #8e2631; background: #fff0f1; border: 1px solid #edc8cc; }
 .editor-product-message.success { color: #256c48; background: #effaf4; border: 1px solid #c8e6d5; }
@@ -558,6 +560,7 @@ main { overflow: hidden; }
 .editor-product-actions a, .editor-product-actions button { min-height: 35px; padding: 0 12px; display: inline-flex; align-items: center; gap: 6px; border-radius: 5px; font-size: 10px; }
 .editor-product-actions a { color: var(--editor-purple); border: 1px solid #d5c9f3; }
 .editor-product-actions button { color: #9b3741; background: #fff; border: 1px solid #e5c8cb; }
+.editor-product-actions .editor-edit-product { color: var(--editor-purple); border-color: #d5c9f3; }
 .editor-product-actions button:disabled { opacity: .6; cursor: wait; }
 
 @media (max-width: 1050px) {

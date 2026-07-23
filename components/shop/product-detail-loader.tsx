@@ -10,7 +10,7 @@ export function ProductDetailLoader({ id, initialProduct }: { id: string; initia
   const [error, setError] = useState("");
 
   useEffect(() => {
-    if (initialProduct || !id.startsWith("custom-")) return;
+    if (initialProduct) return;
     const numericId = id.replace("custom-", "");
     fetch(`/api/products?id=${numericId}`, { cache: "no-store" })
       .then(async response => {

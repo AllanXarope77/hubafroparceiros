@@ -3,7 +3,7 @@
 import { ExternalLink, Minus, Plus, ShoppingBag, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { formatPrice, getProduct, savedProductToProduct, type Product, type SavedProduct } from "@/lib/products";
+import { formatPrice, savedProductToProduct, type Product, type SavedProduct } from "@/lib/products";
 import { useCart } from "./cart-provider";
 
 export function CartPage() {
@@ -11,7 +11,7 @@ export function CartPage() {
   const [savedProducts, setSavedProducts] = useState<Product[]>([]);
 
   useEffect(() => {
-    if (!items.some(item => item.id.startsWith("custom-"))) return;
+    if (!items.length) return;
     fetch("/api/products", { cache: "no-store" })
       .then(response => response.json())
       .then((data: { products?: SavedProduct[] }) => setSavedProducts((data.products ?? []).map(savedProductToProduct)))
@@ -19,7 +19,7 @@ export function CartPage() {
   }, [items]);
 
   const entries = items.flatMap((item) => {
-    const product = getProduct(item.id) ?? savedProducts.find(saved => saved.id === item.id);
+    const product = savedProducts.find(saved => saved.id === item.id.replace("custom-", ""));
     return product ? [{ ...item, product }] : [];
   });
   const subtotal = entries.reduce((total, item) => total + item.product.priceCents * item.quantity, 0);

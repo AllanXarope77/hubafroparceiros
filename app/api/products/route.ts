@@ -1,5 +1,5 @@
 import { desc, eq } from "drizzle-orm";
-import { ensureShopSchema, getDb } from "@/db";
+import { ensureShopCatalogSeeded, getDb } from "@/db";
 import { shopProducts } from "@/db/schema";
 
 const productTypes = new Set(["camisa", "bone", "moletom", "livro"]);
@@ -23,13 +23,50 @@ function colorImageList(value: unknown, selectedColors: string[]) {
   }).slice(0, 20);
 }
 
+function isSafeImage(value: string) {
+  if (value.startsWith("/images/") || value.startsWith("/api/product-images/")) return true;
+  try { return new URL(value).protocol === "https:"; } catch { return false; }
+}
+
 function message(error: unknown) {
   return error instanceof Error ? error.message : "Não foi possível acessar os produtos.";
 }
 
+function productValues(payload: Record<string, unknown>) {
+  const name = String(payload.name ?? "").trim();
+  const description = String(payload.description ?? "").trim();
+  const image = String(payload.image ?? "").trim();
+  const officialUrl = String(payload.officialUrl ?? "").trim();
+  const productType = String(payload.productType ?? "");
+  const audience = String(payload.audience ?? "unissex");
+  const status = String(payload.status ?? "active");
+  const sizes = textList(payload.sizes);
+  const colors = textList(payload.colors);
+  const extraCategories = textList(payload.extraCategories).filter(category => categoryNames.has(category));
+  const colorImages = colorImageList(payload.colorImages, colors);
+  const priceCents = Number(payload.priceCents);
+  const stock = Number(payload.stock);
+
+  if (!name || !image || !officialUrl || !productTypes.has(productType) || !audiences.has(audience) || !statuses.has(status)) {
+    return { error: "Preencha os dados obrigatórios do produto." } as const;
+  }
+  let safeStoreUrl = false;
+  try { safeStoreUrl = new URL(officialUrl).protocol === "https:"; } catch { /* invalid */ }
+  if (!isSafeImage(image) || !safeStoreUrl) {
+    return { error: "Use uma imagem válida e um link da Yampi iniciado por https://." } as const;
+  }
+  if (!Number.isInteger(priceCents) || priceCents < 0 || !Number.isInteger(stock) || stock < 0) {
+    return { error: "Informe preço e estoque válidos." } as const;
+  }
+  if (name.length > 140 || description.length > 1200 || image.length > 1500 || officialUrl.length > 1500) {
+    return { error: "Revise o tamanho dos textos e links." } as const;
+  }
+  return { values: { name, description, image, officialUrl, productType, audience, sizes, colors, extraCategories, colorImages, status, priceCents, stock } } as const;
+}
+
 export async function GET(request: Request) {
   try {
-    await ensureShopSchema();
+    await ensureShopCatalogSeeded();
     const db = await getDb();
     const params = new URL(request.url).searchParams;
     const id = Number(params.get("id"));
@@ -52,44 +89,29 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   try {
-    const payload = (await request.json()) as Record<string, unknown>;
-    const name = String(payload.name ?? "").trim();
-    const description = String(payload.description ?? "").trim();
-    const image = String(payload.image ?? "").trim();
-    const officialUrl = String(payload.officialUrl ?? "").trim();
-    const productType = String(payload.productType ?? "");
-    const audience = String(payload.audience ?? "unissex");
-    const status = String(payload.status ?? "active");
-    const sizes = textList(payload.sizes);
-    const colors = textList(payload.colors);
-    const extraCategories = textList(payload.extraCategories).filter(category => categoryNames.has(category));
-    const colorImages = colorImageList(payload.colorImages, colors);
-    const priceCents = Number(payload.priceCents);
-    const stock = Number(payload.stock);
-
-    if (!name || !image || !officialUrl || !productTypes.has(productType) || !audiences.has(audience) || !statuses.has(status)) {
-      return Response.json({ error: "Preencha os dados obrigatórios do produto." }, { status: 400 });
-    }
-    try {
-      const imageUrl = new URL(image);
-      const storeUrl = new URL(officialUrl);
-      if (imageUrl.protocol !== "https:" || storeUrl.protocol !== "https:") throw new Error();
-    } catch {
-      return Response.json({ error: "Use links seguros iniciados por https:// para a imagem e a Yampi." }, { status: 400 });
-    }
-    if (!Number.isInteger(priceCents) || priceCents < 0 || !Number.isInteger(stock) || stock < 0) {
-      return Response.json({ error: "Informe preço e estoque válidos." }, { status: 400 });
-    }
-    if (name.length > 140 || description.length > 1200 || image.length > 1500 || officialUrl.length > 1500) {
-      return Response.json({ error: "Revise o tamanho dos textos e links." }, { status: 400 });
-    }
-
-    await ensureShopSchema();
+    const parsed = productValues((await request.json()) as Record<string, unknown>);
+    if ("error" in parsed) return Response.json({ error: parsed.error }, { status: 400 });
+    await ensureShopCatalogSeeded();
     const db = await getDb();
-    const [product] = await db.insert(shopProducts).values({
-      name, description, image, officialUrl, productType, audience, sizes, colors, extraCategories, colorImages, status, priceCents, stock,
-    }).returning();
+    const [product] = await db.insert(shopProducts).values(parsed.values).returning();
     return Response.json({ product }, { status: 201 });
+  } catch (error) {
+    return Response.json({ error: message(error) }, { status: 500 });
+  }
+}
+
+export async function PATCH(request: Request) {
+  try {
+    const payload = (await request.json()) as Record<string, unknown>;
+    const id = Number(payload.id);
+    if (!Number.isInteger(id) || id <= 0) return Response.json({ error: "Produto inválido." }, { status: 400 });
+    const parsed = productValues(payload);
+    if ("error" in parsed) return Response.json({ error: parsed.error }, { status: 400 });
+    await ensureShopCatalogSeeded();
+    const db = await getDb();
+    const [product] = await db.update(shopProducts).set(parsed.values).where(eq(shopProducts.id, id)).returning();
+    if (!product) return Response.json({ error: "Produto não encontrado." }, { status: 404 });
+    return Response.json({ product });
   } catch (error) {
     return Response.json({ error: message(error) }, { status: 500 });
   }
@@ -99,7 +121,7 @@ export async function DELETE(request: Request) {
   try {
     const id = Number(new URL(request.url).searchParams.get("id"));
     if (!Number.isInteger(id) || id <= 0) return Response.json({ error: "Produto inválido." }, { status: 400 });
-    await ensureShopSchema();
+    await ensureShopCatalogSeeded();
     const db = await getDb();
     const [deleted] = await db.delete(shopProducts).where(eq(shopProducts.id, id)).returning({ id: shopProducts.id });
     if (!deleted) return Response.json({ error: "Produto não encontrado." }, { status: 404 });

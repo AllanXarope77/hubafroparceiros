@@ -2,22 +2,24 @@
 
 import { Search } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
-import { products, savedProductToProduct, shopCategories, type Product, type SavedProduct, type ShopCategory } from "@/lib/products";
+import { savedProductToProduct, shopCategories, type Product, type SavedProduct, type ShopCategory } from "@/lib/products";
 import { ProductCard } from "./product-card";
 
 export function ShopCatalog() {
   const [category, setCategory] = useState<ShopCategory>("todos");
   const [query, setQuery] = useState("");
-  const [catalogProducts, setCatalogProducts] = useState<Product[]>(products);
+  const [catalogProducts, setCatalogProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetch("/api/products?status=active", { cache: "no-store" })
       .then(async response => {
         if (!response.ok) throw new Error();
         const data = await response.json() as { products?: SavedProduct[] };
-        setCatalogProducts([...(data.products ?? []).map(savedProductToProduct), ...products]);
+        setCatalogProducts((data.products ?? []).map(savedProductToProduct));
       })
-      .catch(() => { /* mantém o catálogo importado da Yampi */ });
+      .catch(() => setCatalogProducts([]))
+      .finally(() => setLoading(false));
   }, []);
 
   const filtered = useMemo(() => catalogProducts.filter((product) => {
@@ -42,12 +44,12 @@ export function ShopCatalog() {
           <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Buscar produto" />
         </label>
       </div>
-      <p className="product-count">{filtered.length} {filtered.length === 1 ? "produto" : "produtos"}</p>
-      {filtered.length ? (
+      <p className="product-count">{loading ? "Carregando catálogo..." : `${filtered.length} ${filtered.length === 1 ? "produto" : "produtos"}`}</p>
+      {!loading && filtered.length ? (
         <div className="product-grid">
           {filtered.map((product, index) => <ProductCard key={product.id} product={product} priority={index < 3} />)}
         </div>
-      ) : <div className="shop-empty">Nenhum produto encontrado com esse filtro.</div>}
+      ) : !loading && <div className="shop-empty">Nenhum produto encontrado com esse filtro.</div>}
     </>
   );
 }

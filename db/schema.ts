@@ -32,3 +32,8 @@ export const shopProducts = sqliteTable("shop_products", {
 });
 
 export type ShopProduct = typeof shopProducts.$inferSelect;
+
+export const catalogImports = sqliteTable("catalog_imports", {
+  key: text("key").primaryKey(),
+  importedAt: text("imported_at").notNull().default(sql`CURRENT_TIMESTAMP`),
+});

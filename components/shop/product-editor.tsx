@@ -1,8 +1,8 @@
 "use client";
 
-import { ArrowLeft, CheckCircle2, ExternalLink, ImageIcon, Package, Save, Tags, Trash2, UploadCloud } from "lucide-react";
+import { ArrowLeft, CheckCircle2, ExternalLink, ImageIcon, Package, Pencil, Save, Tags, Trash2, UploadCloud } from "lucide-react";
 import Link from "next/link";
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 import { formatPrice, type SavedProduct } from "@/lib/products";
 
 const emptyPreview = { name: "Nome do produto", price: "R$ 0,00" };
@@ -14,6 +14,7 @@ const availableExtraCategories = [
 ];
 
 export function ProductEditor() {
+  const formRef = useRef<HTMLFormElement>(null);
   const [products, setProducts] = useState<SavedProduct[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -29,6 +30,7 @@ export function ProductEditor() {
   const [customColors, setCustomColors] = useState("");
   const [colorImages, setColorImages] = useState<Record<string, string>>({});
   const [uploadingColor, setUploadingColor] = useState("");
+  const [editingId, setEditingId] = useState<number | null>(null);
   const customColorList = customColors.split(",").map(color => color.trim()).filter(Boolean);
   const allSelectedColors = [...new Set([...selectedColors, ...customColorList])];
 
@@ -43,7 +45,7 @@ export function ProductEditor() {
       .finally(() => setLoading(false));
   }, []);
 
-  async function createProduct(event: FormEvent<HTMLFormElement>) {
+  async function saveProduct(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setSaving(true);
     setError("");
@@ -52,6 +54,7 @@ export function ProductEditor() {
     const values = new FormData(form);
     const price = Number(String(values.get("price") || "0").replace(",", "."));
     const payload = {
+      id: editingId,
       name: values.get("name"),
       description: values.get("description"),
       priceCents: Math.round(price * 100),
@@ -69,15 +72,18 @@ export function ProductEditor() {
 
     try {
       const response = await fetch("/api/products", {
-        method: "POST",
+        method: editingId ? "PATCH" : "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || "Não foi possível cadastrar o produto.");
-      setProducts(current => [data.product, ...current]);
-      setMessage(`“${data.product.name}” foi cadastrado com sucesso.`);
+      setProducts(current => editingId
+        ? current.map(item => item.id === editingId ? data.product : item)
+        : [data.product, ...current]);
+      setMessage(editingId ? `“${data.product.name}” foi atualizado com sucesso.` : `“${data.product.name}” foi cadastrado com sucesso.`);
       form.reset();
+      setEditingId(null);
       setImage("");
       setPreviewName(emptyPreview.name);
       setPreviewPrice(emptyPreview.price);
@@ -95,6 +101,50 @@ export function ProductEditor() {
 
   function toggleValue(value: string, selected: string[], update: (values: string[]) => void) {
     update(selected.includes(value) ? selected.filter(item => item !== value) : [...selected, value]);
+  }
+
+  function editProduct(product: SavedProduct) {
+    const form = formRef.current;
+    if (!form) return;
+    const setField = (name: string, value: string) => {
+      const field = form.elements.namedItem(name) as HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement | null;
+      if (field) field.value = value;
+    };
+    setField("name", product.name);
+    setField("description", product.description ?? "");
+    setField("price", (product.priceCents / 100).toFixed(2).replace(".", ","));
+    setField("stock", String(product.stock));
+    setField("productType", product.productType);
+    setField("audience", product.audience);
+    setField("status", product.status);
+    setField("officialUrl", product.officialUrl);
+    setEditingId(product.id);
+    setImage(product.image);
+    setPreviewName(product.name);
+    setPreviewPrice(formatPrice(product.priceCents));
+    setSelectedSizes(product.sizes ?? []);
+    setSelectedColors((product.colors ?? []).filter(color => availableColors.includes(color)));
+    setCustomColors((product.colors ?? []).filter(color => !availableColors.includes(color)).join(", "));
+    setSelectedCategories(product.extraCategories ?? []);
+    setColorImages(Object.fromEntries((product.colorImages ?? []).map(item => [item.color, item.image])));
+    setMessage("");
+    setError("");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  function cancelEditing() {
+    formRef.current?.reset();
+    setEditingId(null);
+    setImage("");
+    setPreviewName(emptyPreview.name);
+    setPreviewPrice(emptyPreview.price);
+    setSelectedSizes([]);
+    setSelectedColors([]);
+    setSelectedCategories([]);
+    setCustomColors("");
+    setColorImages({});
+    setMessage("");
+    setError("");
   }
 
   async function uploadColorImage(color: string, file?: File) {
@@ -147,8 +197,8 @@ export function ProductEditor() {
           <a href="#cadastrados"><CheckCircle2 size={17} />Cadastrados</a>
         </aside>
         <main className="product-editor-main">
-          <div className="product-editor-heading"><div><small>Catálogo / Novo produto</small><h1>Cadastrar produto</h1><p>Preencha as informações que serão exibidas na vitrine DNA Guetos.</p></div><span className="editor-draft-badge">Novo cadastro</span></div>
-          <form className="product-editor-form" onSubmit={createProduct}>
+          <div className="product-editor-heading"><div><small>Catálogo / {editingId ? "Editar produto" : "Novo produto"}</small><h1>{editingId ? "Editar produto" : "Cadastrar produto"}</h1><p>Preencha as informações que serão exibidas na vitrine DNA Guetos.</p></div><span className="editor-draft-badge">{editingId ? "Em edição" : "Novo cadastro"}</span></div>
+          <form ref={formRef} className="product-editor-form" onSubmit={saveProduct}>
             <div className="product-editor-fields">
               <section className="editor-panel" id="informacoes">
                 <div className="editor-panel-title"><span>01</span><div><h2>Informações principais</h2><p>Identificação e descrição comercial.</p></div></div>
@@ -167,7 +217,7 @@ export function ProductEditor() {
               </section>
               <section className="editor-panel" id="midia">
                 <div className="editor-panel-title"><span>04</span><div><h2>Imagem do produto</h2><p>Cole o endereço da imagem hospedada.</p></div></div>
-                <label>URL da imagem <input name="image" type="url" placeholder="https://.../produto.png" required value={image} onChange={event => setImage(event.target.value)} /></label>
+                <label>URL da imagem <input name="image" type="text" placeholder="https://.../produto.png" required value={image} onChange={event => setImage(event.target.value)} /></label>
                 <p className="editor-field-hint">Prefira imagens quadradas ou verticais, com fundo limpo e boa resolução.</p>
               </section>
               <section className="editor-panel" id="organizacao">
@@ -177,7 +227,7 @@ export function ProductEditor() {
               </section>
               {error && <p className="editor-product-message error">{error}</p>}
               {message && <p className="editor-product-message success"><CheckCircle2 size={17} />{message}</p>}
-              <div className="product-editor-submit"><button type="submit" disabled={saving}><Save size={17} />{saving ? "Salvando produto..." : "Cadastrar produto"}</button></div>
+              <div className="product-editor-submit">{editingId && <button className="editor-cancel" type="button" onClick={cancelEditing}>Cancelar edição</button>}<button type="submit" disabled={saving}><Save size={17} />{saving ? "Salvando produto..." : editingId ? "Salvar alterações" : "Cadastrar produto"}</button></div>
             </div>
             <aside className="product-editor-preview">
               <span>Prévia na vitrine</span>
@@ -192,7 +242,7 @@ export function ProductEditor() {
             {loading && <p className="editor-products-state">Carregando produtos...</p>}
             {!loading && !products.length && <p className="editor-products-state">Nenhum produto cadastrado por este editor ainda.</p>}
             {!!products.length && <div className="editor-products-list">{products.map(product => (
-              <article key={product.id}><img src={product.image} alt="" /><div><small>{product.productType} · {product.status === "active" ? "Ativo" : "Rascunho"}</small><h3>{product.name}</h3><p>{formatPrice(product.priceCents)} · {product.stock} em estoque · {(product.sizes?.length ?? 0) + (product.colors?.length ?? 0)} variações</p></div><div className="editor-product-actions">{product.status === "active" && <Link href={`/loja/custom-${product.id}`}>Visualizar</Link>}<button type="button" onClick={() => deleteProduct(product)} disabled={deleting === product.id}><Trash2 size={15} />{deleting === product.id ? "Excluindo" : "Excluir"}</button></div></article>
+              <article key={product.id}><img src={product.image} alt="" /><div><small>{product.productType} · {product.status === "active" ? "Ativo" : "Rascunho"}</small><h3>{product.name}</h3><p>{formatPrice(product.priceCents)} · {product.stock} em estoque · {(product.sizes?.length ?? 0) + (product.colors?.length ?? 0)} variações</p></div><div className="editor-product-actions">{product.status === "active" && <Link href={`/loja/${product.id}`}>Visualizar</Link>}<button className="editor-edit-product" type="button" onClick={() => editProduct(product)}><Pencil size={15} />Editar</button><button type="button" onClick={() => deleteProduct(product)} disabled={deleting === product.id}><Trash2 size={15} />{deleting === product.id ? "Excluindo" : "Excluir"}</button></div></article>
             ))}</div>}
           </section>
         </main>
