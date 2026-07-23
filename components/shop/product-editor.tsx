@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowLeft, CheckCircle2, ExternalLink, ImageIcon, Package, Save, Tags, Trash2 } from "lucide-react";
+import { ArrowLeft, CheckCircle2, ExternalLink, ImageIcon, Package, Save, Tags, Trash2, UploadCloud } from "lucide-react";
 import Link from "next/link";
 import { FormEvent, useEffect, useState } from "react";
 import { formatPrice, type SavedProduct } from "@/lib/products";
@@ -23,6 +23,14 @@ export function ProductEditor() {
   const [image, setImage] = useState("");
   const [previewName, setPreviewName] = useState(emptyPreview.name);
   const [previewPrice, setPreviewPrice] = useState(emptyPreview.price);
+  const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
+  const [selectedColors, setSelectedColors] = useState<string[]>([]);
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [customColors, setCustomColors] = useState("");
+  const [colorImages, setColorImages] = useState<Record<string, string>>({});
+  const [uploadingColor, setUploadingColor] = useState("");
+  const customColorList = customColors.split(",").map(color => color.trim()).filter(Boolean);
+  const allSelectedColors = [...new Set([...selectedColors, ...customColorList])];
 
   useEffect(() => {
     fetch("/api/products", { cache: "no-store" })
@@ -43,7 +51,6 @@ export function ProductEditor() {
     const form = event.currentTarget;
     const values = new FormData(form);
     const price = Number(String(values.get("price") || "0").replace(",", "."));
-    const customColors = String(values.get("customColors") || "").split(",").map(color => color.trim()).filter(Boolean);
     const payload = {
       name: values.get("name"),
       description: values.get("description"),
@@ -53,9 +60,10 @@ export function ProductEditor() {
       officialUrl: values.get("officialUrl"),
       productType: values.get("productType"),
       audience: values.get("audience"),
-      sizes: values.getAll("sizes"),
-      colors: [...new Set([...values.getAll("colors").map(String), ...customColors])],
-      extraCategories: values.getAll("extraCategories"),
+      sizes: selectedSizes,
+      colors: allSelectedColors,
+      extraCategories: selectedCategories,
+      colorImages: allSelectedColors.flatMap(color => colorImages[color] ? [{ color, image: colorImages[color] }] : []),
       status: values.get("status"),
     };
 
@@ -73,10 +81,37 @@ export function ProductEditor() {
       setImage("");
       setPreviewName(emptyPreview.name);
       setPreviewPrice(emptyPreview.price);
+      setSelectedSizes([]);
+      setSelectedColors([]);
+      setSelectedCategories([]);
+      setCustomColors("");
+      setColorImages({});
     } catch (reason) {
       setError(reason instanceof Error ? reason.message : "Não foi possível cadastrar o produto.");
     } finally {
       setSaving(false);
+    }
+  }
+
+  function toggleValue(value: string, selected: string[], update: (values: string[]) => void) {
+    update(selected.includes(value) ? selected.filter(item => item !== value) : [...selected, value]);
+  }
+
+  async function uploadColorImage(color: string, file?: File) {
+    if (!file) return;
+    setUploadingColor(color);
+    setError("");
+    const body = new FormData();
+    body.set("file", file);
+    try {
+      const response = await fetch("/api/product-images", { method: "POST", body });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || "Não foi possível anexar a imagem.");
+      setColorImages(current => ({ ...current, [color]: data.url }));
+    } catch (reason) {
+      setError(reason instanceof Error ? reason.message : "Não foi possível anexar a imagem.");
+    } finally {
+      setUploadingColor("");
     }
   }
 
@@ -126,9 +161,9 @@ export function ProductEditor() {
               </section>
               <section className="editor-panel" id="variacoes">
                 <div className="editor-panel-title"><span>03</span><div><h2>Variações</h2><p>Selecione os tamanhos, cores e categorias disponíveis.</p></div></div>
-                <fieldset className="editor-choice-fieldset"><legend>Tamanhos</legend><div className="editor-choice-grid editor-choice-grid--sizes">{availableSizes.map(size => <label className="editor-choice" key={size}><input type="checkbox" name="sizes" value={size} /><span>{size}</span></label>)}</div></fieldset>
-                <fieldset className="editor-choice-fieldset"><legend>Cores</legend><div className="editor-choice-grid">{availableColors.map(color => <label className="editor-choice" key={color}><input type="checkbox" name="colors" value={color} /><span>{color}</span></label>)}</div><label className="editor-custom-colors">Outras cores<input name="customColors" placeholder="Ex.: Laranja, Vinho, Bege" /><small>Separe várias cores com vírgulas.</small></label></fieldset>
-                <fieldset className="editor-choice-fieldset"><legend>Categorias adicionais</legend><p>Use quando o mesmo produto precisar aparecer em mais de um filtro.</p><div className="editor-choice-grid">{availableExtraCategories.map(([value, label]) => <label className="editor-choice" key={value}><input type="checkbox" name="extraCategories" value={value} /><span>{label}</span></label>)}</div></fieldset>
+                <fieldset className="editor-choice-fieldset"><div className="editor-choice-heading"><legend>Tamanhos</legend><button type="button" onClick={() => setSelectedSizes(selectedSizes.length === availableSizes.length ? [] : availableSizes)}>{selectedSizes.length === availableSizes.length ? "Desmarcar tudo" : "Selecionar tudo"}</button></div><div className="editor-choice-grid editor-choice-grid--sizes">{availableSizes.map(size => <label className="editor-choice" key={size}><input type="checkbox" name="sizes" value={size} checked={selectedSizes.includes(size)} onChange={() => toggleValue(size, selectedSizes, setSelectedSizes)} /><span>{size}</span></label>)}</div></fieldset>
+                <fieldset className="editor-choice-fieldset"><div className="editor-choice-heading"><legend>Cores</legend><button type="button" onClick={() => setSelectedColors(selectedColors.length === availableColors.length ? [] : availableColors)}>{selectedColors.length === availableColors.length ? "Desmarcar tudo" : "Selecionar tudo"}</button></div><div className="editor-choice-grid">{availableColors.map(color => <label className="editor-choice" key={color}><input type="checkbox" name="colors" value={color} checked={selectedColors.includes(color)} onChange={() => toggleValue(color, selectedColors, setSelectedColors)} /><span>{color}</span></label>)}</div><label className="editor-custom-colors">Outras cores<input name="customColors" placeholder="Ex.: Laranja, Vinho, Bege" value={customColors} onChange={event => setCustomColors(event.target.value)} /><small>Separe várias cores com vírgulas.</small></label>{!!allSelectedColors.length && <div className="editor-color-images"><div><strong>Imagens por cor</strong><span>Anexe uma imagem específica para cada cor selecionada.</span></div>{allSelectedColors.map(color => <div className="editor-color-image-row" key={color}><div className="editor-color-image-preview">{colorImages[color] ? <img src={colorImages[color]} alt={`Produto na cor ${color}`} /> : <ImageIcon size={19} />}</div><strong>{color}</strong><label className="editor-upload-button"><UploadCloud size={15} />{uploadingColor === color ? "Enviando..." : colorImages[color] ? "Trocar imagem" : "Anexar imagem"}<input type="file" accept="image/jpeg,image/png,image/webp" disabled={!!uploadingColor} onChange={event => uploadColorImage(color, event.target.files?.[0])} /></label>{colorImages[color] && <span className="editor-uploaded-status"><CheckCircle2 size={14} />Anexada</span>}</div>)}</div>}</fieldset>
+                <fieldset className="editor-choice-fieldset"><div className="editor-choice-heading"><legend>Categorias adicionais</legend><button type="button" onClick={() => setSelectedCategories(selectedCategories.length === availableExtraCategories.length ? [] : availableExtraCategories.map(([value]) => value))}>{selectedCategories.length === availableExtraCategories.length ? "Desmarcar tudo" : "Selecionar tudo"}</button></div><p>Use quando o mesmo produto precisar aparecer em mais de um filtro.</p><div className="editor-choice-grid">{availableExtraCategories.map(([value, label]) => <label className="editor-choice" key={value}><input type="checkbox" name="extraCategories" value={value} checked={selectedCategories.includes(value)} onChange={() => toggleValue(value, selectedCategories, setSelectedCategories)} /><span>{label}</span></label>)}</div></fieldset>
               </section>
               <section className="editor-panel" id="midia">
                 <div className="editor-panel-title"><span>04</span><div><h2>Imagem do produto</h2><p>Cole o endereço da imagem hospedada.</p></div></div>

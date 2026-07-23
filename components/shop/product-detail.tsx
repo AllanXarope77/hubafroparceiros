@@ -10,13 +10,14 @@ export function ProductDetail({ product }: { product: Product }) {
   const [quantity, setQuantity] = useState(1);
   const [selectedSize, setSelectedSize] = useState(product.sizes?.[0] ?? "");
   const [selectedColor, setSelectedColor] = useState(product.colors?.[0] ?? "");
+  const selectedImage = product.colorImages?.find(item => item.color === selectedColor)?.image || product.image;
 
   return (
     <section className="product-detail-section">
       <div className="container">
         <div className="product-breadcrumb"><Link href="/loja">DNA Guetos</Link><span>/</span><span>{product.name}</span></div>
         <div className="product-detail-grid">
-          <div className="product-detail-image"><img src={product.image} alt={product.name} /></div>
+          <div className="product-detail-image"><img src={selectedImage} alt={`${product.name}${selectedColor ? ` na cor ${selectedColor}` : ""}`} /></div>
           <div className="product-detail-copy">
             <span className="eyebrow"><i />Produto DNA Guetos</span>
             <h1>{product.name}</h1>

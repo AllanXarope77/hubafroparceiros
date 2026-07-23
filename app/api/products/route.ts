@@ -12,6 +12,17 @@ function textList(value: unknown, maximum = 20) {
   return [...new Set(value.map(item => String(item).trim()).filter(item => item && item.length <= 30))].slice(0, maximum);
 }
 
+function colorImageList(value: unknown, selectedColors: string[]) {
+  if (!Array.isArray(value)) return [];
+  return value.flatMap(item => {
+    if (!item || typeof item !== "object") return [];
+    const color = String((item as { color?: unknown }).color ?? "").trim();
+    const image = String((item as { image?: unknown }).image ?? "").trim();
+    if (!selectedColors.includes(color) || !image.startsWith("/api/product-images/") || image.length > 500) return [];
+    return [{ color, image }];
+  }).slice(0, 20);
+}
+
 function message(error: unknown) {
   return error instanceof Error ? error.message : "Não foi possível acessar os produtos.";
 }
@@ -52,6 +63,7 @@ export async function POST(request: Request) {
     const sizes = textList(payload.sizes);
     const colors = textList(payload.colors);
     const extraCategories = textList(payload.extraCategories).filter(category => categoryNames.has(category));
+    const colorImages = colorImageList(payload.colorImages, colors);
     const priceCents = Number(payload.priceCents);
     const stock = Number(payload.stock);
 
@@ -75,7 +87,7 @@ export async function POST(request: Request) {
     await ensureShopSchema();
     const db = await getDb();
     const [product] = await db.insert(shopProducts).values({
-      name, description, image, officialUrl, productType, audience, sizes, colors, extraCategories, status, priceCents, stock,
+      name, description, image, officialUrl, productType, audience, sizes, colors, extraCategories, colorImages, status, priceCents, stock,
     }).returning();
     return Response.json({ product }, { status: 201 });
   } catch (error) {

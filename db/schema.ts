@@ -26,6 +26,7 @@ export const shopProducts = sqliteTable("shop_products", {
   sizes: text("sizes", { mode: "json" }).$type<string[]>().notNull().default("[]"),
   colors: text("colors", { mode: "json" }).$type<string[]>().notNull().default("[]"),
   extraCategories: text("extra_categories", { mode: "json" }).$type<string[]>().notNull().default("[]"),
+  colorImages: text("color_images", { mode: "json" }).$type<Array<{ color: string; image: string }>>().notNull().default("[]"),
   status: text("status").notNull().default("active"),
   createdAt: text("created_at").notNull().default(sql`CURRENT_TIMESTAMP`),
 });

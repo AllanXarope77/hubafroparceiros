@@ -23,6 +23,7 @@ export type Product = RawProduct & {
   status?: "active" | "draft";
   sizes?: string[];
   colors?: string[];
+  colorImages?: Array<{ color: string; image: string }>;
 };
 
 export type SavedProduct = {
@@ -38,6 +39,7 @@ export type SavedProduct = {
   sizes: string[];
   colors: string[];
   extraCategories: string[];
+  colorImages: Array<{ color: string; image: string }>;
   status: "active" | "draft";
   createdAt: string;
 };
@@ -121,5 +123,6 @@ export function savedProductToProduct(saved: SavedProduct): Product {
     status: saved.status,
     sizes: Array.isArray(saved.sizes) ? saved.sizes : [],
     colors: Array.isArray(saved.colors) ? saved.colors : [],
+    colorImages: Array.isArray(saved.colorImages) ? saved.colorImages : [],
   };
 }

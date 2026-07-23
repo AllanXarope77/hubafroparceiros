@@ -1,0 +1,1 @@
+ALTER TABLE `shop_products` ADD `color_images` text DEFAULT '[]' NOT NULL;
