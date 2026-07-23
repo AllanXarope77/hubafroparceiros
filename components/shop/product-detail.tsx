@@ -1,6 +1,6 @@
 "use client";
 
-import { ExternalLink, Minus, Plus, ShieldCheck } from "lucide-react";
+import { Minus, Plus, ShieldCheck } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import type { Product } from "@/lib/products";
@@ -34,10 +34,7 @@ export function ProductDetail({ product }: { product: Product }) {
               </div>
             </div>
             <AddToCartButton id={product.id} quantity={quantity} />
-            {product.officialUrl && <a className="official-options" href={product.officialUrl} target="_blank" rel="noreferrer">
-              Escolher tamanho e cor na loja oficial <ExternalLink size={15} />
-            </a>}
-            <div className="secure-note"><ShieldCheck size={20} /><span>Tamanhos, cores e pagamento são confirmados com segurança no checkout oficial da Yampi.</span></div>
+            <div className="secure-note"><ShieldCheck size={20} /><span>Pagamento seguro com Mercado Pago. Pix, cartão e boleto disponíveis no checkout.</span></div>
           </div>
         </div>
       </div>

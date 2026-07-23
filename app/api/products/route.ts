@@ -47,13 +47,15 @@ function productValues(payload: Record<string, unknown>) {
   const priceCents = Number(payload.priceCents);
   const stock = Number(payload.stock);
 
-  if (!name || !image || !officialUrl || !productTypes.has(productType) || !audiences.has(audience) || !statuses.has(status)) {
+  if (!name || !image || !productTypes.has(productType) || !audiences.has(audience) || !statuses.has(status)) {
     return { error: "Preencha os dados obrigatórios do produto." } as const;
   }
-  let safeStoreUrl = false;
-  try { safeStoreUrl = new URL(officialUrl).protocol === "https:"; } catch { /* invalid */ }
+  let safeStoreUrl = !officialUrl;
+  if (officialUrl) {
+    try { safeStoreUrl = new URL(officialUrl).protocol === "https:"; } catch { /* invalid */ }
+  }
   if (!isSafeImage(image) || !safeStoreUrl) {
-    return { error: "Use uma imagem válida e um link da Yampi iniciado por https://." } as const;
+    return { error: "Use uma imagem válida e, se informado, um link iniciado por https://." } as const;
   }
   if (!Number.isInteger(priceCents) || priceCents < 0 || !Number.isInteger(stock) || stock < 0) {
     return { error: "Informe preço e estoque válidos." } as const;

@@ -37,3 +37,25 @@ export const catalogImports = sqliteTable("catalog_imports", {
   key: text("key").primaryKey(),
   importedAt: text("imported_at").notNull().default(sql`CURRENT_TIMESTAMP`),
 });
+
+export type ShopOrderItem = {
+  productId: number;
+  name: string;
+  quantity: number;
+  unitPriceCents: number;
+};
+
+export const shopOrders = sqliteTable("shop_orders", {
+  id: text("id").primaryKey(),
+  status: text("status").notNull().default("created"),
+  totalCents: integer("total_cents").notNull(),
+  items: text("items", { mode: "json" }).$type<ShopOrderItem[]>().notNull(),
+  preferenceId: text("preference_id").notNull().default(""),
+  paymentId: text("payment_id").notNull().default(""),
+  checkoutUrl: text("checkout_url").notNull().default(""),
+  mode: text("mode").notNull().default("test"),
+  createdAt: text("created_at").notNull().default(sql`CURRENT_TIMESTAMP`),
+  updatedAt: text("updated_at").notNull().default(sql`CURRENT_TIMESTAMP`),
+});
+
+export type ShopOrder = typeof shopOrders.$inferSelect;

@@ -242,8 +242,24 @@ main { overflow: hidden; }
 .cart-summary > div p { margin: 8px 0; }
 .cart-summary .cart-total { margin-top: 18px; padding-top: 18px; border-top: 1px solid var(--line); color: var(--white); }
 .cart-total strong { color: var(--gold); font-size: 22px; }
-.cart-summary-note { color: #85817a; font-size: 10px; line-height: 1.6; margin: 24px 0; }
+.cart-summary-note { display: flex; align-items: flex-start; gap: 8px; color: #85817a; font-size: 10px; line-height: 1.6; margin: 24px 0; }
+.cart-summary-note svg { flex: 0 0 auto; margin-top: 1px; color: var(--gold); }
 .cart-summary .button { width: 100%; }
+.checkout-button { border: 0; justify-content: center; }
+.checkout-button:disabled { opacity: .65; cursor: wait; }
+.checkout-error { padding: 10px 12px; color: #ffd7d7; background: #5f1820; border-radius: 6px; font-size: 11px; line-height: 1.45; }
+
+.order-result-section { min-height: 78vh; padding: 150px 0 90px; display: grid; place-items: center; background: radial-gradient(circle at 50% 20%, rgba(210,174,43,.11), transparent 35%), #080808; }
+.order-result-card { max-width: 680px; padding: 54px; color: #f8f6ef; background: #111; border: 1px solid rgba(255,255,255,.09); text-align: center; }
+.order-result-card > svg { color: var(--gold); }
+.order-result-kicker { display: block; margin-top: 22px; color: var(--gold); font-size: 10px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
+.order-result-card h1 { margin: 14px 0; font-size: clamp(34px, 6vw, 58px); line-height: .98; }
+.order-result-card > p { max-width: 500px; margin: 0 auto; color: #aaa59d; line-height: 1.7; }
+.order-result-summary { margin: 34px 0 26px; padding: 18px 0; display: flex; align-items: center; justify-content: center; gap: 28px; flex-wrap: wrap; border-top: 1px solid #2b2b2b; border-bottom: 1px solid #2b2b2b; font-size: 12px; }
+.order-result-summary span { display: flex; gap: 7px; }
+.order-result-summary em { padding: 5px 8px; color: #1c1600; background: var(--gold); border-radius: 3px; font-size: 9px; font-style: normal; font-weight: 800; text-transform: uppercase; }
+.order-result-actions { display: flex; align-items: center; justify-content: center; gap: 20px; flex-wrap: wrap; }
+.order-result-actions > a:not(.button) { color: #c6c1b8; font-size: 12px; text-decoration: underline; }
 .continue-shopping { display: block; margin-top: 18px; text-align: center; color: var(--muted); font-size: 10px; text-decoration: underline; }
 .cart-empty { padding-top: 80px; text-align: center; }
 .cart-empty svg { color: var(--gold); }

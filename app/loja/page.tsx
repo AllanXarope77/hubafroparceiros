@@ -15,7 +15,7 @@ export default function LojaPage() {
         <div className="container">
           <div className="shop-heading"><SectionHeading eyebrow="Coleção completa" title={<>DNA que se veste<br />e se afirma.</>} copy="Filtre por categoria, conheça cada produto e organize sua compra no carrinho." /></div>
           <ShopCatalog />
-          <p className="integration-note">Tamanhos, cores, frete e pagamento são finalizados com segurança na loja oficial Afroparceiros.</p>
+          <p className="integration-note">Compra protegida e pagamento processado com segurança pelo Mercado Pago.</p>
         </div>
       </section>
     </SiteShell>

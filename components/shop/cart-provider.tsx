@@ -51,7 +51,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
       setItems((current) => current.map((item) => item.id === id ? { ...item, quantity } : item));
     },
     removeItem(id) { setItems((current) => current.filter((item) => item.id !== id)); },
-    clearCart() { setItems([]); },
+    clearCart() { setItems((current) => current.length ? [] : current); },
   }), [items]);
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;

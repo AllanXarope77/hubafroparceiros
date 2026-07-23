@@ -60,7 +60,7 @@ export function ProductEditor() {
       priceCents: Math.round(price * 100),
       stock: Number(values.get("stock") || 0),
       image: values.get("image"),
-      officialUrl: values.get("officialUrl"),
+      officialUrl: "",
       productType: values.get("productType"),
       audience: values.get("audience"),
       sizes: selectedSizes,
@@ -117,7 +117,6 @@ export function ProductEditor() {
     setField("productType", product.productType);
     setField("audience", product.audience);
     setField("status", product.status);
-    setField("officialUrl", product.officialUrl);
     setEditingId(product.id);
     setImage(product.image);
     setPreviewName(product.name);
@@ -223,7 +222,7 @@ export function ProductEditor() {
               <section className="editor-panel" id="organizacao">
                 <div className="editor-panel-title"><span>05</span><div><h2>Organização e publicação</h2><p>Defina onde o produto aparecerá.</p></div></div>
                 <div className="editor-field-grid"><label>Tipo<select name="productType" defaultValue="camisa"><option value="camisa">Camisa</option><option value="bone">Boné</option><option value="moletom">Moletom</option><option value="livro">Livro</option></select></label><label>Público<select name="audience" defaultValue="unissex"><option value="unissex">Unissex</option><option value="masculino">Masculino</option><option value="feminino">Feminino</option><option value="infantil">Infantil</option></select></label></div>
-                <div className="editor-field-grid"><label>Status<select name="status" defaultValue="active"><option value="active">Ativo na vitrine</option><option value="draft">Rascunho</option></select></label><label>Link oficial da Yampi <input name="officialUrl" type="url" placeholder="https://www.afroparceiros.com/..." required /></label></div>
+                <label>Status<select name="status" defaultValue="active"><option value="active">Ativo na vitrine</option><option value="draft">Rascunho</option></select></label>
               </section>
               {error && <p className="editor-product-message error">{error}</p>}
               {message && <p className="editor-product-message success"><CheckCircle2 size={17} />{message}</p>}

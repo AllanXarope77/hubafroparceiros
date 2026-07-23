@@ -1,6 +1,6 @@
 "use client";
 
-import { ExternalLink, Minus, Plus, ShoppingBag, Trash2 } from "lucide-react";
+import { CreditCard, Minus, Plus, ShieldCheck, ShoppingBag, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { formatPrice, savedProductToProduct, type Product, type SavedProduct } from "@/lib/products";
@@ -9,20 +9,46 @@ import { useCart } from "./cart-provider";
 export function CartPage() {
   const { items, updateQuantity, removeItem, clearCart } = useCart();
   const [savedProducts, setSavedProducts] = useState<Product[]>([]);
+  const [loadedProducts, setLoadedProducts] = useState(false);
+  const [checkingOut, setCheckingOut] = useState(false);
+  const [checkoutError, setCheckoutError] = useState("");
 
   useEffect(() => {
     if (!items.length) return;
     fetch("/api/products", { cache: "no-store" })
       .then(response => response.json())
       .then((data: { products?: SavedProduct[] }) => setSavedProducts((data.products ?? []).map(savedProductToProduct)))
-      .catch(() => { /* os produtos originais continuam disponíveis */ });
-  }, [items]);
+      .catch(() => setSavedProducts([]))
+      .finally(() => setLoadedProducts(true));
+  }, [items.length]);
 
   const entries = items.flatMap((item) => {
     const product = savedProducts.find(saved => saved.id === item.id.replace("custom-", ""));
     return product ? [{ ...item, product }] : [];
   });
   const subtotal = entries.reduce((total, item) => total + item.product.priceCents * item.quantity, 0);
+
+  async function startCheckout() {
+    setCheckingOut(true);
+    setCheckoutError("");
+    try {
+      const response = await fetch("/api/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ items }),
+      });
+      const data = await response.json() as { checkoutUrl?: string; error?: string };
+      if (!response.ok || !data.checkoutUrl) throw new Error(data.error || "Não foi possível abrir o pagamento.");
+      window.location.assign(data.checkoutUrl);
+    } catch (reason) {
+      setCheckoutError(reason instanceof Error ? reason.message : "Não foi possível abrir o pagamento.");
+      setCheckingOut(false);
+    }
+  }
+
+  if (!loadedProducts && items.length) {
+    return <section className="cart-section"><div className="container cart-empty"><ShoppingBag size={44} /><h1>Preparando seu carrinho...</h1></div></section>;
+  }
 
   if (!entries.length) {
     return (
@@ -44,9 +70,7 @@ export function CartPage() {
             {entries.map(({ product, quantity }) => (
               <article className="cart-item" key={product.id}>
                 <Link href={`/loja/${product.id}`} className="cart-item-image"><img src={product.image} alt={product.name} /></Link>
-                <div className="cart-item-copy"><Link href={`/loja/${product.id}`}><h2>{product.name}</h2></Link><strong>{product.price}</strong>
-                  {product.officialUrl && <a href={product.officialUrl} target="_blank" rel="noreferrer">Escolher tamanho e cor <ExternalLink size={13} /></a>}
-                </div>
+                <div className="cart-item-copy"><Link href={`/loja/${product.id}`}><h2>{product.name}</h2></Link><strong>{product.price}</strong></div>
                 <div className="quantity-control">
                   <button type="button" aria-label="Diminuir" onClick={() => quantity === 1 ? removeItem(product.id) : updateQuantity(product.id, quantity - 1)}><Minus size={15} /></button>
                   <strong>{quantity}</strong>
@@ -61,10 +85,11 @@ export function CartPage() {
             <span>Resumo</span>
             <div><p>Produtos</p><strong>{items.reduce((sum, item) => sum + item.quantity, 0)}</strong></div>
             <div className="cart-total"><p>Subtotal</p><strong>{formatPrice(subtotal)}</strong></div>
-            <p className="cart-summary-note">Para confirmar tamanho, cor, frete e pagamento, abra cada produto na loja oficial. A Yampi reúne os itens no carrinho oficial durante a escolha.</p>
-            {entries[0].product.officialUrl
-              ? <a className="button button--gold" href={entries[0].product.officialUrl} target="_blank" rel="noreferrer">Continuar na Yampi <ExternalLink size={16} /></a>
-              : <Link className="button button--gold" href={`/loja/${entries[0].product.id}`}>Revisar produto</Link>}
+            <p className="cart-summary-note"><ShieldCheck size={16} /> O pagamento é processado com segurança pelo Mercado Pago.</p>
+            {checkoutError && <p className="checkout-error">{checkoutError}</p>}
+            <button className="button button--gold checkout-button" type="button" onClick={startCheckout} disabled={checkingOut}>
+              <CreditCard size={17} />{checkingOut ? "Abrindo pagamento..." : "Finalizar compra"}
+            </button>
             <Link className="continue-shopping" href="/loja">Continuar comprando</Link>
           </aside>
         </div>

@@ -63,6 +63,20 @@ export async function ensureShopSchema() {
       key TEXT PRIMARY KEY,
       imported_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
     )`),
+    d1.prepare(`CREATE TABLE IF NOT EXISTS shop_orders (
+      id TEXT PRIMARY KEY,
+      status TEXT NOT NULL DEFAULT 'created',
+      total_cents INTEGER NOT NULL,
+      items TEXT NOT NULL,
+      preference_id TEXT NOT NULL DEFAULT '',
+      payment_id TEXT NOT NULL DEFAULT '',
+      checkout_url TEXT NOT NULL DEFAULT '',
+      mode TEXT NOT NULL DEFAULT 'test',
+      created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+    )`),
+    d1.prepare("CREATE INDEX IF NOT EXISTS shop_orders_created_at_idx ON shop_orders (created_at)"),
+    d1.prepare("CREATE INDEX IF NOT EXISTS shop_orders_status_idx ON shop_orders (status)"),
   ]);
 }
 
