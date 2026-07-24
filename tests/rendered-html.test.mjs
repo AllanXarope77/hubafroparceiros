@@ -70,6 +70,16 @@ test("carrega o catálogo editável da DNA Guetos", async () => {
   assert.doesNotMatch(html, /Loja demonstrativa|Camiseta Centro/);
 });
 
+test("oferece português, inglês e espanhol nas páginas públicas", async () => {
+  const response = await render("/loja");
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  assert.match(html, /Idioma do site/);
+  assert.match(html, /Português/);
+  assert.match(html, /English/);
+  assert.match(html, /Español/);
+});
+
 test("oferece filtros, páginas de produto e carrinho", async () => {
   const shopResponse = await render("/loja");
   const shopHtml = await shopResponse.text();

@@ -6,6 +6,7 @@ import { Menu, ShoppingBag, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { navItems } from "@/content/site";
 import { useCart } from "@/components/shop/cart-provider";
+import { LanguageSelector } from "@/components/i18n/language-selector";
 
 export function Navbar() {
   const pathname = usePathname();
@@ -44,6 +45,7 @@ export function Navbar() {
         </nav>
 
         <div className="nav-actions">
+        <LanguageSelector />
         <Link href="/carrinho" className="cart-link" aria-label={`Carrinho com ${count} itens`}>
           <ShoppingBag size={19} />
           {count > 0 && <span>{count > 99 ? "99+" : count}</span>}
@@ -62,6 +64,7 @@ export function Navbar() {
 
       {open && (
         <nav className="mobile-nav" aria-label="Navegação móvel">
+          <LanguageSelector mobile />
           {navItems.map((item, index) => (
             <Link key={item.href} href={item.href} onClick={() => setOpen(false)}>
               <span>0{index + 1}</span>
