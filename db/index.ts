@@ -7,6 +7,7 @@ const catalogImportKey = "yampi_catalog_v1";
 const clothingCatalogImportKey = "yampi_clothing_catalog_v2";
 const variantPricingImportKey = "variant_pricing_and_sizes_v3";
 const colorVariantsImportKey = "yampi_color_variants_v4";
+const colorImageFallbacksImportKey = "color_image_fallbacks_v5";
 const localImages: Record<string, string> = {
   "43721859": "/images/dna-guetos/camisa-dna-guetos.png",
   "43722351": "/images/dna-guetos/camisa-thug-life.png",
@@ -243,6 +244,37 @@ async function ensureYampiColorVariants(d1: Awaited<ReturnType<typeof getD1>>) {
   await d1.batch(statements);
 }
 
+async function ensureColorImageFallbacks(d1: Awaited<ReturnType<typeof getD1>>) {
+  const imported = await d1.prepare("SELECT key FROM catalog_imports WHERE key = ?").bind(colorImageFallbacksImportKey).first();
+  if (imported) return;
+
+  const result = await d1.prepare(`
+    SELECT id, image, colors, color_images
+    FROM shop_products
+    WHERE colors <> '[]'
+  `).all<{
+    id: number;
+    image: string;
+    colors: string;
+    color_images: string;
+  }>();
+
+  const statements = result.results.map(product => {
+    const colors = JSON.parse(product.colors || "[]") as string[];
+    const savedImages = JSON.parse(product.color_images || "[]") as Array<{ color: string; image: string }>;
+    const imageByColor = new Map(savedImages.filter(item => item?.color && item?.image).map(item => [item.color, item.image]));
+    const colorImages = colors.map(color => ({
+      color,
+      image: imageByColor.get(color) || product.image,
+    }));
+    return d1.prepare("UPDATE shop_products SET color_images = ? WHERE id = ?")
+      .bind(JSON.stringify(colorImages), product.id);
+  });
+
+  statements.push(d1.prepare("INSERT OR IGNORE INTO catalog_imports (key) VALUES (?)").bind(colorImageFallbacksImportKey));
+  await d1.batch(statements);
+}
+
 export async function ensureShopCatalogSeeded() {
   await ensureShopSchema();
   const d1 = await getD1();
@@ -264,4 +296,5 @@ export async function ensureShopCatalogSeeded() {
   }
   await ensureVariantPricingAndSizes(d1);
   await ensureYampiColorVariants(d1);
+  await ensureColorImageFallbacks(d1);
 }

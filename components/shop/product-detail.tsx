@@ -18,7 +18,7 @@ export function ProductDetail({ product }: { product: Product }) {
       <div className="container">
         <div className="product-breadcrumb"><Link href="/loja">DNA Guetos</Link><span>/</span><span>{product.name}</span></div>
         <div className="product-detail-grid">
-          <div className="product-detail-image"><img src={selectedImage} alt={`${product.name}${selectedColor ? ` na cor ${selectedColor}` : ""}`} /></div>
+          <div className="product-detail-image"><img key={selectedImage} src={selectedImage} alt={`${product.name}${selectedColor ? ` na cor ${selectedColor}` : ""}`} /></div>
           <div className="product-detail-copy">
             <span className="eyebrow"><i />Produto DNA Guetos</span>
             <h1>{product.name}</h1>
