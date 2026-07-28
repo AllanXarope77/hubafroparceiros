@@ -2,14 +2,17 @@ import { eq, inArray } from "drizzle-orm";
 import { ensureShopCatalogSeeded, getDb } from "@/db";
 import { shopOrders, shopProducts, type ShopOrderItem } from "@/db/schema";
 import { createPaymentPreference } from "@/lib/mercado-pago";
+import { productVariantPriceCents } from "@/lib/products";
 
-type RequestedItem = { id?: unknown; quantity?: unknown };
+type RequestedItem = { id?: unknown; quantity?: unknown; size?: unknown; color?: unknown };
 
 function requestItems(value: unknown) {
   if (!Array.isArray(value) || !value.length || value.length > 30) return null;
   const items = value.map((item: RequestedItem) => ({
     id: Number(String(item?.id ?? "").replace("custom-", "")),
     quantity: Number(item?.quantity),
+    size: String(item?.size ?? "").trim().slice(0, 30),
+    color: String(item?.color ?? "").trim().slice(0, 30),
   }));
   if (items.some(item => !Number.isInteger(item.id) || item.id <= 0 || !Number.isInteger(item.quantity) || item.quantity < 1 || item.quantity > 20)) return null;
   return items;
@@ -36,7 +39,17 @@ export async function POST(request: Request) {
 
     const items: ShopOrderItem[] = requested.map(item => {
       const product = productMap.get(item.id)!;
-      return { productId: product.id, name: product.name, quantity: item.quantity, unitPriceCents: product.priceCents };
+      const size = item.size || product.sizes?.[0] || "";
+      const color = item.color || product.colors?.[0] || "";
+      if ((size && !product.sizes.includes(size)) || (color && !product.colors.includes(color))) {
+        throw new Error(`A variação escolhida de “${product.name}” não está mais disponível.`);
+      }
+      return {
+        productId: product.id,
+        name: [product.name, size, color].filter(Boolean).join(" · "),
+        quantity: item.quantity,
+        unitPriceCents: productVariantPriceCents(product, size, color),
+      };
     });
     const totalCents = items.reduce((total, item) => total + item.unitPriceCents * item.quantity, 0);
     const orderId = crypto.randomUUID();

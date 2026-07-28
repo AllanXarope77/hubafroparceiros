@@ -18,9 +18,8 @@ export function ProductCard({ product, priority = false }: { product: Product; p
       </Link>
       <div className="product-card-actions">
         <Link className="product-view" href={`/loja/${product.id}`}>Ver produto</Link>
-        <AddToCartButton id={product.id} compact />
+        <AddToCartButton id={product.id} size={product.sizes?.[0]} color={product.colors?.[0]} compact />
       </div>
     </article>
   );
 }
-

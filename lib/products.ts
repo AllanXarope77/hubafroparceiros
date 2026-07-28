@@ -25,6 +25,9 @@ export type Product = {
   sizes?: string[];
   colors?: string[];
   colorImages?: Array<{ color: string; image: string }>;
+  audience?: SavedProduct["audience"];
+  productType?: SavedProduct["productType"];
+  catalogData?: ProductCatalogData;
 };
 
 export type CatalogVariant = {
@@ -34,6 +37,7 @@ export type CatalogVariant = {
   sku: string;
   barcode: string;
   stock: number;
+  priceCents?: number;
 };
 
 export type ProductCatalogData = {
@@ -85,6 +89,18 @@ export function formatPrice(cents: number) {
   return new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(cents / 100);
 }
 
+export function productVariantPriceCents(
+  product: Pick<SavedProduct, "priceCents" | "catalogData"> | Pick<Product, "priceCents" | "catalogData">,
+  size = "",
+  color = "",
+) {
+  const variant = product.catalogData?.variants?.find(item =>
+    item.size === size && (!color || item.color === color),
+  );
+  if (variant?.priceCents && variant.priceCents > 0) return variant.priceCents;
+  return ["X1", "X2", "X3"].includes(size) ? 20000 : product.priceCents;
+}
+
 export function savedProductToProduct(saved: SavedProduct): Product {
   const categories: ShopCategory[] = [saved.productType];
   if (saved.audience === "unissex") categories.push("masculino", "feminino");
@@ -107,5 +123,8 @@ export function savedProductToProduct(saved: SavedProduct): Product {
     sizes: Array.isArray(saved.sizes) ? saved.sizes : [],
     colors: Array.isArray(saved.colors) ? saved.colors : [],
     colorImages: Array.isArray(saved.colorImages) ? saved.colorImages : [],
+    audience: saved.audience,
+    productType: saved.productType,
+    catalogData: saved.catalogData,
   };
 }

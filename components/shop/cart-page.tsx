@@ -3,8 +3,8 @@
 import { CreditCard, Minus, Plus, ShieldCheck, ShoppingBag, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { formatPrice, savedProductToProduct, type Product, type SavedProduct } from "@/lib/products";
-import { useCart } from "./cart-provider";
+import { formatPrice, productVariantPriceCents, savedProductToProduct, type Product, type SavedProduct } from "@/lib/products";
+import { cartItemKey, useCart } from "./cart-provider";
 
 export function CartPage() {
   const { items, updateQuantity, removeItem, clearCart } = useCart();
@@ -26,7 +26,8 @@ export function CartPage() {
     const product = savedProducts.find(saved => saved.id === item.id.replace("custom-", ""));
     return product ? [{ ...item, product }] : [];
   });
-  const subtotal = entries.reduce((total, item) => total + item.product.priceCents * item.quantity, 0);
+  const subtotal = entries.reduce((total, item) =>
+    total + productVariantPriceCents(item.product, item.size ?? item.product.sizes?.[0], item.color) * item.quantity, 0);
 
   async function startCheckout() {
     setCheckingOut(true);
@@ -67,18 +68,21 @@ export function CartPage() {
         <div className="cart-title"><span className="eyebrow"><i />Sua seleção</span><h1>Carrinho</h1></div>
         <div className="cart-layout">
           <div className="cart-items">
-            {entries.map(({ product, quantity }) => (
-              <article className="cart-item" key={product.id}>
+            {entries.map(({ product, quantity, size, color, ...cartItem }) => {
+              const key = cartItemKey({ id: cartItem.id, size, color });
+              const unitPrice = productVariantPriceCents(product, size ?? product.sizes?.[0], color);
+              return (
+              <article className="cart-item" key={key}>
                 <Link href={`/loja/${product.id}`} className="cart-item-image"><img src={product.image} alt={product.name} /></Link>
-                <div className="cart-item-copy"><Link href={`/loja/${product.id}`}><h2>{product.name}</h2></Link><strong>{product.price}</strong></div>
+                <div className="cart-item-copy"><Link href={`/loja/${product.id}`}><h2>{product.name}</h2></Link><strong>{formatPrice(unitPrice)}</strong>{(size || color) && <span>{[size, color].filter(Boolean).join(" · ")}</span>}</div>
                 <div className="quantity-control">
-                  <button type="button" aria-label="Diminuir" onClick={() => quantity === 1 ? removeItem(product.id) : updateQuantity(product.id, quantity - 1)}><Minus size={15} /></button>
+                  <button type="button" aria-label="Diminuir" onClick={() => quantity === 1 ? removeItem(key) : updateQuantity(key, quantity - 1)}><Minus size={15} /></button>
                   <strong>{quantity}</strong>
-                  <button type="button" aria-label="Aumentar" onClick={() => updateQuantity(product.id, quantity + 1)}><Plus size={15} /></button>
+                  <button type="button" aria-label="Aumentar" onClick={() => updateQuantity(key, quantity + 1)}><Plus size={15} /></button>
                 </div>
-                <button type="button" className="cart-remove" aria-label={`Remover ${product.name}`} onClick={() => removeItem(product.id)}><Trash2 size={18} /></button>
+                <button type="button" className="cart-remove" aria-label={`Remover ${product.name}`} onClick={() => removeItem(key)}><Trash2 size={18} /></button>
               </article>
-            ))}
+            );})}
             <button type="button" className="clear-cart" onClick={clearCart}>Limpar carrinho</button>
           </div>
           <aside className="cart-summary">

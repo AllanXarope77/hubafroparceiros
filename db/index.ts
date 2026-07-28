@@ -4,6 +4,7 @@ import * as schema from "./schema";
 
 const catalogImportKey = "yampi_catalog_v1";
 const clothingCatalogImportKey = "yampi_clothing_catalog_v2";
+const variantPricingImportKey = "variant_pricing_and_sizes_v3";
 const localImages: Record<string, string> = {
   "43721859": "/images/dna-guetos/camisa-dna-guetos.png",
   "43722351": "/images/dna-guetos/camisa-thug-life.png",
@@ -150,6 +151,7 @@ async function ensureClothingCatalogSeeded(d1: Awaited<ReturnType<typeof getD1>>
       sku: [baseSku, color, size].filter(Boolean).map(skuPart).join("-"),
       barcode: "",
       stock: 0,
+      priceCents: ["X1", "X2", "X3"].includes(size) ? 20000 : fields.priceCents,
     })));
     const extraCategories = [productType, ...(audience === "masculino" || audience === "feminino" ? [audience] : [])];
     const piece = productType === "moletom" ? "Moletom" : "Camisa";
@@ -184,23 +186,67 @@ async function ensureClothingCatalogSeeded(d1: Awaited<ReturnType<typeof getD1>>
   await d1.batch(statements);
 }
 
+async function ensureVariantPricingAndSizes(d1: Awaited<ReturnType<typeof getD1>>) {
+  const imported = await d1.prepare("SELECT key FROM catalog_imports WHERE key = ?").bind(variantPricingImportKey).first();
+  if (imported) return;
+
+  const result = await d1.prepare(`
+    SELECT id, price_cents, audience, sizes, catalog_data
+    FROM shop_products
+    WHERE sizes <> '[]'
+  `).all<{
+    id: number;
+    price_cents: number;
+    audience: string;
+    sizes: string;
+    catalog_data: string;
+  }>();
+
+  const statements = result.results.map(product => {
+    const currentSizes = JSON.parse(product.sizes || "[]") as string[];
+    const sizes = currentSizes.filter(size =>
+      size !== "Único" && size !== "Ãšnico" && (size !== "PP" || product.audience === "infantil"),
+    );
+    const data = JSON.parse(product.catalog_data || "{}") as {
+      variants?: Array<Record<string, unknown>>;
+      [key: string]: unknown;
+    };
+    const variants = Array.isArray(data.variants)
+      ? data.variants.flatMap(variant => {
+          const size = String(variant.size ?? "");
+          if (size === "Único" || size === "Ãšnico" || (size === "PP" && product.audience !== "infantil")) return [];
+          return [{
+            ...variant,
+            priceCents: ["X1", "X2", "X3"].includes(size) ? 20000 : product.price_cents,
+          }];
+        })
+      : [];
+    return d1.prepare("UPDATE shop_products SET sizes = ?, catalog_data = ? WHERE id = ?")
+      .bind(JSON.stringify(sizes), JSON.stringify({ ...data, variants }), product.id);
+  });
+
+  statements.push(d1.prepare("INSERT OR IGNORE INTO catalog_imports (key) VALUES (?)").bind(variantPricingImportKey));
+  await d1.batch(statements);
+}
+
 export async function ensureShopCatalogSeeded() {
   await ensureShopSchema();
   const d1 = await getD1();
   await ensureClothingCatalogSeeded(d1);
   const imported = await d1.prepare("SELECT key FROM catalog_imports WHERE key = ?").bind(catalogImportKey).first();
-  if (imported) return;
-
-  const statements = catalog.products.map(product => {
-    const fields = importedProductFields(product);
-    return d1.prepare(`INSERT OR IGNORE INTO shop_products (
-      id, name, description, price_cents, stock, image, official_url, product_type, audience,
-      sizes, colors, extra_categories, color_images, status
-    ) VALUES (?, ?, '', ?, ?, ?, ?, ?, ?, '[]', '[]', '[]', '[]', 'active')`).bind(
-      Number(product.id), product.name, fields.priceCents, product.stock, fields.image,
-      fields.officialUrl, fields.productType, fields.audience,
-    );
-  });
-  statements.push(d1.prepare("INSERT OR IGNORE INTO catalog_imports (key) VALUES (?)").bind(catalogImportKey));
-  await d1.batch(statements);
+  if (!imported) {
+    const statements = catalog.products.map(product => {
+      const fields = importedProductFields(product);
+      return d1.prepare(`INSERT OR IGNORE INTO shop_products (
+        id, name, description, price_cents, stock, image, official_url, product_type, audience,
+        sizes, colors, extra_categories, color_images, status
+      ) VALUES (?, ?, '', ?, ?, ?, ?, ?, ?, '[]', '[]', '[]', '[]', 'active')`).bind(
+        Number(product.id), product.name, fields.priceCents, product.stock, fields.image,
+        fields.officialUrl, fields.productType, fields.audience,
+      );
+    });
+    statements.push(d1.prepare("INSERT OR IGNORE INTO catalog_imports (key) VALUES (?)").bind(catalogImportKey));
+    await d1.batch(statements);
+  }
+  await ensureVariantPricingAndSizes(d1);
 }

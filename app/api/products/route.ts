@@ -57,6 +57,7 @@ function catalogDataValue(value: unknown, sizes: string[], colors: string[]): Pr
       sku: shortText(row.sku, 80),
       barcode: shortText(row.barcode, 40),
       stock: nonNegativeInteger(row.stock),
+      priceCents: ["X1", "X2", "X3"].includes(size) ? 20000 : nonNegativeInteger(row.priceCents),
     } satisfies CatalogVariant];
   }).slice(0, 200) : [];
 

@@ -2,14 +2,18 @@
 
 import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 
-export type CartItem = { id: string; quantity: number };
+export type CartItem = { id: string; quantity: number; size?: string; color?: string };
+
+export function cartItemKey(item: Pick<CartItem, "id" | "size" | "color">) {
+  return `${item.id}::${item.size ?? ""}::${item.color ?? ""}`;
+}
 
 type CartContextValue = {
   items: CartItem[];
   count: number;
-  addItem: (id: string, quantity?: number) => void;
-  updateQuantity: (id: string, quantity: number) => void;
-  removeItem: (id: string) => void;
+  addItem: (id: string, quantity?: number, size?: string, color?: string) => void;
+  updateQuantity: (key: string, quantity: number) => void;
+  removeItem: (key: string) => void;
   clearCart: () => void;
 };
 
@@ -38,19 +42,21 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const value = useMemo<CartContextValue>(() => ({
     items,
     count: items.reduce((total, item) => total + item.quantity, 0),
-    addItem(id, quantity = 1) {
+    addItem(id, quantity = 1, size, color) {
       setItems((current) => {
-        const found = current.find((item) => item.id === id);
+        const nextItem = { id, quantity, size, color };
+        const key = cartItemKey(nextItem);
+        const found = current.find((item) => cartItemKey(item) === key);
         return found
-          ? current.map((item) => item.id === id ? { ...item, quantity: item.quantity + quantity } : item)
-          : [...current, { id, quantity }];
+          ? current.map((item) => cartItemKey(item) === key ? { ...item, quantity: item.quantity + quantity } : item)
+          : [...current, nextItem];
       });
     },
-    updateQuantity(id, quantity) {
+    updateQuantity(key, quantity) {
       if (quantity < 1) return;
-      setItems((current) => current.map((item) => item.id === id ? { ...item, quantity } : item));
+      setItems((current) => current.map((item) => cartItemKey(item) === key ? { ...item, quantity } : item));
     },
-    removeItem(id) { setItems((current) => current.filter((item) => item.id !== id)); },
+    removeItem(key) { setItems((current) => current.filter((item) => cartItemKey(item) !== key)); },
     clearCart() { setItems((current) => current.length ? [] : current); },
   }), [items]);
 

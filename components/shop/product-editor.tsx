@@ -3,10 +3,10 @@
 import { ArrowLeft, CheckCircle2, Download, ExternalLink, ImageIcon, Package, Pencil, Save, Tags, Trash2, UploadCloud } from "lucide-react";
 import Link from "next/link";
 import { FormEvent, useEffect, useRef, useState } from "react";
-import { emptyProductCatalogData, formatPrice, type CatalogVariant, type ProductCatalogData, type SavedProduct } from "@/lib/products";
+import { emptyProductCatalogData, formatPrice, productVariantPriceCents, type CatalogVariant, type ProductCatalogData, type SavedProduct } from "@/lib/products";
 
 const emptyPreview = { name: "Nome do produto", price: "R$ 0,00" };
-const availableSizes = ["PP", "P", "M", "G", "GG", "XG", "EXG", "X1", "X2", "X3", "Único"];
+const standardSizes = ["P", "M", "G", "GG", "XG", "EXG", "X1", "X2", "X3"];
 const availableColors = ["Preto", "Branco", "Vermelho", "Amarelo", "Rosa", "Verde", "Azul", "Marrom"];
 const availableExtraCategories = [
   ["masculino", "Masculino"], ["feminino", "Feminino"], ["bone", "Boné"],
@@ -50,9 +50,11 @@ export function ProductEditor() {
   const [editingId, setEditingId] = useState<number | null>(null);
   const [baseSku, setBaseSku] = useState("");
   const [variantRows, setVariantRows] = useState<CatalogVariant[]>([]);
+  const [audience, setAudience] = useState<SavedProduct["audience"]>("unissex");
   const [csvScope, setCsvScope] = useState<"active" | "all">("active");
   const customColorList = customColors.split(",").map(color => color.trim()).filter(Boolean);
   const allSelectedColors = [...new Set([...selectedColors, ...customColorList])];
+  const availableSizes = audience === "infantil" ? ["PP", ...standardSizes] : standardSizes;
   const variantCombinations = (selectedSizes.length ? selectedSizes : [""]).flatMap(size =>
     (allSelectedColors.length ? allSelectedColors : [""]).map(color => ({ size, color, key: variantKey(size, color) })),
   );
@@ -110,6 +112,7 @@ export function ProductEditor() {
             sku: saved?.sku.trim() || generatedSku,
             barcode: saved?.barcode.trim() || "",
             stock: saved?.stock ?? (variantCombinations.length === 1 ? productStock : 0),
+            priceCents: ["X1", "X2", "X3"].includes(combination.size) ? 20000 : Math.round(price * 100),
           };
         }),
       },
@@ -140,6 +143,7 @@ export function ProductEditor() {
       setColorImages({});
       setBaseSku("");
       setVariantRows([]);
+      setAudience("unissex");
     } catch (reason) {
       setError(reason instanceof Error ? reason.message : "Não foi possível cadastrar o produto.");
     } finally {
@@ -186,6 +190,7 @@ export function ProductEditor() {
     setColorImages(Object.fromEntries((product.colorImages ?? []).map(item => [item.color, item.image])));
     setBaseSku(channelData.baseSku);
     setVariantRows(channelData.variants);
+    setAudience(product.audience);
     setMessage("");
     setError("");
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -204,6 +209,7 @@ export function ProductEditor() {
     setColorImages({});
     setBaseSku("");
     setVariantRows([]);
+    setAudience("unissex");
     setMessage("");
     setError("");
   }
@@ -282,7 +288,7 @@ export function ProductEditor() {
         return [
           product.id, combination.key, sku, configured?.barcode || (index === 0 ? channelData.barcode : ""), product.name,
           product.description, channelData.brand, product.productType, product.audience, channelData.condition, channelData.material,
-          "BRL", (product.priceCents / 100).toFixed(2), product.stock, variantStock, combination.size, combination.color,
+          "BRL", (productVariantPriceCents(product, combination.size, combination.color) / 100).toFixed(2), product.stock, variantStock, combination.size, combination.color,
           mainImage, variantImage, product.extraCategories?.join("|") ?? "", channelData.weightGrams || "", channelData.lengthCm || "",
           channelData.widthCm || "", channelData.heightCm || "", product.status, `${window.location.origin}/loja/${product.id}`,
         ];
@@ -360,7 +366,7 @@ export function ProductEditor() {
               </section>
               <section className="editor-panel" id="organizacao">
                 <div className="editor-panel-title"><span>05</span><div><h2>Organização e publicação</h2><p>Defina onde o produto aparecerá.</p></div></div>
-                <div className="editor-field-grid"><label>Tipo<select name="productType" defaultValue="camisa"><option value="camisa">Camisa</option><option value="bone">Boné</option><option value="moletom">Moletom</option><option value="livro">Livro</option></select></label><label>Público<select name="audience" defaultValue="unissex"><option value="unissex">Unissex</option><option value="masculino">Masculino</option><option value="feminino">Feminino</option><option value="infantil">Infantil</option></select></label></div>
+                <div className="editor-field-grid"><label>Tipo<select name="productType" defaultValue="camisa"><option value="camisa">Camisa</option><option value="bone">Boné</option><option value="moletom">Moletom</option><option value="livro">Livro</option></select></label><label>Público<select name="audience" value={audience} onChange={event => { const next = event.target.value as SavedProduct["audience"]; setAudience(next); if (next !== "infantil") setSelectedSizes(current => current.filter(size => size !== "PP")); }}><option value="unissex">Unissex</option><option value="masculino">Masculino</option><option value="feminino">Feminino</option><option value="infantil">Infantil</option></select></label></div>
                 <label>Status<select name="status" defaultValue="active"><option value="active">Ativo na vitrine</option><option value="draft">Rascunho</option></select></label>
               </section>
               <section className="editor-panel" id="canais">
