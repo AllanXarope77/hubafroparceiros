@@ -3,6 +3,7 @@ import catalog from "@/data/yampi-products.json";
 import * as schema from "./schema";
 
 const catalogImportKey = "yampi_catalog_v1";
+const clothingCatalogImportKey = "yampi_clothing_catalog_v2";
 const localImages: Record<string, string> = {
   "43721859": "/images/dna-guetos/camisa-dna-guetos.png",
   "43722351": "/images/dna-guetos/camisa-thug-life.png",
@@ -97,9 +98,96 @@ function importedProductFields(product: (typeof catalog.products)[number]) {
   };
 }
 
+function clothingAudience(product: (typeof catalog.products)[number]) {
+  const value = `${product.name} ${product.publicUrl}`.toLowerCase();
+  if (/-i\/p|criança/.test(value)) return "infantil";
+  if (/-f\/p|feminino|negra|panafricana|machista|misógino/.test(value)) return "feminino";
+  if (/-m\/p|continuo-negro|panafricano/.test(value)) return "masculino";
+  return "unissex";
+}
+
+function clothingColor(product: (typeof catalog.products)[number]) {
+  const value = `${product.image} ${product.publicUrl}`.toLowerCase();
+  const colors = [
+    ["preto", "Preto"], ["branco", "Branco"], ["vermelho", "Vermelho"], ["amarelo", "Amarelo"],
+    ["rosa", "Rosa"], ["verde", "Verde"], ["azul", "Azul"], ["marrom", "Marrom"],
+  ] as const;
+  return colors.find(([key]) => value.includes(key))?.[1] ?? "";
+}
+
+function skuPart(value: string) {
+  return value.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-zA-Z0-9]+/g, "-").replace(/^-|-$/g, "").toUpperCase();
+}
+
+async function ensureClothingCatalogSeeded(d1: Awaited<ReturnType<typeof getD1>>) {
+  const imported = await d1.prepare("SELECT key FROM catalog_imports WHERE key = ?").bind(clothingCatalogImportKey).first();
+  if (imported) return;
+
+  const clothing = catalog.products.filter(product => {
+    const type = importedProductFields(product).productType;
+    return (type === "camisa" || type === "moletom") && !product.image.includes("nophoto");
+  });
+  const nameCounts = new Map<string, number>();
+  for (const product of clothing) nameCounts.set(product.name, (nameCounts.get(product.name) ?? 0) + 1);
+
+  const audienceLabels = { masculino: "Masculina", feminino: "Feminina", infantil: "Infantil", unissex: "Unissex" };
+  const sizes = ["PP", "P", "M", "G", "GG", "XG", "EXG", "X1", "X2", "X3", "Único"];
+  const statements = clothing.map(product => {
+    const fields = importedProductFields(product);
+    const audience = clothingAudience(product);
+    const productType = fields.productType as "camisa" | "moletom";
+    const displayName = (nameCounts.get(product.name) ?? 0) > 1
+      ? `${product.name} (${audienceLabels[audience]})`
+      : product.name;
+    const inferredColor = clothingColor(product);
+    const colors = product.id === "43721859" ? ["Preto", "Branco", "Rosa"] : inferredColor ? [inferredColor] : [];
+    const variantColors = colors.length ? colors : [""];
+    const baseSku = `YAMPI-${product.id}`;
+    const variants = sizes.flatMap(size => variantColors.map(color => ({
+      key: `${size}::${color || "padrao"}`,
+      size,
+      color,
+      sku: [baseSku, color, size].filter(Boolean).map(skuPart).join("-"),
+      barcode: "",
+      stock: 0,
+    })));
+    const extraCategories = [productType, ...(audience === "masculino" || audience === "feminino" ? [audience] : [])];
+    const piece = productType === "moletom" ? "Moletom" : "Camisa";
+    const description = `${piece} autoral DNA GUETOS. ${displayName.replace(/^(Camisa|Moletom)\s+/i, "")} transforma identidade, memória e resistência em presença. Produto nacional desenvolvido para expressar cultura, pertencimento e atitude.`;
+    const image = localImages[product.id] ?? product.image.replace("-small.", "-large.");
+    const catalogData = {
+      brand: "DNA GUETOS",
+      baseSku,
+      barcode: "",
+      material: "",
+      condition: "new",
+      weightGrams: 0,
+      lengthCm: 0,
+      widthCm: 0,
+      heightCm: 0,
+      variants,
+    };
+
+    return d1.prepare(`INSERT INTO shop_products (
+      id, name, description, price_cents, stock, image, official_url, product_type, audience,
+      sizes, colors, extra_categories, color_images, catalog_data, status
+    ) SELECT ?, ?, ?, ?, ?, ?, '', ?, ?, ?, ?, ?, '[]', ?, 'active'
+    WHERE NOT EXISTS (
+      SELECT 1 FROM shop_products WHERE json_extract(catalog_data, '$.baseSku') = ?
+    )`).bind(
+      Number(product.id), displayName, description, fields.priceCents, product.stock, image,
+      productType, audience, JSON.stringify(sizes), JSON.stringify(colors), JSON.stringify(extraCategories),
+      JSON.stringify(catalogData), baseSku,
+    );
+  });
+  statements.push(d1.prepare("INSERT OR IGNORE INTO catalog_imports (key) VALUES (?)").bind(clothingCatalogImportKey));
+  await d1.batch(statements);
+}
+
 export async function ensureShopCatalogSeeded() {
   await ensureShopSchema();
   const d1 = await getD1();
+  await ensureClothingCatalogSeeded(d1);
   const imported = await d1.prepare("SELECT key FROM catalog_imports WHERE key = ?").bind(catalogImportKey).first();
   if (imported) return;
 
