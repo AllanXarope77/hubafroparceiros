@@ -1,10 +1,12 @@
 import { drizzle } from "drizzle-orm/d1";
 import catalog from "@/data/yampi-products.json";
+import { yampiColorVariants } from "@/data/yampi-color-variants";
 import * as schema from "./schema";
 
 const catalogImportKey = "yampi_catalog_v1";
 const clothingCatalogImportKey = "yampi_clothing_catalog_v2";
 const variantPricingImportKey = "variant_pricing_and_sizes_v3";
+const colorVariantsImportKey = "yampi_color_variants_v4";
 const localImages: Record<string, string> = {
   "43721859": "/images/dna-guetos/camisa-dna-guetos.png",
   "43722351": "/images/dna-guetos/camisa-thug-life.png",
@@ -229,6 +231,18 @@ async function ensureVariantPricingAndSizes(d1: Awaited<ReturnType<typeof getD1>
   await d1.batch(statements);
 }
 
+async function ensureYampiColorVariants(d1: Awaited<ReturnType<typeof getD1>>) {
+  const imported = await d1.prepare("SELECT key FROM catalog_imports WHERE key = ?").bind(colorVariantsImportKey).first();
+  if (imported) return;
+
+  const statements = yampiColorVariants.map(product =>
+    d1.prepare("UPDATE shop_products SET colors = ?, color_images = ? WHERE id = ?")
+      .bind(JSON.stringify(product.colors), JSON.stringify(product.colorImages), product.id),
+  );
+  statements.push(d1.prepare("INSERT OR IGNORE INTO catalog_imports (key) VALUES (?)").bind(colorVariantsImportKey));
+  await d1.batch(statements);
+}
+
 export async function ensureShopCatalogSeeded() {
   await ensureShopSchema();
   const d1 = await getD1();
@@ -249,4 +263,5 @@ export async function ensureShopCatalogSeeded() {
     await d1.batch(statements);
   }
   await ensureVariantPricingAndSizes(d1);
+  await ensureYampiColorVariants(d1);
 }

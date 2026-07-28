@@ -19,7 +19,7 @@ function colorImageList(value: unknown, selectedColors: string[]) {
     if (!item || typeof item !== "object") return [];
     const color = String((item as { color?: unknown }).color ?? "").trim();
     const image = String((item as { image?: unknown }).image ?? "").trim();
-    if (!selectedColors.includes(color) || !image.startsWith("/api/product-images/") || image.length > 500) return [];
+    if (!selectedColors.includes(color) || !isSafeImage(image) || image.length > 500) return [];
     return [{ color, image }];
   }).slice(0, 20);
 }
