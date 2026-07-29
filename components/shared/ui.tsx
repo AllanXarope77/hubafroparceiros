@@ -8,8 +8,14 @@ export function Eyebrow({ children }: { children: ReactNode }) {
 }
 
 export function ButtonLink({ href, children, variant = "gold" }: { href: string; children: ReactNode; variant?: "gold" | "ghost" }) {
+  const isExternal = href.startsWith("http://") || href.startsWith("https://");
   return (
-    <Link href={href} className={`button button--${variant}`}>
+    <Link
+      href={href}
+      className={`button button--${variant}`}
+      target={isExternal ? "_blank" : undefined}
+      rel={isExternal ? "noopener noreferrer" : undefined}
+    >
       {children}<ArrowRight size={17} />
     </Link>
   );
@@ -59,4 +65,3 @@ export function FinalCta({ title = "Faça parte desse movimento", copy = "A cult
     </section>
   );
 }
-

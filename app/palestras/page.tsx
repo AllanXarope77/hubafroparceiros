@@ -89,7 +89,9 @@ export default function PalestrasPage() {
                   equipes éticas, conscientes e preparadas.
                 </p>
                 <div className="hero-actions">
-                  <ButtonLink href="/contato">Agendar uma palestra</ButtonLink>
+                  <ButtonLink href="https://api.whatsapp.com/send/?phone=5511900000000&text=Ol%C3%A1%21+Vim+pelo+site+e+gostaria+de+saber+mais+sobre+as+palestras+corporativas+e+forma%C3%A7%C3%B5es+da+Afroparceiros+para+a+minha+equipe.&type=phone_number&app_absent=0">
+                    Agendar uma palestra
+                  </ButtonLink>
                   <ButtonLink href="#formacoes" variant="ghost">
                     Conhecer formações
                   </ButtonLink>
