@@ -31,8 +31,14 @@ export function Footer() {
           <span className="footer-label">Siga o movimento</span>
           <div className="footer-links">
             {socials.map((social) => (
-              <a key={social} href="#" aria-label={`${social} do Hub Afroparceiros`}>
-                {social} <ArrowUpRight size={14} />
+              <a
+                key={social.label}
+                href={social.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`${social.label} do Hub Afroparceiros`}
+              >
+                {social.label} <ArrowUpRight size={14} />
               </a>
             ))}
           </div>

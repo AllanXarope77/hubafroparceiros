@@ -59,4 +59,9 @@ export const projects = [
   },
 ] as const;
 
-export const socials = ["Instagram", "YouTube", "LinkedIn", "Spotify"];
+export const socials = [
+  { label: "Instagram", href: "https://www.instagram.com/afroparceirosoficial/" },
+  { label: "YouTube", href: "https://www.youtube.com/@Afroparceiros" },
+  { label: "LinkedIn", href: "https://www.linkedin.com/in/sergio-carvalho-sant/?skipRedirect=true" },
+  { label: "Spotify", href: "https://open.spotify.com/show/1RqN2gzgY4EKKA3V8tWrtX" },
+] as const;
