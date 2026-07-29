@@ -1,6 +1,6 @@
 import { drizzle } from "drizzle-orm/d1";
 import catalog from "@/data/yampi-products.json";
-import { yampiColorVariants } from "@/data/yampi-color-variants";
+import { editorProductColorAliases, yampiColorVariants } from "@/data/yampi-color-variants";
 import * as schema from "./schema";
 
 const catalogImportKey = "yampi_catalog_v1";
@@ -8,6 +8,7 @@ const clothingCatalogImportKey = "yampi_clothing_catalog_v2";
 const variantPricingImportKey = "variant_pricing_and_sizes_v3";
 const colorVariantsImportKey = "yampi_color_variants_v4";
 const colorImageFallbacksImportKey = "color_image_fallbacks_v5";
+const editorProductColorsImportKey = "editor_product_colors_v6";
 const localImages: Record<string, string> = {
   "43721859": "/images/dna-guetos/camisa-dna-guetos.png",
   "43722351": "/images/dna-guetos/camisa-thug-life.png",
@@ -275,6 +276,51 @@ async function ensureColorImageFallbacks(d1: Awaited<ReturnType<typeof getD1>>) 
   await d1.batch(statements);
 }
 
+async function ensureEditorProductColors(d1: Awaited<ReturnType<typeof getD1>>) {
+  const imported = await d1.prepare("SELECT key FROM catalog_imports WHERE key = ?").bind(editorProductColorsImportKey).first();
+  if (imported) return;
+
+  const statements = editorProductColorAliases.flatMap(alias => {
+    const source = yampiColorVariants.find(product => product.id === alias.sourceId);
+    if (!source) return [];
+    return [
+      d1.prepare("UPDATE shop_products SET colors = ?, color_images = ? WHERE id = ?")
+        .bind(JSON.stringify(source.colors), JSON.stringify(source.colorImages), alias.id),
+    ];
+  });
+
+  const editorProducts = await d1.prepare(`
+    SELECT id, audience, sizes, catalog_data
+    FROM shop_products
+    WHERE id IN (${editorProductColorAliases.map(() => "?").join(", ")})
+  `).bind(...editorProductColorAliases.map(product => product.id)).all<{
+    id: number;
+    audience: string;
+    sizes: string;
+    catalog_data: string;
+  }>();
+
+  for (const product of editorProducts.results) {
+    const isInfant = product.audience === "infantil";
+    const sizes = (JSON.parse(product.sizes || "[]") as string[])
+      .filter(size => size !== "Ãšnico" && size !== "Único" && (isInfant || size !== "PP"));
+    const data = JSON.parse(product.catalog_data || "{}") as {
+      variants?: Array<Record<string, unknown> & { size?: string }>;
+    };
+    const variants = (data.variants || []).filter(variant => {
+      const size = String(variant.size || "");
+      return size !== "Ãšnico" && size !== "Único" && (isInfant || size !== "PP");
+    });
+    statements.push(
+      d1.prepare("UPDATE shop_products SET sizes = ?, catalog_data = ? WHERE id = ?")
+        .bind(JSON.stringify(sizes), JSON.stringify({ ...data, variants }), product.id),
+    );
+  }
+
+  statements.push(d1.prepare("INSERT OR IGNORE INTO catalog_imports (key) VALUES (?)").bind(editorProductColorsImportKey));
+  await d1.batch(statements);
+}
+
 export async function ensureShopCatalogSeeded() {
   await ensureShopSchema();
   const d1 = await getD1();
@@ -297,4 +343,5 @@ export async function ensureShopCatalogSeeded() {
   await ensureVariantPricingAndSizes(d1);
   await ensureYampiColorVariants(d1);
   await ensureColorImageFallbacks(d1);
+  await ensureEditorProductColors(d1);
 }

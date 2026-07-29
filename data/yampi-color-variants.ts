@@ -218,3 +218,9 @@ export const yampiColorVariants = sources.map(({ id, colors, images }) => ({
     image: `${imageBase}${filename}`,
   })),
 }));
+
+export const editorProductColorAliases = [
+  { id: 45486517, sourceId: 43721859 },
+  { id: 45486518, sourceId: 43722351 },
+  { id: 45486519, sourceId: 43733555 },
+];
