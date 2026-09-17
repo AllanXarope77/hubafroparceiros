@@ -3,6 +3,22 @@ export type SiteLanguage = "pt" | "en" | "es";
 type Translation = { en: string; es: string };
 
 export const siteTranslations: Record<string, Translation> = {
+  "Início": { en: "Home", es: "Inicio" },
+  "Soluções": { en: "Solutions", es: "Soluciones" },
+  "Experiências": { en: "Experiences", es: "Experiencias" },
+  "Projetos": { en: "Projects", es: "Proyectos" },
+  "Artistas": { en: "Artists", es: "Artistas" },
+  "Conteúdo": { en: "Content", es: "Contenido" },
+  "Sobre": { en: "About", es: "Nosotros" },
+  "Solicite uma proposta": { en: "Request a proposal", es: "Solicita una propuesta" },
+  "Central comercial": { en: "Business center", es: "Central comercial" },
+  "Como podemos ajudar?": { en: "How can we help?", es: "¿Cómo podemos ayudar?" },
+  "Vamos construir algo juntos?": { en: "Shall we build something together?", es: "¿Construimos algo juntos?" },
+  "Cultura que movimenta.": { en: "Culture that moves.", es: "Cultura que moviliza." },
+  "Conhecimento que transforma.": { en: "Knowledge that transforms.", es: "Conocimiento que transforma." },
+  "Conexões que geram negócios.": { en: "Connections that create business.", es: "Conexiones que generan negocios." },
+  "Conheça nossas soluções": { en: "Discover our solutions", es: "Conoce nuestras soluciones" },
+  "Explore o ecossistema": { en: "Explore the ecosystem", es: "Explora el ecosistema" },
   "Home": { en: "Home", es: "Inicio" },
   "Palestras": { en: "Talks", es: "Conferencias" },
   "Clube do Livro": { en: "Book Club", es: "Club de Lectura" },

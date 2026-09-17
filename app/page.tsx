@@ -1,123 +1,98 @@
 import Link from "next/link";
-import { ArrowRight, Quote } from "lucide-react";
+import { ArrowRight, BookOpen, BriefcaseBusiness, Landmark, Mic2, ShoppingBag, Sparkles } from "lucide-react";
 import { SiteShell } from "@/components/layout/site-shell";
-import { FinalCta, SectionHeading } from "@/components/shared/ui";
+import { ButtonLink, Eyebrow, SectionHeading } from "@/components/shared/ui";
 import { Reveal } from "@/components/shared/reveal";
-import { projects } from "@/content/site";
 
-const stats = [
-  ["10+", "anos construindo pontes"],
-  ["500+", "conteúdos publicados"],
-  ["200+", "encontros realizados"],
-  ["40 mil", "pessoas alcançadas"],
-];
+const paths = [
+  { title: "Quero contratar", copy: "Palestras, treinamentos, eventos corporativos e soluções personalizadas.", href: "/solucoes", icon: BriefcaseBusiness },
+  { title: "Quero viver uma experiência", copy: "Arte, cultura, música, conhecimento e experiências autorais.", href: "/experiencias", icon: Sparkles },
+  { title: "Quero patrocinar ou realizar um projeto", copy: "Projetos culturais, sociais e educacionais prontos para construir parcerias.", href: "/projetos", icon: Landmark },
+  { title: "Quero comprar", copy: "DNA Guetos, Livro Guetos e produtos do nosso universo.", href: "/loja", icon: ShoppingBag },
+] as const;
 
-const testimonials = [
-  {
-    quote: "O Hub não entrega só conteúdo. Ele cria contexto, encontro e coragem para transformar intenção em ação.",
-    name: "Marina Costa",
-    role: "Gestora cultural · São Paulo",
-  },
-  {
-    quote: "Encontrei aqui uma comunidade que trata cultura com profundidade, beleza e compromisso com o futuro.",
-    name: "Rafael Nascimento",
-    role: "Educador · Salvador",
-  },
-];
+const ecosystem = [
+  { title: "AFROPARCEIROS", copy: "Produtora afrocentrada e núcleo empresarial do ecossistema.", href: "/sobre" },
+  { title: "INSTITUTO AFROPARCEIROS", copy: "Braço voltado ao impacto social, cultura, educação e transformação.", href: "/instituto-afroparceiros" },
+  { title: "DNA GUETOS", copy: "Marca que transforma identidade, território e expressão em produtos e experiências.", href: "/loja" },
+] as const;
+
+const highlights = [
+  { title: "Soluções B2B", href: "/solucoes", icon: BriefcaseBusiness },
+  { title: "Experiências", href: "/experiencias", icon: Sparkles },
+  { title: "Banco de projetos", href: "/projetos", icon: Landmark },
+  { title: "Artistas", href: "/artistas", icon: Mic2 },
+  { title: "Livro Guetos", href: "/livro-guetos", icon: BookOpen },
+  { title: "Conteúdo", href: "/conteudo", icon: ArrowRight },
+] as const;
 
 export default function Home() {
   return (
     <SiteShell>
-      <section className="home-hero home-hero--banner" id="inicio">
-        <img
-          className="home-banner-image"
-          src="/images/banner-principal.png"
-          alt="HUB Afroparceiros — Pois resistência não é moda, é meio de sobrevivência"
-        />
-      </section>
-
-      <section className="section about-section" id="sobre">
-        <div className="container about-grid">
-          <Reveal className="about-number"><span>01</span></Reveal>
-          <div>
-            <SectionHeading
-              eyebrow="Sobre o Hub"
-              title={<>Uma plataforma.<br /><span className="gold-text">Muitos caminhos.</span></>}
-            />
-            <Reveal delay={0.08}>
-              <p className="lead-copy">
-                Somos um ponto de encontro para quem acredita no poder da cultura
-                como ferramenta de presença, autonomia e transformação social.
-              </p>
-              <p className="body-copy">
-                Reunimos iniciativas independentes em um mesmo território digital.
-                Cada projeto tem sua própria linguagem; todos compartilham o mesmo
-                compromisso: criar experiências que deixam marcas e abrem conversas.
-              </p>
-            </Reveal>
-          </div>
-          <Reveal className="about-manifesto" delay={0.14}>
-            <span>Nosso manifesto</span>
-            <p>“Não ocupamos espaços. Criamos novos centros.”</p>
+      <section className="hub-home-hero" id="inicio">
+        <div className="hub-home-grid" aria-hidden="true" />
+        <div className="container hub-home-hero-inner">
+          <Reveal>
+            <Eyebrow>AFROPARCEIROS — HUB</Eyebrow>
+            <h1>Cultura que movimenta.<br />Conhecimento que transforma.<br /><span>Conexões que geram negócios.</span></h1>
+            <p>Afroparceiros é uma produtora afrocentrada que conecta cultura, conhecimento, experiências e projetos para empresas, instituições, territórios e pessoas.</p>
+            <div className="hero-actions">
+              <ButtonLink href="/solucoes">Conheça nossas soluções</ButtonLink>
+              <ButtonLink href="#ecossistema" variant="ghost">Explore o ecossistema</ButtonLink>
+            </div>
+          </Reveal>
+          <Reveal className="hub-home-signature" delay={0.12}>
+            <span>BA</span><i /><span>DF</span>
+            <small>Cultura · Conhecimento · Negócios</small>
           </Reveal>
         </div>
       </section>
 
-      <section className="section projects-section" id="ecossistema">
+      <section className="section hub-paths-section">
         <div className="container">
-          <SectionHeading
-            eyebrow="Nosso ecossistema"
-            title={<>Cinco projetos.<br />Uma só <span className="gold-text">pulsação.</span></>}
-            copy="Explore as frentes que dão vida ao Hub e encontre seu próximo ponto de conexão."
-          />
-          <div className="projects-grid">
-            {projects.map((project, index) => {
-              return (
-                <Reveal key={project.href} className={`project-card project-card--${index + 1}`} delay={index * 0.05}>
-                  <Link href={project.href} aria-label={`Conhecer ${project.title}`}>
-                    <div className={`project-visual ${project.className}`} role="img" aria-label={`Identidade visual do projeto ${project.title}`}>
-                      <span>0{index + 1}</span>
-                    </div>
-                    <div className="project-card-body">
-                      <small>{project.eyebrow}</small>
-                      <h3>{project.title}</h3>
-                      <p>{project.description}</p>
-                      <span className="text-link">Conhecer <ArrowRight size={16} /></span>
-                    </div>
-                  </Link>
-                </Reveal>
-              );
+          <SectionHeading eyebrow="Por onde começar" title={<>Escolha o caminho que<br /><span className="gold-text">faz sentido agora.</span></>} />
+          <div className="hub-paths-grid">
+            {paths.map((item, index) => {
+              const Icon = item.icon;
+              return <Reveal key={item.href} className="hub-path-card" delay={index * 0.05}><Link href={item.href}><span>0{index + 1}</span><Icon size={30} strokeWidth={1.25} /><h2>{item.title}</h2><p>{item.copy}</p><strong>Explorar <ArrowRight size={16} /></strong></Link></Reveal>;
             })}
           </div>
         </div>
       </section>
 
-      <section className="stats-section">
-        <div className="container stats-grid">
-          {stats.map(([number, label], index) => (
-            <Reveal key={label} className="stat" delay={index * 0.06}>
-              <strong>{number}</strong><span>{label}</span>
+      <section className="section hub-ecosystem-section" id="ecossistema">
+        <div className="container hub-ecosystem-layout">
+          <SectionHeading eyebrow="O ecossistema" title={<>Uma marca-mãe.<br /><span className="gold-text">Frentes conectadas.</span></>} copy="Cada frente tem uma função própria e se conecta às demais para ampliar possibilidades de atuação, parceria e impacto." />
+          <div className="hub-ecosystem-list">
+            {ecosystem.map((item, index) => <Reveal key={item.title} delay={index * 0.06}><Link href={item.href}><span>0{index + 1}</span><div><h3>{item.title}</h3><p>{item.copy}</p></div><ArrowRight size={20} /></Link></Reveal>)}
+          </div>
+        </div>
+      </section>
+
+      <section className="section hub-highlights-section">
+        <div className="container">
+          <SectionHeading eyebrow="Explore o HUB" title={<>Encontre pessoas, ideias<br />e caminhos para <span className="gold-text">agir.</span></>} />
+          <div className="hub-highlights-grid">
+            {highlights.map((item, index) => { const Icon = item.icon; return <Reveal key={item.href} delay={index * 0.04}><Link href={item.href}><Icon size={22} /><span>{item.title}</span><ArrowRight size={16} /></Link></Reveal>; })}
+          </div>
+        </div>
+      </section>
+
+      <section className="hub-proof-section" aria-label="Credenciais, clientes e realizações">
+        <div className="container hub-proof-grid">
+          {["Credenciais", "Clientes", "Realizações"].map((title) => (
+            <Reveal key={title} className="hub-proof-item">
+              <small>Acervo institucional</small>
+              <h2>{title}</h2>
+              <p>Estrutura preparada para receber apenas informações oficiais e autorizadas.</p>
             </Reveal>
           ))}
         </div>
       </section>
 
-      <section className="section testimonials-section">
-        <div className="container">
-          <SectionHeading eyebrow="Quem caminha com a gente" title={<>Impacto que vira<br /><span className="gold-text">história.</span></>} />
-          <div className="testimonials-grid">
-            {testimonials.map((item, index) => (
-              <Reveal key={item.name} className="testimonial-card" delay={index * 0.08}>
-                <Quote size={30} strokeWidth={1.2} />
-                <blockquote>{item.quote}</blockquote>
-                <div><strong>{item.name}</strong><span>{item.role}</span></div>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
+      <section className="hub-home-banner-section"><img src="/images/banner-principal.png" alt="HUB Afroparceiros" /></section>
 
-      <FinalCta />
+      <section className="hub-commercial-cta"><div className="container"><Reveal><Eyebrow>Central comercial</Eyebrow><h2>Vamos construir algo juntos?</h2><p>Conte-nos o que sua organização precisa e encontre o caminho certo dentro do ecossistema.</p><ButtonLink href="/contato">Solicite uma proposta</ButtonLink></Reveal></div></section>
     </SiteShell>
   );
 }

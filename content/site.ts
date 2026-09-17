@@ -7,12 +7,14 @@ import {
 } from "lucide-react";
 
 export const navItems = [
-  { label: "Home", href: "/" },
+  { label: "Início", href: "/" },
+  { label: "Soluções", href: "/solucoes" },
+  { label: "Experiências", href: "/experiencias" },
+  { label: "Projetos", href: "/projetos" },
+  { label: "Artistas", href: "/artistas" },
   { label: "DNA Guetos", href: "/loja" },
-  { label: "Blog", href: "/blog" },
-  { label: "Palestras", href: "/palestras" },
-  { label: "Clube do Livro", href: "/clube-do-livro" },
-  { label: "Podcast", href: "/podcast" },
+  { label: "Conteúdo", href: "/conteudo" },
+  { label: "Sobre", href: "/sobre" },
   { label: "Contato", href: "/contato" },
 ] as const;
 

@@ -14,10 +14,7 @@ export function Footer() {
               alt="HUB Afroparceiros"
             />
           </Link>
-          <p className="footer-intro">
-            Um ecossistema de projetos que transforma repertório em presença,
-            encontro e impacto coletivo.
-          </p>
+          <p className="footer-intro">AFROPARCEIROS é o HUB que conecta cultura, conhecimento, experiências, projetos e negócios.</p>
         </div>
         <div>
           <span className="footer-label">Explore</span>
@@ -25,6 +22,16 @@ export function Footer() {
             {navItems.slice(1, 6).map((item) => (
               <Link key={item.href} href={item.href}>{item.label}</Link>
             ))}
+          </div>
+        </div>
+        <div>
+          <span className="footer-label">Ecossistema</span>
+          <div className="footer-links">
+            <Link href="/conteudo">Conteúdo</Link>
+            <Link href="/livro-guetos">Livro Guetos</Link>
+            <Link href="/instituto-afroparceiros">Instituto Afroparceiros</Link>
+            <Link href="/sobre">Sobre</Link>
+            <Link href="/contato">Central comercial</Link>
           </div>
         </div>
         <div>
@@ -54,8 +61,8 @@ export function Footer() {
         </div>
       </div>
       <div className="container footer-bottom">
-        <span>© 2026 HUB AFROPARCEIROS</span>
-        <span>Feito para mover ideias.</span>
+        <span>© 2026 AFROPARCEIROS — HUB</span>
+        <span>Bahia · Distrito Federal</span>
       </div>
     </footer>
   );

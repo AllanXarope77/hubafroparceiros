@@ -1,21 +1,31 @@
 import type { Metadata } from "next";
 import { ArrowUpRight, Mail } from "lucide-react";
+import { CommercialContactForm } from "@/components/hub/commercial-contact-form";
 import { SiteShell } from "@/components/layout/site-shell";
-import { PageHero } from "@/components/shared/ui";
+import { Eyebrow } from "@/components/shared/ui";
 import { Reveal } from "@/components/shared/reveal";
 
-export const metadata: Metadata = { title: "Contato | Hub Afro", description: "Entre em contato com o Hub Afro." };
+export const metadata: Metadata = { title: "Central comercial", description: "Fale com a AFROPARCEIROS sobre soluções, experiências, projetos, artistas, loja, livro, imprensa e parcerias." };
 
-export default function ContatoPage() {
+export default async function ContatoPage({ searchParams }: { searchParams?: Promise<{ assunto?: string }> }) {
+  const params = await searchParams;
+
   return (
     <SiteShell>
-      <PageHero index="06" eyebrow="Vamos conversar" title={<>Toda parceria começa<br /><span className="gold-text">com um encontro.</span></>} copy="Conte sua ideia, convide o Hub para seu evento ou descubra como podemos construir algo relevante juntos." />
-      <section className="section contact-section"><div className="container contact-grid">
-        <Reveal className="contact-info"><span className="eyebrow"><i />Canal direto</span><h2>Estamos do outro lado.</h2><p>Respondemos em até dois dias úteis. Fale conosco pelo e-mail abaixo.</p>
-          <a href="mailto:ceo@afroparceiros.com"><Mail size={20} /><div><small>E-mail</small><strong>ceo@afroparceiros.com</strong></div><ArrowUpRight size={18} /></a>
-        </Reveal>
-        <Reveal className="contact-form-wrap" delay={.1}><form className="contact-form"><div className="field-row"><label>Seu nome<input type="text" placeholder="Como podemos chamar você?" /></label><label>Seu e-mail<input type="email" placeholder="voce@email.com" /></label></div><label>Assunto<select defaultValue=""><option value="" disabled>Selecione uma opção</option><option>Palestras</option><option>Parcerias</option><option>Imprensa</option><option>Clube do Livro</option><option>Outro</option></select></label><label>Conte sua ideia<textarea rows={6} placeholder="Escreva aqui sua mensagem..." /></label><button type="submit">Enviar mensagem <ArrowUpRight size={17} /></button><small>Ao enviar, você concorda com nossa política de privacidade.</small></form></Reveal>
-      </div></section>
+      <section className="hub-inner-hero hub-inner-hero--compact">
+        <div className="container"><Reveal><Eyebrow>Central comercial</Eyebrow><h1>Vamos construir<br /><span>algo juntos?</span></h1><p>Escolha o assunto para encontrarmos o melhor caminho dentro do ecossistema AFROPARCEIROS.</p></Reveal></div>
+      </section>
+      <section className="section commercial-contact-section">
+        <div className="container commercial-contact-layout">
+          <Reveal className="commercial-contact-aside">
+            <span className="eyebrow"><i />Contato direto</span>
+            <h2>Como podemos ajudar?</h2>
+            <p>A estrutura abaixo organiza demandas comerciais, projetos, artistas, imprensa e parcerias. Os campos mudam conforme sua escolha.</p>
+            <a href="mailto:ceo@afroparceiros.com"><Mail size={20} /><div><small>E-mail</small><strong>ceo@afroparceiros.com</strong></div><ArrowUpRight size={18} /></a>
+          </Reveal>
+          <Reveal delay={0.08}><CommercialContactForm initialTopic={params?.assunto} /></Reveal>
+        </div>
+      </section>
     </SiteShell>
   );
 }

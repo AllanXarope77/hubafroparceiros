@@ -9,22 +9,22 @@ const spaceGrotesk = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://hub-afro.sites.openai.com"),
+  metadataBase: new URL("https://hub-afro-movimento.crafty-sugar-4970.chatgpt.site"),
   title: {
-    default: "Hub Afro — Cultura em movimento",
-    template: "%s · Hub Afro",
+    default: "AFROPARCEIROS — Cultura, conhecimento e negócios",
+    template: "%s · AFROPARCEIROS",
   },
-  description: "Um ecossistema de moda, literatura, educação, comunicação e podcast que transforma cultura em movimento.",
+  description: "HUB afrocentrado que conecta cultura, conhecimento, experiências e projetos para empresas, instituições, territórios e pessoas.",
   keywords: ["cultura afro-brasileira", "literatura", "educação", "podcast", "moda", "impacto social"],
   openGraph: {
-    title: "Hub Afro — Cultura em movimento",
-    description: "Ideias que movem mundos. Conheça nosso ecossistema criativo.",
+    title: "AFROPARCEIROS — Cultura, conhecimento e negócios",
+    description: "Conheça o ecossistema AFROPARCEIROS.",
     type: "website",
     locale: "pt_BR",
-    siteName: "Hub Afro",
+    siteName: "AFROPARCEIROS",
     images: [{ url: "/og.png", width: 1728, height: 910, alt: "Hub Afro — Ideias que movem mundos" }],
   },
-  twitter: { card: "summary_large_image", title: "Hub Afro — Cultura em movimento", description: "Ideias que movem mundos.", images: ["/og.png"] },
+  twitter: { card: "summary_large_image", title: "AFROPARCEIROS — HUB", description: "Cultura, conhecimento, experiências, projetos e negócios.", images: ["/og.png"] },
   icons: { icon: "/favicon.svg", shortcut: "/favicon.svg" },
 };
 

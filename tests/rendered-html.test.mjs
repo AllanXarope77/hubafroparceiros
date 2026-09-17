@@ -22,16 +22,17 @@ async function render(pathname = "/") {
   );
 }
 
-test("renderiza a home com a identidade do Hub Afro", async () => {
+test("renderiza a home com a identidade da AFROPARCEIROS", async () => {
   const response = await render();
   assert.equal(response.status, 200);
   assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i);
 
   const html = await response.text();
-  assert.match(html, /Hub Afro/i);
-  assert.match(html, /HUB Afroparceiros/);
-  assert.match(html, /resistência não é moda/i);
+  assert.match(html, /AFROPARCEIROS/i);
+  assert.match(html, /Cultura que movimenta/i);
+  assert.match(html, /Conexões que geram negócios/i);
   assert.match(html, /banner-principal\.png/);
+  assert.doesNotMatch(html, /Marina Costa|Rafael Nascimento|500\+|40 mil/i);
   assert.doesNotMatch(html, /codex-preview|Your site is taking shape/i);
 });
 
@@ -44,7 +45,17 @@ test("mantém todas as áreas principais acessíveis", async () => {
     ["/palestras", /Transforme a cultura/],
     ["/clube-do-livro", /Ler junto muda/],
     ["/podcast", /Vozes que/],
-    ["/contato", /Toda parceria começa/],
+    ["/contato", /Vamos construir/],
+    ["/solucoes", /Soluções B2B/],
+    ["/experiencias", /Experiências AFROPARCEIROS/],
+    ["/projetos", /Banco de Projetos/],
+    ["/projetos/feijhoada", /Feijhôada/],
+    ["/artistas", /Talentos que criam/],
+    ["/pessoas/sergio-carvalho", /Sergio/],
+    ["/conteudo", /Blog AFROPARCEIROS/],
+    ["/livro-guetos", /O Apartheid Urbano/],
+    ["/sobre", /Muito além/],
+    ["/instituto-afroparceiros", /Instituto Afroparceiros/],
   ];
 
   for (const [pathname, expectedText] of routes) {

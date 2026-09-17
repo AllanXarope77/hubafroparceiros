@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, ShoppingBag, X } from "lucide-react";
+import { ArrowUpRight, Menu, ShoppingBag, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { navItems } from "@/content/site";
 import { useCart } from "@/components/shop/cart-provider";
@@ -13,6 +13,7 @@ export function Navbar() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const { count } = useCart();
+  const isActive = (href: string) => href === "/" ? pathname === "/" : pathname.startsWith(href);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -37,7 +38,7 @@ export function Navbar() {
             <Link
               key={item.href}
               href={item.href}
-              className={pathname === item.href ? "active" : ""}
+              className={isActive(item.href) ? "active" : ""}
             >
               {item.label}
             </Link>
@@ -45,6 +46,7 @@ export function Navbar() {
         </nav>
 
         <div className="nav-actions">
+        <Link href="/contato" className="nav-proposal">Solicite uma proposta <ArrowUpRight size={14} /></Link>
         <LanguageSelector />
         <Link href="/carrinho" className="cart-link" aria-label={`Carrinho com ${count} itens`}>
           <ShoppingBag size={19} />
@@ -64,6 +66,9 @@ export function Navbar() {
 
       {open && (
         <nav className="mobile-nav" aria-label="Navegação móvel">
+          <Link className="mobile-proposal" href="/contato" onClick={() => setOpen(false)}>
+            Solicite uma proposta <ArrowUpRight size={18} />
+          </Link>
           <LanguageSelector mobile />
           {navItems.map((item, index) => (
             <Link key={item.href} href={item.href} onClick={() => setOpen(false)}>
@@ -71,7 +76,7 @@ export function Navbar() {
               {item.label}
             </Link>
           ))}
-          <Link href="/carrinho" onClick={() => setOpen(false)}><span>07</span>Carrinho {count > 0 ? `(${count})` : ""}</Link>
+          <Link href="/carrinho" onClick={() => setOpen(false)}><span>10</span>Carrinho {count > 0 ? `(${count})` : ""}</Link>
         </nav>
       )}
     </header>
