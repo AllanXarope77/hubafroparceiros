@@ -15,8 +15,7 @@ export type MercadoPagoPayment = {
 };
 
 async function accessToken() {
-  const { env } = await import("cloudflare:workers");
-  const token = (env as unknown as Record<string, string | undefined>).MERCADO_PAGO_ACCESS_TOKEN;
+  const token = process.env.MERCADO_PAGO_ACCESS_TOKEN;
   if (!token) throw new Error("A integração com o Mercado Pago ainda não foi conectada.");
   return token;
 }

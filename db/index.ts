@@ -1,4 +1,5 @@
-import { drizzle } from "drizzle-orm/d1";
+import { createClient, type Client, type InStatement, type InValue } from "@libsql/client";
+import { drizzle } from "drizzle-orm/libsql";
 import catalog from "@/data/yampi-products.json";
 import { editorProductColorAliases, yampiColorVariants } from "@/data/yampi-color-variants";
 import * as schema from "./schema";
@@ -17,14 +18,62 @@ const localImages: Record<string, string> = {
   "44489895": "/images/dna-guetos/moletom-dna-guetos.png",
 };
 
+let client: Client | undefined;
+
+function getClient() {
+  const url = process.env.TURSO_DATABASE_URL?.trim();
+  const authToken = process.env.TURSO_AUTH_TOKEN?.trim();
+  if (!url) {
+    throw new Error("Configure TURSO_DATABASE_URL e TURSO_AUTH_TOKEN para ativar o catálogo e o blog.");
+  }
+  client ??= createClient({ url, authToken: authToken || undefined });
+  return client;
+}
+
+class LibSqlStatement {
+  constructor(
+    private readonly client: Client,
+    private readonly sql: string,
+    private readonly args: InValue[] = [],
+  ) {}
+
+  bind(...args: InValue[]) {
+    return new LibSqlStatement(this.client, this.sql, args);
+  }
+
+  async first<T = Record<string, InValue>>() {
+    const result = await this.client.execute({ sql: this.sql, args: this.args });
+    return (result.rows[0] as unknown as T | undefined) ?? null;
+  }
+
+  async all<T = Record<string, InValue>>() {
+    const result = await this.client.execute({ sql: this.sql, args: this.args });
+    return { results: result.rows as unknown as T[] };
+  }
+
+  toStatement(): InStatement {
+    return { sql: this.sql, args: this.args };
+  }
+}
+
+class LibSqlD1Adapter {
+  constructor(private readonly client: Client) {}
+
+  prepare(sql: string) {
+    return new LibSqlStatement(this.client, sql);
+  }
+
+  async batch(statements: LibSqlStatement[]) {
+    return this.client.batch(statements.map(statement => statement.toStatement()), "write");
+  }
+}
+
 export async function getD1() {
-  const { env } = await import("cloudflare:workers");
-  if (!env.DB) throw new Error("O armazenamento do site não está disponível.");
-  return env.DB;
+  return new LibSqlD1Adapter(getClient());
 }
 
 export async function getDb() {
-  return drizzle(await getD1(), { schema });
+  return drizzle(getClient(), { schema });
 }
 
 export async function ensureBlogSchema() {

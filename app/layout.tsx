@@ -1,15 +1,13 @@
 import type { Metadata } from "next";
-import { Space_Grotesk } from "next/font/google";
 import { SiteTranslator } from "@/components/i18n/site-translator";
 import "./globals.css";
 
-const spaceGrotesk = Space_Grotesk({
-  variable: "--font-space",
-  subsets: ["latin"],
-});
+const productionUrl = process.env.NEXT_PUBLIC_SITE_URL
+  || (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : "")
+  || "https://hub-afro-movimento.crafty-sugar-4970.chatgpt.site";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://hub-afro-movimento.crafty-sugar-4970.chatgpt.site"),
+  metadataBase: new URL(productionUrl),
   title: {
     default: "AFROPARCEIROS — Cultura, conhecimento e negócios",
     template: "%s · AFROPARCEIROS",
@@ -31,7 +29,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="pt-BR">
-      <body className={spaceGrotesk.variable}><SiteTranslator />{children}</body>
+      <body><SiteTranslator />{children}</body>
     </html>
   );
 }

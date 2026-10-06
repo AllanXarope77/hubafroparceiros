@@ -1,6 +1,7 @@
 @import "tailwindcss";
 
 :root {
+  --font-space: "Space Grotesk", "Segoe UI", Arial, sans-serif;
   --ink: #080808;
   --surface: #111111;
   --surface-2: #171717;
