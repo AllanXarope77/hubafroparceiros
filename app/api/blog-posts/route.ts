@@ -1,4 +1,5 @@
 import { desc, eq } from "drizzle-orm";
+import { bundledBlogPosts } from "@/data/blog-posts";
 import { ensureBlogSchema, getDb } from "@/db";
 import { blogPosts } from "@/db/schema";
 
@@ -14,15 +15,37 @@ function slugify(value: string) {
   return `${base || "post"}-${Date.now().toString(36)}`;
 }
 
-function errorMessage(error: unknown) {
-  return error instanceof Error ? error.message : "Não foi possível acessar os posts.";
+function hasRemoteDatabase() {
+  return Boolean(process.env.TURSO_DATABASE_URL?.trim());
+}
+
+function bundledResponse(slug: string | null) {
+  if (slug) {
+    const post = bundledBlogPosts.find(item => item.slug === slug);
+    if (!post) return Response.json({ error: "Post não encontrado." }, { status: 404 });
+    return Response.json({ post, storage: "bundled" });
+  }
+
+  return Response.json(
+    { posts: bundledBlogPosts, storage: "bundled" },
+    { headers: { "Cache-Control": "public, s-maxage=60, stale-while-revalidate=300" } },
+  );
+}
+
+function persistenceUnavailable() {
+  return Response.json(
+    { error: "Conecte o banco do Blog na Vercel para publicar ou excluir posts de forma persistente." },
+    { status: 503 },
+  );
 }
 
 export async function GET(request: Request) {
+  const slug = new URL(request.url).searchParams.get("slug");
+  if (!hasRemoteDatabase()) return bundledResponse(slug);
+
   try {
     await ensureBlogSchema();
     const db = await getDb();
-    const slug = new URL(request.url).searchParams.get("slug");
 
     if (slug) {
       const [post] = await db.select().from(blogPosts).where(eq(blogPosts.slug, slug)).limit(1);
@@ -33,11 +56,14 @@ export async function GET(request: Request) {
     const posts = await db.select().from(blogPosts).orderBy(desc(blogPosts.createdAt), desc(blogPosts.id)).limit(50);
     return Response.json({ posts }, { headers: { "Cache-Control": "no-store" } });
   } catch (error) {
-    return Response.json({ error: errorMessage(error) }, { status: 500 });
+    console.error("Blog database unavailable; serving bundled content.", error);
+    return bundledResponse(slug);
   }
 }
 
 export async function POST(request: Request) {
+  if (!hasRemoteDatabase()) return persistenceUnavailable();
+
   try {
     const payload = (await request.json()) as Partial<{
       title: string;
@@ -70,11 +96,14 @@ export async function POST(request: Request) {
 
     return Response.json({ post }, { status: 201 });
   } catch (error) {
-    return Response.json({ error: errorMessage(error) }, { status: 500 });
+    console.error("Unable to publish blog post.", error);
+    return Response.json({ error: "O banco do Blog não está disponível. Revise a integração na Vercel." }, { status: 503 });
   }
 }
 
 export async function DELETE(request: Request) {
+  if (!hasRemoteDatabase()) return persistenceUnavailable();
+
   try {
     const id = Number(new URL(request.url).searchParams.get("id"));
     if (!Number.isInteger(id) || id <= 0) {
@@ -88,6 +117,7 @@ export async function DELETE(request: Request) {
     if (!deleted) return Response.json({ error: "Post não encontrado." }, { status: 404 });
     return Response.json({ deleted });
   } catch (error) {
-    return Response.json({ error: errorMessage(error) }, { status: 500 });
+    console.error("Unable to delete blog post.", error);
+    return Response.json({ error: "O banco do Blog não está disponível. Revise a integração na Vercel." }, { status: 503 });
   }
 }

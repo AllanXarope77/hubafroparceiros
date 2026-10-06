@@ -23,10 +23,10 @@ export function BlogPostDetail() {
     fetch(`/api/blog-posts?slug=${encodeURIComponent(params.slug)}`, { cache: "no-store" })
       .then(async response => {
         const data = await response.json();
-        if (!response.ok) throw new Error(data.error || "Post não encontrado.");
+        if (!response.ok) throw new Error(response.status === 404 ? "Post não encontrado." : "Este conteúdo não está disponível no momento.");
         setPost(data.post);
       })
-      .catch(reason => setError(reason instanceof Error ? reason.message : "Post não encontrado."));
+      .catch(reason => setError(reason instanceof Error ? reason.message : "Este conteúdo não está disponível no momento."));
   }, [params.slug]);
 
   if (error) return <div className="container blog-post-state"><p>{error}</p><Link href="/blog"><ArrowLeft size={16} />Voltar para o Blog</Link></div>;
