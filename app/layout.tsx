@@ -1,13 +1,10 @@
 import type { Metadata } from "next";
 import { SiteTranslator } from "@/components/i18n/site-translator";
+import { getSiteUrl } from "@/lib/site-url";
 import "./globals.css";
 
-const productionUrl = process.env.NEXT_PUBLIC_SITE_URL
-  || (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : "")
-  || "https://hub-afro-movimento.crafty-sugar-4970.chatgpt.site";
-
 export const metadata: Metadata = {
-  metadataBase: new URL(productionUrl),
+  metadataBase: new URL(getSiteUrl()),
   title: {
     default: "AFROPARCEIROS — Cultura, conhecimento e negócios",
     template: "%s · AFROPARCEIROS",
@@ -24,6 +21,7 @@ export const metadata: Metadata = {
   },
   twitter: { card: "summary_large_image", title: "AFROPARCEIROS — HUB", description: "Cultura, conhecimento, experiências, projetos e negócios.", images: ["/og.png"] },
   icons: { icon: "/favicon.svg", shortcut: "/favicon.svg" },
+  robots: { index: true, follow: true },
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
