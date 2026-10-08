@@ -1,6 +1,8 @@
 import { desc, eq } from "drizzle-orm";
 import { ensureShopCatalogSeeded, getDb } from "@/db";
 import { shopProducts } from "@/db/schema";
+import { adminAuthResponse } from "@/lib/admin-auth";
+import { bundledProducts, hasRemoteDatabase } from "@/lib/bundled-products";
 import { emptyProductCatalogData, type CatalogVariant, type ProductCatalogData } from "@/lib/products";
 
 const productTypes = new Set(["camisa", "bone", "moletom", "livro"]);
@@ -116,11 +118,25 @@ function productValues(payload: Record<string, unknown>) {
 }
 
 export async function GET(request: Request) {
+  const params = new URL(request.url).searchParams;
+  const id = Number(params.get("id"));
+
+  if (!hasRemoteDatabase()) {
+    const products = bundledProducts();
+    if (Number.isInteger(id) && id > 0) {
+      const product = products.find(item => item.id === id);
+      if (!product) return Response.json({ error: "Produto não encontrado." }, { status: 404 });
+      return Response.json({ product, storage: "bundled" }, { headers: { "Cache-Control": "public, s-maxage=60, stale-while-revalidate=300" } });
+    }
+    return Response.json(
+      { products, storage: "bundled" },
+      { headers: { "Cache-Control": "public, s-maxage=60, stale-while-revalidate=300" } },
+    );
+  }
+
   try {
     await ensureShopCatalogSeeded();
     const db = await getDb();
-    const params = new URL(request.url).searchParams;
-    const id = Number(params.get("id"));
 
     if (Number.isInteger(id) && id > 0) {
       const [product] = await db.select().from(shopProducts).where(eq(shopProducts.id, id)).limit(1);
@@ -139,6 +155,9 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
+  const unauthorized = adminAuthResponse(request);
+  if (unauthorized) return unauthorized;
+  if (!hasRemoteDatabase()) return Response.json({ error: "O banco do catálogo ainda não foi conectado." }, { status: 503 });
   try {
     const parsed = productValues((await request.json()) as Record<string, unknown>);
     if ("error" in parsed) return Response.json({ error: parsed.error }, { status: 400 });
@@ -152,6 +171,9 @@ export async function POST(request: Request) {
 }
 
 export async function PATCH(request: Request) {
+  const unauthorized = adminAuthResponse(request);
+  if (unauthorized) return unauthorized;
+  if (!hasRemoteDatabase()) return Response.json({ error: "O banco do catálogo ainda não foi conectado." }, { status: 503 });
   try {
     const payload = (await request.json()) as Record<string, unknown>;
     const id = Number(payload.id);
@@ -169,6 +191,9 @@ export async function PATCH(request: Request) {
 }
 
 export async function DELETE(request: Request) {
+  const unauthorized = adminAuthResponse(request);
+  if (unauthorized) return unauthorized;
+  if (!hasRemoteDatabase()) return Response.json({ error: "O banco do catálogo ainda não foi conectado." }, { status: 503 });
   try {
     const id = Number(new URL(request.url).searchParams.get("id"));
     if (!Number.isInteger(id) || id <= 0) return Response.json({ error: "Produto inválido." }, { status: 400 });

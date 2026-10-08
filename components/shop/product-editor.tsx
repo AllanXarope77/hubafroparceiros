@@ -4,6 +4,7 @@ import { ArrowLeft, CheckCircle2, Download, ExternalLink, ImageIcon, Package, Pe
 import Link from "next/link";
 import { FormEvent, useEffect, useRef, useState } from "react";
 import { emptyProductCatalogData, formatPrice, productVariantPriceCents, type CatalogVariant, type ProductCatalogData, type SavedProduct } from "@/lib/products";
+import { adminHeaders, readAdminKey, rememberAdminKey } from "@/lib/admin-key-client";
 
 const emptyPreview = { name: "Nome do produto", price: "R$ 0,00" };
 const standardSizes = ["P", "M", "G", "GG", "XG", "EXG", "X1", "X2", "X3"];
@@ -52,6 +53,7 @@ export function ProductEditor() {
   const [variantRows, setVariantRows] = useState<CatalogVariant[]>([]);
   const [audience, setAudience] = useState<SavedProduct["audience"]>("unissex");
   const [csvScope, setCsvScope] = useState<"active" | "all">("active");
+  const [adminKey, setAdminKey] = useState(() => readAdminKey());
   const customColorList = customColors.split(",").map(color => color.trim()).filter(Boolean);
   const allSelectedColors = [...new Set([...selectedColors, ...customColorList])];
   const availableSizes = audience === "infantil" ? ["PP", ...standardSizes] : standardSizes;
@@ -120,9 +122,10 @@ export function ProductEditor() {
     };
 
     try {
+      rememberAdminKey(adminKey);
       const response = await fetch("/api/products", {
         method: editingId ? "PATCH" : "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: adminHeaders(adminKey, true),
         body: JSON.stringify(payload),
       });
       const data = await response.json();
@@ -221,7 +224,8 @@ export function ProductEditor() {
     const body = new FormData();
     body.set("file", file);
     try {
-      const response = await fetch("/api/product-images", { method: "POST", body });
+      rememberAdminKey(adminKey);
+      const response = await fetch("/api/product-images", { method: "POST", body, headers: adminHeaders(adminKey) });
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || "Não foi possível anexar a imagem.");
       setColorImages(current => ({ ...current, [color]: data.url }));
@@ -237,7 +241,8 @@ export function ProductEditor() {
     setDeleting(product.id);
     setError("");
     try {
-      const response = await fetch(`/api/products?id=${product.id}`, { method: "DELETE" });
+      rememberAdminKey(adminKey);
+      const response = await fetch(`/api/products?id=${product.id}`, { method: "DELETE", headers: adminHeaders(adminKey) });
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || "Não foi possível excluir o produto.");
       setProducts(current => current.filter(item => item.id !== product.id));
@@ -325,6 +330,10 @@ export function ProductEditor() {
         </aside>
         <main className="product-editor-main">
           <div className="product-editor-heading"><div><small>Catálogo / {editingId ? "Editar produto" : "Novo produto"}</small><h1>{editingId ? "Editar produto" : "Cadastrar produto"}</h1><p>Cadastre uma vez e mantenha os dados preparados para a vitrine e para outros canais de venda.</p></div><span className="editor-draft-badge">{editingId ? "Em edição" : "Novo cadastro"}</span></div>
+          <section className="editor-panel editor-admin-access" aria-labelledby="admin-access-title">
+            <div className="editor-panel-title"><span>00</span><div><h2 id="admin-access-title">Acesso administrativo</h2><p>A chave fica somente nesta aba do navegador e protege alterações no catálogo.</p></div></div>
+            <label>Chave administrativa <input type="password" value={adminKey} onChange={event => setAdminKey(event.target.value)} autoComplete="current-password" placeholder="Chave do editor" required /></label>
+          </section>
           <form ref={formRef} className="product-editor-form" onSubmit={saveProduct}>
             <div className="product-editor-fields">
               <section className="editor-panel" id="informacoes">

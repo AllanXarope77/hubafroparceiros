@@ -1,4 +1,5 @@
 import { put } from "@vercel/blob";
+import { adminAuthResponse } from "@/lib/admin-auth";
 
 const acceptedTypes = new Map([
   ["image/jpeg", "jpg"],
@@ -7,6 +8,8 @@ const acceptedTypes = new Map([
 ]);
 
 export async function POST(request: Request) {
+  const unauthorized = adminAuthResponse(request);
+  if (unauthorized) return unauthorized;
   try {
     const form = await request.formData();
     const file = form.get("file");

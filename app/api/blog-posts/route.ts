@@ -2,6 +2,7 @@ import { desc, eq } from "drizzle-orm";
 import { bundledBlogPosts } from "@/data/blog-posts";
 import { ensureBlogSchema, getDb } from "@/db";
 import { blogPosts } from "@/db/schema";
+import { adminAuthResponse } from "@/lib/admin-auth";
 
 function slugify(value: string) {
   const base = value
@@ -62,6 +63,8 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
+  const unauthorized = adminAuthResponse(request);
+  if (unauthorized) return unauthorized;
   if (!hasRemoteDatabase()) return persistenceUnavailable();
 
   try {
@@ -102,6 +105,8 @@ export async function POST(request: Request) {
 }
 
 export async function DELETE(request: Request) {
+  const unauthorized = adminAuthResponse(request);
+  if (unauthorized) return unauthorized;
   if (!hasRemoteDatabase()) return persistenceUnavailable();
 
   try {

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { ArrowRight, CheckCircle2, Trash2 } from "lucide-react";
 import { FormEvent, useEffect, useState } from "react";
+import { adminHeaders, readAdminKey, rememberAdminKey } from "@/lib/admin-key-client";
 
 type PublishedPost = { id: number; slug: string; title: string; category: string; createdAt: string };
 
@@ -14,6 +15,7 @@ export function BlogEditor() {
   const [loadingPosts, setLoadingPosts] = useState(true);
   const [postsError, setPostsError] = useState("");
   const [deletingId, setDeletingId] = useState<number | null>(null);
+  const [adminKey, setAdminKey] = useState(() => readAdminKey());
 
   useEffect(() => {
     fetch("/api/blog-posts", { cache: "no-store" })
@@ -42,9 +44,10 @@ export function BlogEditor() {
     };
 
     try {
+      rememberAdminKey(adminKey);
       const response = await fetch("/api/blog-posts", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: adminHeaders(adminKey, true),
         body: JSON.stringify(payload),
       });
       const data = await response.json();
@@ -65,7 +68,8 @@ export function BlogEditor() {
     setDeletingId(post.id);
     setPostsError("");
     try {
-      const response = await fetch(`/api/blog-posts?id=${post.id}`, { method: "DELETE" });
+      rememberAdminKey(adminKey);
+      const response = await fetch(`/api/blog-posts?id=${post.id}`, { method: "DELETE", headers: adminHeaders(adminKey) });
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || "Não foi possível excluir o post.");
       setPosts(current => current.filter(item => item.id !== post.id));
@@ -80,6 +84,7 @@ export function BlogEditor() {
   return (
     <div className="blog-editor-grid">
       <form className="blog-editor-form" onSubmit={publish}>
+        <label>Chave administrativa<input type="password" value={adminKey} onChange={event => setAdminKey(event.target.value)} autoComplete="current-password" placeholder="Chave do editor" required /></label>
         <div className="field-row">
           <label>Título<input name="title" type="text" maxLength={140} placeholder="Título do post" required /></label>
           <label>Categoria<input name="category" type="text" maxLength={50} placeholder="Cultura, educação..." required /></label>
