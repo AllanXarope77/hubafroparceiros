@@ -7,6 +7,7 @@ const privatePaths = [
   "/loja/editar",
   "/carrinho",
   "/pedido",
+  "/newsletter/descadastrar",
 ];
 
 export default function robots(): MetadataRoute.Robots {

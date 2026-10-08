@@ -4,7 +4,7 @@ import { ButtonLink, Eyebrow, SectionHeading } from "@/components/shared/ui";
 import { Reveal } from "@/components/shared/reveal";
 import { experienceAreas } from "@/content/hub-architecture";
 
-export const metadata: Metadata = { title: "Experiências", description: "Experiências AFROPARCEIROS que conectam arte, cultura, música e conhecimento." };
+export const metadata: Metadata = { title: "Experiências", description: "Experiências AFROPARCEIROS que conectam arte, cultura, música e conhecimento.", alternates: { canonical: "/experiencias" } };
 
 export default function ExperienciasPage() {
   return <SiteShell>

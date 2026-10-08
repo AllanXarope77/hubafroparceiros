@@ -5,7 +5,7 @@ import { SiteShell } from "@/components/layout/site-shell";
 import { Eyebrow } from "@/components/shared/ui";
 import { Reveal } from "@/components/shared/reveal";
 
-export const metadata: Metadata = { title: "Conteúdo", description: "Blog, Afroparceiros TV, Podcast e Carta do HUB." };
+export const metadata: Metadata = { title: "Conteúdo", description: "Blog, Afroparceiros TV, Podcast e Carta do HUB.", alternates: { canonical: "/conteudo" } };
 const doors = [
   ["Leia", "Blog AFROPARCEIROS", "Artigos, análises, entrevistas, cultura, território, diversidade, empreendedorismo, educação e bastidores.", "/blog", BookOpen],
   ["Assista", "AFROPARCEIROS TV", "Vídeos e conversas incorporados do canal oficial no YouTube.", "/conteudo/tv", Play],

@@ -6,7 +6,7 @@ import { ButtonLink, Eyebrow, SectionHeading } from "@/components/shared/ui";
 import { Reveal } from "@/components/shared/reveal";
 import { solutionAreas } from "@/content/hub-architecture";
 
-export const metadata: Metadata = { title: "Soluções B2B", description: "Palestras, treinamentos, eventos corporativos e soluções sob medida da AFROPARCEIROS." };
+export const metadata: Metadata = { title: "Soluções B2B", description: "Palestras, treinamentos, eventos corporativos e soluções sob medida da AFROPARCEIROS.", alternates: { canonical: "/solucoes" } };
 const icons = [Mic2, GraduationCap, Building2, Puzzle] as const;
 
 export default function SolucoesPage() {

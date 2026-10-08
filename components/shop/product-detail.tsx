@@ -2,6 +2,7 @@
 
 import { Minus, Plus, ShieldCheck } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import { useState } from "react";
 import { formatPrice, productVariantPriceCents, type Product } from "@/lib/products";
 import { AddToCartButton } from "./add-to-cart-button";
@@ -12,13 +13,24 @@ export function ProductDetail({ product }: { product: Product }) {
   const [selectedColor, setSelectedColor] = useState(product.colors?.[0] ?? "");
   const selectedImage = product.colorImages?.find(item => item.color === selectedColor)?.image || product.image;
   const selectedPrice = productVariantPriceCents(product, selectedSize, selectedColor);
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://hubafroparceiros.vercel.app";
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: product.name,
+    description: product.description || "Produto DNA Guetos",
+    image: selectedImage.startsWith("http") ? selectedImage : `${siteUrl}${selectedImage}`,
+    brand: { "@type": "Brand", name: "DNA GUETOS" },
+    offers: { "@type": "Offer", priceCurrency: "BRL", price: (selectedPrice / 100).toFixed(2), availability: product.stock > 0 ? "https://schema.org/InStock" : "https://schema.org/PreOrder", url: `${siteUrl}/loja/${product.id}` },
+  };
 
   return (
     <section className="product-detail-section">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
       <div className="container">
         <div className="product-breadcrumb"><Link href="/loja">DNA Guetos</Link><span>/</span><span>{product.name}</span></div>
         <div className="product-detail-grid">
-          <div className="product-detail-image"><img key={selectedImage} src={selectedImage} alt={`${product.name}${selectedColor ? ` na cor ${selectedColor}` : ""}`} /></div>
+          <div className="product-detail-image"><Image key={selectedImage} src={selectedImage} alt={`${product.name}${selectedColor ? ` na cor ${selectedColor}` : ""}`} width={1200} height={1200} priority unoptimized /></div>
           <div className="product-detail-copy">
             <span className="eyebrow"><i />Produto DNA Guetos</span>
             <h1>{product.name}</h1>

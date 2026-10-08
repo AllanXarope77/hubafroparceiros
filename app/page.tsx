@@ -1,8 +1,11 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { ArrowRight, BookOpen, BriefcaseBusiness, Landmark, Mic2, ShoppingBag, Sparkles } from "lucide-react";
 import { SiteShell } from "@/components/layout/site-shell";
 import { ButtonLink, Eyebrow, SectionHeading } from "@/components/shared/ui";
 import { Reveal } from "@/components/shared/reveal";
+
+export const metadata: Metadata = { alternates: { canonical: "/" } };
 
 const ecosystem = [
   { title: "AFROPARCEIROS", copy: "Produtora afrocentrada e núcleo empresarial do ecossistema.", href: "/sobre" },

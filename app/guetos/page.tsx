@@ -5,7 +5,7 @@ import { SiteShell } from "@/components/layout/site-shell";
 import { Eyebrow, SectionHeading } from "@/components/shared/ui";
 import { Reveal } from "@/components/shared/reveal";
 
-export const metadata: Metadata = { title: "Guetos", description: "Livro, DNA Guetos e conteúdos ligados ao universo Guetos." };
+export const metadata: Metadata = { title: "Guetos", description: "Livro, DNA Guetos e conteúdos ligados ao universo Guetos.", alternates: { canonical: "/guetos" } };
 const doors = [
   ["DNA Guetos", "Moda, identidade e expressão em produtos do ecossistema.", "/loja", ShoppingBag],
   ["Guetos — O Apartheid Urbano", "A página editorial do livro e suas conexões com o HUB.", "/guetos/o-apartheid-urbano", BookOpen],

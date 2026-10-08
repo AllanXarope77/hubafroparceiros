@@ -5,6 +5,7 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       { protocol: "https", hostname: "images.yampi.me" },
       { protocol: "https", hostname: "king-assets.yampi.me" },
+      { protocol: "https", hostname: "**" },
     ],
   },
   async redirects() {

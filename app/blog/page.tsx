@@ -3,7 +3,7 @@ import { BlogPostFeed } from "@/components/blog/blog-post-feed";
 import { SiteShell } from "@/components/layout/site-shell";
 import { FinalCta, PageHero, SectionHeading } from "@/components/shared/ui";
 
-export const metadata: Metadata = { title: "Blog | Hub Afro", description: "Ideias, análises e histórias para ampliar repertórios." };
+export const metadata: Metadata = { title: "Blog AFROPARCEIROS", description: "Ideias, análises e histórias para ampliar repertórios.", alternates: { canonical: "/blog" } };
 
 export default function BlogPage() {
   return (

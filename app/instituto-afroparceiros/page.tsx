@@ -4,7 +4,7 @@ import { SiteShell } from "@/components/layout/site-shell";
 import { ButtonLink, Eyebrow, SectionHeading } from "@/components/shared/ui";
 import { Reveal } from "@/components/shared/reveal";
 
-export const metadata: Metadata = { title: "Instituto Afroparceiros", description: "Frente de impacto social, cultura, educação e transformação do ecossistema AFROPARCEIROS." };
+export const metadata: Metadata = { title: "Instituto Afroparceiros", description: "Frente de impacto social, cultura, educação e transformação do ecossistema AFROPARCEIROS.", alternates: { canonical: "/instituto-afroparceiros" } };
 
 export default function InstitutoPage() {
   return <SiteShell>

@@ -5,7 +5,7 @@ import { SiteShell } from "@/components/layout/site-shell";
 import { ButtonLink, Eyebrow, SectionHeading } from "@/components/shared/ui";
 import { Reveal } from "@/components/shared/reveal";
 
-export const metadata: Metadata = { title: "Sobre", description: "Conheça o ecossistema AFROPARCEIROS e suas frentes de atuação." };
+export const metadata: Metadata = { title: "Sobre", description: "Conheça o ecossistema AFROPARCEIROS e suas frentes de atuação.", alternates: { canonical: "/sobre" } };
 const fronts = [
   ["AFROPARCEIROS", "Produtora afrocentrada e núcleo empresarial do ecossistema.", "/"],
   ["INSTITUTO AFROPARCEIROS", "Frente voltada ao impacto social, à cultura, à educação e à transformação.", "/instituto-afroparceiros"],

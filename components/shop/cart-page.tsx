@@ -2,6 +2,7 @@
 
 import { CreditCard, Minus, Plus, ShieldCheck, ShoppingBag, Trash2 } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import { formatPrice, productVariantPriceCents, savedProductToProduct, type Product, type SavedProduct } from "@/lib/products";
 import { cartItemKey, useCart } from "./cart-provider";
@@ -73,7 +74,7 @@ export function CartPage() {
               const unitPrice = productVariantPriceCents(product, size ?? product.sizes?.[0], color);
               return (
               <article className="cart-item" key={key}>
-                <Link href={`/loja/${product.id}`} className="cart-item-image"><img src={product.image} alt={product.name} /></Link>
+                <Link href={`/loja/${product.id}`} className="cart-item-image"><Image src={product.image} alt={product.name} width={240} height={240} unoptimized /></Link>
                 <div className="cart-item-copy"><Link href={`/loja/${product.id}`}><h2>{product.name}</h2></Link><strong>{formatPrice(unitPrice)}</strong>{(size || color) && <span>{[size, color].filter(Boolean).join(" · ")}</span>}</div>
                 <div className="quantity-control">
                   <button type="button" aria-label="Diminuir" onClick={() => quantity === 1 ? removeItem(key) : updateQuantity(key, quantity - 1)}><Minus size={15} /></button>

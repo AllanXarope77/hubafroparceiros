@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import type { Product } from "@/lib/products";
 import { AddToCartButton } from "./add-to-cart-button";
 
@@ -9,7 +10,7 @@ export function ProductCard({ product, priority = false }: { product: Product; p
     <article className="product-card shop-product-card">
       <Link href={`/loja/${product.id}`} className="product-card-link" aria-label={`Ver ${product.name}`}>
         <div className="product-art product-art--image">
-          <img className="product-art-image" src={product.image} alt={product.name} loading={priority ? "eager" : "lazy"} />
+          <Image className="product-art-image" src={product.image} alt={product.name} width={1200} height={1200} priority={priority} unoptimized />
         </div>
         <div className="product-info">
           <div><small>{type}</small><h3>{product.name}</h3></div>

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import {
   Award,
   BadgeCheck,
@@ -176,9 +177,11 @@ export default function PalestrasPage() {
         <section className="section specialist-section">
           <div className="container specialist-grid">
             <Reveal className="specialist-photo">
-              <img
+              <Image
                 src="/images/palestras/sergio-carvalho.png"
                 alt="Sérgio Carvalho, especialista em diversidade e inclusão"
+                width={900}
+                height={1100}
               />
               <span>Especialista convidado</span>
             </Reveal>

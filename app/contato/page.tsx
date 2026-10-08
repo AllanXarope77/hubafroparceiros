@@ -5,7 +5,7 @@ import { SiteShell } from "@/components/layout/site-shell";
 import { Eyebrow } from "@/components/shared/ui";
 import { Reveal } from "@/components/shared/reveal";
 
-export const metadata: Metadata = { title: "Central comercial", description: "Fale com a AFROPARCEIROS sobre soluções, experiências, projetos, artistas, loja, livro, imprensa e parcerias." };
+export const metadata: Metadata = { title: "Central de Relacionamento", description: "Fale com a AFROPARCEIROS sobre soluções, experiências, projetos, talentos, loja, livro, imprensa e parcerias.", alternates: { canonical: "/contato" } };
 
 export default async function ContatoPage({ searchParams }: { searchParams?: Promise<{ assunto?: string }> }) {
   const params = await searchParams;

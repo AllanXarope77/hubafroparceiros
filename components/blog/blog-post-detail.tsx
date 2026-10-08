@@ -36,9 +36,12 @@ export function BlogPostDetail() {
   const dateValue = post.createdAt.includes("T") ? post.createdAt : post.createdAt.replace(" ", "T");
   const date = new Intl.DateTimeFormat("pt-BR", { dateStyle: "long" }).format(new Date(`${dateValue}Z`));
   const paragraphs = post.content.split(/\n\s*\n/).filter(Boolean);
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://hubafroparceiros.vercel.app";
+  const structuredData = { "@context": "https://schema.org", "@type": "Article", headline: post.title, description: post.excerpt, datePublished: post.createdAt, image: post.image || undefined, mainEntityOfPage: `${siteUrl}/blog/${params.slug}`, publisher: { "@type": "Organization", name: "AFROPARCEIROS" } };
 
   return (
     <article className="blog-post-page">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
       <header className="container blog-post-header">
         <Link href="/blog"><ArrowLeft size={16} />Voltar para o Blog</Link>
         <small>{post.category} · {date}</small>

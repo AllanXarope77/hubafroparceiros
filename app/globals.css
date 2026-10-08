@@ -1004,6 +1004,13 @@ main { overflow: hidden; }
 .newsletter-consent { display: flex; gap: 10px; align-items: flex-start; color: var(--muted); font-size: 11px; line-height: 1.5; }
 .newsletter-signup button { width: max-content; padding: 13px 20px; color: #090909; background: var(--gold); border: 0; font-weight: 700; }
 .newsletter-signup small { color: var(--gold); }
+.cookie-banner { position: fixed; z-index: 100; left: 20px; right: 20px; bottom: 20px; width: min(calc(100% - 40px), 900px); margin-inline: auto; padding: 20px; display: flex; align-items: center; justify-content: space-between; gap: 28px; color: var(--white); background: #1d1d1d; border: 1px solid rgba(212,176,106,.55); box-shadow: 0 20px 60px rgba(0,0,0,.45); }
+.cookie-banner strong { display: block; margin-bottom: 6px; }
+.cookie-banner p { max-width: 570px; margin: 0 0 7px; color: var(--muted); font-size: 12px; line-height: 1.5; }
+.cookie-banner a { color: var(--gold); font-size: 10px; text-decoration: underline; }
+.cookie-banner > div:last-child { display: flex; gap: 8px; flex: 0 0 auto; }
+.cookie-banner button { min-height: 42px; padding: 0 14px; color: #090909; background: var(--gold); border: 1px solid var(--gold); font-size: 10px; font-weight: 700; }
+.cookie-banner .cookie-essential { color: var(--white); background: transparent; border-color: var(--line); }
 
 .commercial-contact-section { background: #0c0c0c; }
 .commercial-contact-layout { display: grid; grid-template-columns: .7fr 1.3fr; gap: 90px; align-items: start; }
@@ -1128,4 +1135,6 @@ main { overflow: hidden; }
   .shop-brand-strip a { flex: 0 0 auto; }
   .connections-grid { grid-template-columns: 1fr; }
   .commercial-review dl > div { grid-template-columns: 1fr; gap: 6px; }
+  .cookie-banner { align-items: stretch; flex-direction: column; }
+  .cookie-banner > div:last-child { flex-direction: column; }
 }

@@ -6,7 +6,7 @@ import { SiteShell } from "@/components/layout/site-shell";
 import { ButtonLink, Eyebrow, SectionHeading } from "@/components/shared/ui";
 import { Reveal } from "@/components/shared/reveal";
 
-export const metadata: Metadata = { title: "Talentos", description: "Curadoria artística e talentos autorizados do ecossistema AFROPARCEIROS." };
+export const metadata: Metadata = { title: "Talentos", description: "Curadoria artística e talentos autorizados do ecossistema AFROPARCEIROS.", alternates: { canonical: "/talentos" } };
 
 export default function TalentosPage() {
   return <SiteShell>

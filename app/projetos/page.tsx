@@ -4,7 +4,7 @@ import { ButtonLink, Eyebrow, SectionHeading } from "@/components/shared/ui";
 import { Reveal } from "@/components/shared/reveal";
 import { projectFilters } from "@/content/hub-architecture";
 
-export const metadata: Metadata = { title: "Banco de Projetos", description: "Projetos culturais, educacionais e sociais concebidos pela AFROPARCEIROS." };
+export const metadata: Metadata = { title: "Banco de Projetos", description: "Projetos culturais, educacionais e sociais concebidos pela AFROPARCEIROS.", alternates: { canonical: "/projetos" } };
 
 export default function ProjetosPage() {
   return <SiteShell>

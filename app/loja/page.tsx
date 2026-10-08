@@ -4,7 +4,7 @@ import { ShopCatalog } from "@/components/shop/shop-catalog";
 import { ButtonLink, PageHero, SectionHeading } from "@/components/shared/ui";
 import Link from "next/link";
 
-export const metadata: Metadata = { title: "DNA Guetos | Hub Afro", description: "Conheça os produtos da DNA Guetos." };
+export const metadata: Metadata = { title: "DNA Guetos | Hub Afro", description: "Conheça os produtos da DNA Guetos.", alternates: { canonical: "/loja" } };
 
 export default function LojaPage() {
   return (
