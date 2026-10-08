@@ -68,6 +68,7 @@ export const commercialTopics = [
   ["livro", "Comprar livro"],
   ["imprensa", "Imprensa"],
   ["parceria", "Propor parceria"],
+  ["instituto", "Instituto Afroparceiros"],
   ["outro", "Outro assunto"],
 ] as const;
 

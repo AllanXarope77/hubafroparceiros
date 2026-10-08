@@ -13,7 +13,7 @@ export default function LojaPage() {
         <ButtonLink href="#produtos">Ver coleção</ButtonLink>
       </PageHero>
       <nav className="shop-brand-strip" aria-label="Categorias DNA Guetos">
-        <a href="#produtos">Novidades</a><a href="#produtos">Camisetas</a><a href="#produtos">Moletons</a><a href="#produtos">Bonés</a><a href="#produtos">Coleções</a><Link href="/livro-guetos">Livro Guetos</Link>
+        <a href="#produtos">Novidades</a><a href="#produtos">Camisetas</a><a href="#produtos">Moletons</a><a href="#produtos">Bonés</a><a href="#produtos">Coleções</a><Link href="/guetos/o-apartheid-urbano">Livro Guetos</Link>
       </nav>
       <section className="section" id="produtos">
         <div className="container">
