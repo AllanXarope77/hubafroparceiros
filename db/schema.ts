@@ -9,6 +9,11 @@ export const blogPosts = sqliteTable("blog_posts", {
   category: text("category").notNull(),
   excerpt: text("excerpt").notNull().default(""),
   content: text("content").notNull(),
+  image: text("image").notNull().default(""),
+  seoTitle: text("seo_title").notNull().default(""),
+  seoDescription: text("seo_description").notNull().default(""),
+  publicationStatus: text("publication_status").notNull().default("published"),
+  publishedAt: text("published_at").notNull().default(""),
   createdAt: text("created_at").notNull().default(sql`CURRENT_TIMESTAMP`),
 });
 
@@ -61,3 +66,41 @@ export const shopOrders = sqliteTable("shop_orders", {
 });
 
 export type ShopOrder = typeof shopOrders.$inferSelect;
+
+export const commercialLeads = sqliteTable("commercial_leads", {
+  id: text("id").primaryKey(),
+  protocol: text("protocol").notNull(),
+  topic: text("topic").notNull(),
+  name: text("name").notNull(),
+  email: text("email").notNull(),
+  whatsapp: text("whatsapp").notNull().default(""),
+  cityState: text("city_state").notNull().default(""),
+  company: text("company").notNull().default(""),
+  role: text("role").notNull().default(""),
+  eventDate: text("event_date").notNull().default(""),
+  estimatedAudience: integer("estimated_audience").notNull().default(0),
+  requestType: text("request_type").notNull().default(""),
+  message: text("message").notNull(),
+  consent: integer("consent", { mode: "boolean" }).notNull().default(false),
+  status: text("status").notNull().default("new"),
+  createdAt: text("created_at").notNull().default(sql`CURRENT_TIMESTAMP`),
+});
+
+export const newsletterSubscribers = sqliteTable("newsletter_subscribers", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  email: text("email").notNull(),
+  status: text("status").notNull().default("active"),
+  unsubscribeToken: text("unsubscribe_token").notNull(),
+  consentAt: text("consent_at").notNull().default(sql`CURRENT_TIMESTAMP`),
+  unsubscribedAt: text("unsubscribed_at").notNull().default(""),
+  createdAt: text("created_at").notNull().default(sql`CURRENT_TIMESTAMP`),
+});
+
+export const dataConsents = sqliteTable("data_consents", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  subjectType: text("subject_type").notNull(),
+  subjectId: text("subject_id").notNull(),
+  purpose: text("purpose").notNull(),
+  granted: integer("granted", { mode: "boolean" }).notNull(),
+  createdAt: text("created_at").notNull().default(sql`CURRENT_TIMESTAMP`),
+});

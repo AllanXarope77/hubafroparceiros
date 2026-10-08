@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowUpRight } from "lucide-react";
 import { navItems, socials } from "@/content/site";
+import { NewsletterForm } from "@/components/newsletter/newsletter-form";
 
 export function Footer() {
   return (
@@ -58,11 +59,7 @@ export function Footer() {
         <div>
           <span className="footer-label">Carta do Hub</span>
           <p className="footer-note">Uma curadoria mensal de ideias, encontros e lançamentos.</p>
-          <form className="newsletter-form">
-            <label className="sr-only" htmlFor="footer-email">Seu e-mail</label>
-            <input id="footer-email" type="email" placeholder="seu@email.com" />
-            <button type="submit" aria-label="Assinar newsletter">→</button>
-          </form>
+          <NewsletterForm compact />
         </div>
       </div>
       <div className="container footer-bottom">

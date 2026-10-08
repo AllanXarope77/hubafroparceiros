@@ -10,6 +10,7 @@ type Post = {
   category: string;
   excerpt: string;
   content: string;
+  image?: string;
   createdAt: string;
 };
 
@@ -43,6 +44,7 @@ export function BlogPostDetail() {
         <small>{post.category} · {date}</small>
         <h1>{post.title}</h1>
         <p>{post.excerpt}</p>
+        {post.image && <div className="blog-post-hero-image" role="img" aria-label={`Imagem de destaque de ${post.title}`} style={{ backgroundImage: `url("${post.image.replace(/["')]/g, "")}")` }} />}
       </header>
       <div className="container blog-post-body">
         {paragraphs.map((paragraph, index) => <p key={index}>{paragraph}</p>)}

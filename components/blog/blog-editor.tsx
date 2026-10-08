@@ -5,7 +5,7 @@ import { ArrowRight, CheckCircle2, Trash2 } from "lucide-react";
 import { FormEvent, useEffect, useState } from "react";
 import { adminHeaders, readAdminKey, rememberAdminKey } from "@/lib/admin-key-client";
 
-type PublishedPost = { id: number; slug: string; title: string; category: string; createdAt: string };
+type PublishedPost = { id: number; slug: string; title: string; category: string; publicationStatus?: string; createdAt: string };
 
 export function BlogEditor() {
   const [saving, setSaving] = useState(false);
@@ -41,6 +41,11 @@ export function BlogEditor() {
       category: String(values.get("category") || ""),
       excerpt: String(values.get("excerpt") || ""),
       content: String(values.get("content") || ""),
+      image: String(values.get("image") || ""),
+      slug: String(values.get("slug") || ""),
+      seoTitle: String(values.get("seoTitle") || ""),
+      seoDescription: String(values.get("seoDescription") || ""),
+      publicationStatus: String(values.get("publicationStatus") || "published"),
     };
 
     try {
@@ -89,8 +94,17 @@ export function BlogEditor() {
           <label>Título<input name="title" type="text" maxLength={140} placeholder="Título do post" required /></label>
           <label>Categoria<input name="category" type="text" maxLength={50} placeholder="Cultura, educação..." required /></label>
         </div>
+        <div className="field-row">
+          <label>URL amigável<input name="slug" type="text" maxLength={80} placeholder="titulo-do-post (opcional)" /></label>
+          <label>Status<select name="publicationStatus" defaultValue="published"><option value="published">Publicado</option><option value="draft">Rascunho</option></select></label>
+        </div>
+        <label>Imagem de destaque<input name="image" type="url" placeholder="https://... (opcional)" /></label>
         <label>Resumo<textarea name="excerpt" rows={3} maxLength={280} placeholder="Uma apresentação curta para o card do post" required /></label>
         <label>Conteúdo<textarea name="content" rows={14} placeholder="Escreva o texto completo do post. Separe os parágrafos com uma linha em branco." required /></label>
+        <div className="field-row">
+          <label>Título SEO<input name="seoTitle" type="text" maxLength={70} placeholder="Até 70 caracteres" /></label>
+          <label>Descrição SEO<textarea name="seoDescription" rows={2} maxLength={170} placeholder="Até 170 caracteres" /></label>
+        </div>
         <button type="submit" disabled={saving}>{saving ? "Publicando..." : "Publicar post"} <ArrowRight size={17} /></button>
         {error && <p className="editor-message editor-message--error">{error}</p>}
         {published && <p className="editor-message editor-message--success"><CheckCircle2 size={18} />Post publicado. <Link href={`/blog/${published.slug}`}>Visualizar “{published.title}”</Link></p>}
@@ -109,7 +123,7 @@ export function BlogEditor() {
         {!!posts.length && <div className="blog-editor-post-list">
           {posts.map(post => (
             <article className="blog-editor-post-item" key={post.id}>
-              <div><small>{post.category}</small><h3>{post.title}</h3><Link href={`/blog/${post.slug}`}>Visualizar post</Link></div>
+              <div><small>{post.category} · {post.publicationStatus === "draft" ? "Rascunho" : "Publicado"}</small><h3>{post.title}</h3>{post.publicationStatus !== "draft" && <Link href={`/blog/${post.slug}`}>Visualizar post</Link>}</div>
               <button type="button" onClick={() => deletePost(post)} disabled={deletingId === post.id} aria-label={`Excluir o post ${post.title}`}>
                 <Trash2 size={16} />{deletingId === post.id ? "Excluindo..." : "Excluir"}
               </button>

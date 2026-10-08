@@ -86,9 +86,68 @@ export async function ensureBlogSchema() {
       category TEXT NOT NULL,
       excerpt TEXT NOT NULL DEFAULT '',
       content TEXT NOT NULL,
+      image TEXT NOT NULL DEFAULT '',
+      seo_title TEXT NOT NULL DEFAULT '',
+      seo_description TEXT NOT NULL DEFAULT '',
+      publication_status TEXT NOT NULL DEFAULT 'published',
+      published_at TEXT NOT NULL DEFAULT '',
       created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
     )`),
     d1.prepare("CREATE INDEX IF NOT EXISTS blog_posts_created_at_idx ON blog_posts (created_at)"),
+  ]);
+  const columns = await d1.prepare("PRAGMA table_info(blog_posts)").all<{ name: string }>();
+  const names = new Set(columns.results.map(column => column.name));
+  const additions = [
+    ["image", "TEXT NOT NULL DEFAULT ''"],
+    ["seo_title", "TEXT NOT NULL DEFAULT ''"],
+    ["seo_description", "TEXT NOT NULL DEFAULT ''"],
+    ["publication_status", "TEXT NOT NULL DEFAULT 'published'"],
+    ["published_at", "TEXT NOT NULL DEFAULT ''"],
+  ].filter(([name]) => !names.has(name));
+  if (additions.length) await d1.batch(additions.map(([name, type]) => d1.prepare(`ALTER TABLE blog_posts ADD COLUMN ${name} ${type}`)));
+}
+
+export async function ensureEngagementSchema() {
+  const d1 = await getD1();
+  await d1.batch([
+    d1.prepare(`CREATE TABLE IF NOT EXISTS commercial_leads (
+      id TEXT PRIMARY KEY,
+      protocol TEXT NOT NULL,
+      topic TEXT NOT NULL,
+      name TEXT NOT NULL,
+      email TEXT NOT NULL,
+      whatsapp TEXT NOT NULL DEFAULT '',
+      city_state TEXT NOT NULL DEFAULT '',
+      company TEXT NOT NULL DEFAULT '',
+      role TEXT NOT NULL DEFAULT '',
+      event_date TEXT NOT NULL DEFAULT '',
+      estimated_audience INTEGER NOT NULL DEFAULT 0,
+      request_type TEXT NOT NULL DEFAULT '',
+      message TEXT NOT NULL,
+      consent INTEGER NOT NULL DEFAULT 0,
+      status TEXT NOT NULL DEFAULT 'new',
+      created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+    )`),
+    d1.prepare("CREATE UNIQUE INDEX IF NOT EXISTS commercial_leads_protocol_idx ON commercial_leads (protocol)"),
+    d1.prepare(`CREATE TABLE IF NOT EXISTS newsletter_subscribers (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      email TEXT NOT NULL,
+      status TEXT NOT NULL DEFAULT 'active',
+      unsubscribe_token TEXT NOT NULL,
+      consent_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      unsubscribed_at TEXT NOT NULL DEFAULT '',
+      created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+    )`),
+    d1.prepare("CREATE UNIQUE INDEX IF NOT EXISTS newsletter_email_idx ON newsletter_subscribers (email)"),
+    d1.prepare("CREATE UNIQUE INDEX IF NOT EXISTS newsletter_token_idx ON newsletter_subscribers (unsubscribe_token)"),
+    d1.prepare(`CREATE TABLE IF NOT EXISTS data_consents (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      subject_type TEXT NOT NULL,
+      subject_id TEXT NOT NULL,
+      purpose TEXT NOT NULL,
+      granted INTEGER NOT NULL,
+      created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+    )`),
   ]);
 }
 

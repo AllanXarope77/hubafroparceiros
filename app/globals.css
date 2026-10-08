@@ -148,8 +148,13 @@ main { overflow: hidden; }
 .footer-links a { display: inline-flex; align-items: center; gap: 5px; color: #c4c0b9; font-size: 12px; transition: color .2s; }
 .footer-links a:hover { color: var(--gold); }
 .newsletter-form { display: flex; border-bottom: 1px solid #5e5b55; margin-top: 24px; }
-.newsletter-form input { flex: 1; min-width: 0; background: none; border: 0; outline: 0; color: var(--white); padding: 12px 0; font-size: 12px; }
+.newsletter-form { flex-wrap: wrap; }
+.newsletter-form > label:first-child { flex: 1; }
+.newsletter-form input[type="email"] { width: 100%; min-width: 0; background: none; border: 0; outline: 0; color: var(--white); padding: 12px 0; font-size: 12px; }
 .newsletter-form button { background: none; color: var(--gold); border: 0; padding: 10px; font-size: 20px; }
+.newsletter-form .newsletter-consent { flex: 0 0 100%; padding: 9px 0 12px; color: #77736c; font-size: 9px; }
+.newsletter-form > small { flex: 0 0 100%; padding-bottom: 10px; color: var(--gold); }
+.newsletter-consent a { text-decoration: underline; }
 .footer-bottom { border-top: 1px solid var(--line); margin-top: 74px; padding-top: 25px; display: flex; justify-content: space-between; gap: 22px; color: #8c8983; font-size: 9px; letter-spacing: .1em; text-transform: uppercase; }
 .footer-legal-links { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 18px; }
 .footer-legal-links a:hover { color: var(--gold); }
@@ -305,6 +310,8 @@ main { overflow: hidden; }
 .article-art { height: 280px; margin-bottom: 21px; display: grid; place-items: center; position: relative; overflow: hidden; }
 .article-art::before { content: ""; width: 150px; height: 150px; border: 1px solid rgba(255,255,255,.3); transform: rotate(45deg); }
 .article-art span { position: absolute; color: rgba(255,255,255,.62); font-family: var(--font-space); font-size: 52px; }
+.article-art--custom { background-position: center; background-size: cover; }
+.blog-post-hero-image { width: 100%; aspect-ratio: 16 / 8; margin-top: 38px; background-position: center; background-size: cover; border: 1px solid var(--line); }
 .article-art--red { background: #60161c; } .article-art--gold { background: #85702b; } .article-art--dark { background: #181818; } .article-art--paper { background: #605342; } .article-art--line { background: linear-gradient(130deg,#111 50%,#9c2228 50%); } .article-art--earth { background: #443021; }
 .article-card h3 { font-size: 21px; line-height: 1.35; margin: 11px 0 0; }
 .published-article-card p { color: var(--muted); font-size: 13px; line-height: 1.65; margin-top: 12px; }

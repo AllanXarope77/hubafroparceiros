@@ -5,15 +5,13 @@ import { blogPosts } from "@/db/schema";
 import { adminAuthResponse } from "@/lib/admin-auth";
 
 function slugify(value: string) {
-  const base = value
+  return value
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/(^-|-$)/g, "")
-    .slice(0, 64);
-
-  return `${base || "post"}-${Date.now().toString(36)}`;
+    .slice(0, 80) || "post";
 }
 
 function hasRemoteDatabase() {
@@ -41,7 +39,13 @@ function persistenceUnavailable() {
 }
 
 export async function GET(request: Request) {
-  const slug = new URL(request.url).searchParams.get("slug");
+  const params = new URL(request.url).searchParams;
+  const slug = params.get("slug");
+  const includeAll = params.get("scope") === "all";
+  if (includeAll) {
+    const unauthorized = adminAuthResponse(request);
+    if (unauthorized) return unauthorized;
+  }
   if (!hasRemoteDatabase()) return bundledResponse(slug);
 
   try {
@@ -50,11 +54,13 @@ export async function GET(request: Request) {
 
     if (slug) {
       const [post] = await db.select().from(blogPosts).where(eq(blogPosts.slug, slug)).limit(1);
-      if (!post) return Response.json({ error: "Post não encontrado." }, { status: 404 });
+      if (!post || (!includeAll && post.publicationStatus !== "published")) return Response.json({ error: "Post não encontrado." }, { status: 404 });
       return Response.json({ post });
     }
 
-    const posts = await db.select().from(blogPosts).orderBy(desc(blogPosts.createdAt), desc(blogPosts.id)).limit(50);
+    const posts = includeAll
+      ? await db.select().from(blogPosts).orderBy(desc(blogPosts.createdAt), desc(blogPosts.id)).limit(100)
+      : await db.select().from(blogPosts).where(eq(blogPosts.publicationStatus, "published")).orderBy(desc(blogPosts.publishedAt), desc(blogPosts.createdAt)).limit(50);
     return Response.json({ posts }, { headers: { "Cache-Control": "no-store" } });
   } catch (error) {
     console.error("Blog database unavailable; serving bundled content.", error);
@@ -73,28 +79,46 @@ export async function POST(request: Request) {
       category: string;
       excerpt: string;
       content: string;
+      image: string;
+      slug: string;
+      seoTitle: string;
+      seoDescription: string;
+      publicationStatus: string;
     }>;
 
     const title = payload.title?.trim() ?? "";
     const category = payload.category?.trim() ?? "";
     const excerpt = payload.excerpt?.trim() ?? "";
     const content = payload.content?.trim() ?? "";
+    const image = payload.image?.trim() ?? "";
+    const seoTitle = payload.seoTitle?.trim() ?? "";
+    const seoDescription = payload.seoDescription?.trim() ?? "";
+    const publicationStatus = payload.publicationStatus === "draft" ? "draft" : "published";
+    let slug = slugify(payload.slug?.trim() || title);
 
     if (!title || !category || !excerpt || !content) {
       return Response.json({ error: "Preencha todos os campos para publicar." }, { status: 400 });
     }
-    if (title.length > 140 || category.length > 50 || excerpt.length > 280) {
+    if (title.length > 140 || category.length > 50 || excerpt.length > 280 || seoTitle.length > 70 || seoDescription.length > 170) {
       return Response.json({ error: "Revise o tamanho do título, categoria ou resumo." }, { status: 400 });
     }
+    if (image && !image.startsWith("/images/") && !/^https:\/\//.test(image)) return Response.json({ error: "Use uma URL de imagem segura." }, { status: 400 });
 
     await ensureBlogSchema();
     const db = await getDb();
+    const [existing] = await db.select({ id: blogPosts.id }).from(blogPosts).where(eq(blogPosts.slug, slug)).limit(1);
+    if (existing) slug = `${slug}-${Date.now().toString(36)}`;
     const [post] = await db.insert(blogPosts).values({
       title,
-      slug: slugify(title),
+      slug,
       category,
       excerpt,
       content,
+      image,
+      seoTitle,
+      seoDescription,
+      publicationStatus,
+      publishedAt: publicationStatus === "published" ? new Date().toISOString() : "",
     }).returning();
 
     return Response.json({ post }, { status: 201 });

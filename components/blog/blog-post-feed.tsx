@@ -12,6 +12,7 @@ type Post = {
   category: string;
   excerpt: string;
   content: string;
+  image?: string;
   createdAt: string;
 };
 
@@ -44,7 +45,7 @@ export function BlogPostFeed() {
       {!loading && !error && !posts.length && <p className="blog-feed-status blog-feed-status--full">Novos conteúdos serão publicados em breve.</p>}
       {!loading && posts.map((post, index) => (
         <Reveal className="article-card published-article-card" key={post.id} delay={(index % 2) * .06}>
-          <div className={`article-art ${artStyles[index % artStyles.length]}`} role="img" aria-label={`Arte do post ${post.title}`}><span>{String(index + 1).padStart(2, "0")}</span></div>
+          <div className={`article-art ${post.image ? "article-art--custom" : artStyles[index % artStyles.length]}`} style={post.image ? { backgroundImage: `linear-gradient(rgba(0,0,0,.15), rgba(0,0,0,.45)), url("${post.image.replace(/["')]/g, "")}")` } : undefined} role="img" aria-label={`Imagem do post ${post.title}`}><span>{String(index + 1).padStart(2, "0")}</span></div>
           <small>{post.category} · {readingTime(post.content)} min de leitura</small>
           <h3>{post.title}</h3>
           <p>{post.excerpt}</p>
