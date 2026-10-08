@@ -7,17 +7,17 @@ export const solutionAreas = [
   {
     title: "Treinamentos",
     copy: "Jornadas de formação conectadas aos desafios e ao contexto de cada equipe.",
-    href: "/contato?assunto=treinamento",
+    href: "/solucoes/workshops",
   },
   {
     title: "Eventos corporativos",
     copy: "Programações que aproximam cultura, conhecimento e objetivos institucionais.",
-    href: "/contato?assunto=evento-corporativo",
+    href: "/solucoes/eventos-corporativos",
   },
   {
     title: "Soluções sob medida",
     copy: "Construções personalizadas a partir da necessidade apresentada pela organização.",
-    href: "/contato?assunto=solucao-sob-medida",
+    href: "/solucoes/sob-medida",
   },
 ] as const;
 
