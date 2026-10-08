@@ -8,14 +8,13 @@ import {
 
 export const navItems = [
   { label: "Início", href: "/" },
+  { label: "Sobre", href: "/sobre" },
   { label: "Soluções", href: "/solucoes" },
   { label: "Experiências", href: "/experiencias" },
   { label: "Projetos", href: "/projetos" },
-  { label: "Artistas", href: "/artistas" },
-  { label: "DNA Guetos", href: "/loja" },
+  { label: "Talentos", href: "/talentos" },
+  { label: "Guetos", href: "/guetos" },
   { label: "Conteúdo", href: "/conteudo" },
-  { label: "Sobre", href: "/sobre" },
-  { label: "Contato", href: "/contato" },
 ] as const;
 
 export const projects = [

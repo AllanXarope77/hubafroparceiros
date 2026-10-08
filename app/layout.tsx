@@ -1,7 +1,18 @@
 import type { Metadata } from "next";
+import localFont from "next/font/local";
 import { SiteTranslator } from "@/components/i18n/site-translator";
 import { getSiteUrl } from "@/lib/site-url";
 import "./globals.css";
+
+const montserrat = localFont({
+  src: [
+    { path: "./fonts/Montserrat-Regular.ttf", weight: "400", style: "normal" },
+    { path: "./fonts/Montserrat-SemiBold.ttf", weight: "600", style: "normal" },
+    { path: "./fonts/Montserrat-Bold.ttf", weight: "700", style: "normal" },
+  ],
+  variable: "--font-montserrat",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL(getSiteUrl()),
@@ -17,7 +28,7 @@ export const metadata: Metadata = {
     type: "website",
     locale: "pt_BR",
     siteName: "AFROPARCEIROS",
-    images: [{ url: "/og.png", width: 1728, height: 910, alt: "Hub Afro — Ideias que movem mundos" }],
+    images: [{ url: "/og.png", width: 1728, height: 910, alt: "Afroparceiros — cultura, diversidade, conhecimento e negócios" }],
   },
   twitter: { card: "summary_large_image", title: "AFROPARCEIROS — HUB", description: "Cultura, conhecimento, experiências, projetos e negócios.", images: ["/og.png"] },
   icons: { icon: "/favicon.svg", shortcut: "/favicon.svg" },
@@ -27,7 +38,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="pt-BR">
-      <body><SiteTranslator />{children}</body>
+      <body className={montserrat.variable}><SiteTranslator />{children}</body>
     </html>
   );
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { ArrowUpRight, Menu, ShoppingBag, X } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -26,10 +27,13 @@ export function Navbar() {
     <header className={`navbar ${scrolled ? "navbar--scrolled" : ""}`}>
       <div className="nav-inner">
         <Link href="/" className="brand" aria-label="Hub Afroparceiros — início">
-          <img
+          <Image
             className="brand-logo"
-            src="/images/logo-hub-afroparceiros.png"
-            alt="HUB Afroparceiros"
+            src="/images/afroparceiros-oficial.png"
+            alt="Afroparceiros — cultura que transforma"
+            width={1000}
+            height={1000}
+            priority
           />
         </Link>
 
@@ -46,7 +50,7 @@ export function Navbar() {
         </nav>
 
         <div className="nav-actions">
-        <Link href="/contato" className="nav-proposal">Solicite uma proposta <ArrowUpRight size={14} /></Link>
+        <Link href="/contato" className="nav-proposal">Fale com a gente <ArrowUpRight size={14} /></Link>
         <LanguageSelector />
         <Link href="/carrinho" className="cart-link" aria-label={`Carrinho com ${count} itens`}>
           <ShoppingBag size={19} />
@@ -67,7 +71,7 @@ export function Navbar() {
       {open && (
         <nav className="mobile-nav" aria-label="Navegação móvel">
           <Link className="mobile-proposal" href="/contato" onClick={() => setOpen(false)}>
-            Solicite uma proposta <ArrowUpRight size={18} />
+            Fale com a gente <ArrowUpRight size={18} />
           </Link>
           <LanguageSelector mobile />
           {navItems.map((item, index) => (
@@ -76,7 +80,7 @@ export function Navbar() {
               {item.label}
             </Link>
           ))}
-          <Link href="/carrinho" onClick={() => setOpen(false)}><span>10</span>Carrinho {count > 0 ? `(${count})` : ""}</Link>
+          <Link href="/carrinho" onClick={() => setOpen(false)}><span>09</span>Carrinho {count > 0 ? `(${count})` : ""}</Link>
         </nav>
       )}
     </header>
