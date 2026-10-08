@@ -826,6 +826,10 @@ main { overflow: hidden; }
 .hub-proof-item small { color: var(--gold); font-size: 9px; letter-spacing: .14em; text-transform: uppercase; }
 .hub-proof-item h2 { margin: 62px 0 10px; font-size: 29px; }
 .hub-proof-item p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.6; }
+.connections-section { background: #0b0b0b; }
+.connections-grid { margin-top: 56px; display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--line); border-left: 1px solid var(--line); }
+.connection-name { min-height: 110px; padding: 22px; display: flex; align-items: center; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.connection-name span { color: #dedbd5; font-size: 14px; line-height: 1.4; }
 .hub-home-banner-section { background: #000; }
 .hub-home-banner-section img { width: 100%; height: auto; display: block; }
 .hub-commercial-cta { padding: 112px 0; color: #080808; background: var(--gold); }
@@ -1004,6 +1008,7 @@ main { overflow: hidden; }
   .book-editorial-grid { grid-template-columns: 340px 1fr; }
   .person-connections-grid { grid-template-columns: repeat(2, 1fr); }
   .footer-grid { grid-template-columns: repeat(2, 1fr); }
+  .connections-grid { grid-template-columns: repeat(3, 1fr); }
   .commercial-contact-aside { position: static; }
 }
 
@@ -1029,6 +1034,7 @@ main { overflow: hidden; }
   .book-future-section .container { align-items: flex-start; flex-direction: column; }
   .about-placeholder-list--large { grid-template-columns: 1fr 1fr; }
   .commercial-form { padding: 28px 20px; }
+  .connections-grid { grid-template-columns: repeat(2, 1fr); }
 }
 
 @media (max-width: 520px) {
@@ -1059,4 +1065,5 @@ main { overflow: hidden; }
   .commercial-fields button { width: 100%; justify-content: center; }
   .shop-brand-strip { justify-content: flex-start; overflow-x: auto; flex-wrap: nowrap; }
   .shop-brand-strip a { flex: 0 0 auto; }
+  .connections-grid { grid-template-columns: 1fr; }
 }
