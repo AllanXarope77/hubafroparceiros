@@ -22,7 +22,9 @@ let client: Client | undefined;
 
 function getClient() {
   const url = process.env.TURSO_DATABASE_URL?.trim();
-  const authToken = process.env.TURSO_AUTH_TOKEN?.trim();
+  const authToken = (
+    process.env.TURSO_AUTH_TOKEN ?? process.env.TURSO_DATABASE_TURSO_AUTH_TOKEN
+  )?.trim();
   if (!url) {
     throw new Error("Configure TURSO_DATABASE_URL e TURSO_AUTH_TOKEN para ativar o catálogo e o blog.");
   }
