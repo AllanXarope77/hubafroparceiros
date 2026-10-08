@@ -1026,6 +1026,27 @@ main { overflow: hidden; }
 .commercial-fields input:focus, .commercial-fields textarea:focus { border-color: var(--gold); }
 .commercial-fields button { width: max-content; min-height: 50px; padding: 0 20px; display: inline-flex; align-items: center; gap: 12px; color: #090909; background: var(--gold); border: 0; font-weight: 700; }
 .commercial-fields > small { color: #77736c; font-size: 10px; }
+.commercial-step-indicator { margin-bottom: 32px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.commercial-step-indicator span { padding: 10px; color: #6f6b65; border-bottom: 1px solid var(--line); font-size: 9px; text-transform: uppercase; }
+.commercial-step-indicator span.active { color: var(--gold); border-color: var(--gold); }
+.commercial-next { margin-top: 28px; min-height: 50px; padding: 0 20px; display: inline-flex; align-items: center; gap: 10px; color: #090909; background: var(--gold); border: 0; font-weight: 700; }
+.commercial-next:disabled { opacity: .45; cursor: not-allowed; }
+.commercial-back { margin-bottom: 16px; padding: 0; display: inline-flex; align-items: center; gap: 7px; color: var(--muted); background: transparent; border: 0; }
+.commercial-fields--step { margin-top: 0; padding-top: 0; border: 0; }
+.commercial-fields--step > h2, .commercial-review h2 { margin: 0 0 8px; font-size: 28px; }
+.commercial-consent { display: flex !important; grid-template-columns: auto 1fr; gap: 10px !important; align-items: start; line-height: 1.55; }
+.commercial-consent input { width: auto; margin-top: 2px; }
+.commercial-consent a { color: var(--gold); text-decoration: underline; }
+.commercial-review > small, .commercial-confirmation > small { color: var(--gold); text-transform: uppercase; letter-spacing: .14em; }
+.commercial-review dl { margin: 28px 0; display: grid; gap: 0; border-top: 1px solid var(--line); }
+.commercial-review dl > div { padding: 14px 0; display: grid; grid-template-columns: 150px 1fr; gap: 18px; border-bottom: 1px solid var(--line); }
+.commercial-review dt { color: var(--muted); font-size: 10px; text-transform: uppercase; }
+.commercial-review dd { margin: 0; white-space: pre-wrap; line-height: 1.5; }
+.commercial-confirmation { min-height: 480px; display: flex; flex-direction: column; justify-content: center; }
+.commercial-confirmation > svg { margin-bottom: 22px; color: var(--gold); }
+.commercial-confirmation h2 { font-size: 40px; }
+.commercial-confirmation p { color: var(--muted); line-height: 1.6; }
+.commercial-confirmation a { margin-top: 25px; display: inline-flex; align-items: center; gap: 8px; color: var(--gold); }
 .shop-brand-strip { padding: 20px 24px; display: flex; justify-content: center; flex-wrap: wrap; gap: 10px 30px; background: #050505; border-bottom: 1px solid var(--line); }
 .shop-brand-strip a { color: #bbb7af; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; }
 .shop-brand-strip a:hover { color: var(--gold); }
@@ -1106,4 +1127,5 @@ main { overflow: hidden; }
   .shop-brand-strip { justify-content: flex-start; overflow-x: auto; flex-wrap: nowrap; }
   .shop-brand-strip a { flex: 0 0 auto; }
   .connections-grid { grid-template-columns: 1fr; }
+  .commercial-review dl > div { grid-template-columns: 1fr; gap: 6px; }
 }

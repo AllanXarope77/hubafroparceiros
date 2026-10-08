@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ArrowUpRight, Mail } from "lucide-react";
+import { ArrowUpRight, Mail, MessageCircle } from "lucide-react";
 import { CommercialContactForm } from "@/components/hub/commercial-contact-form";
 import { SiteShell } from "@/components/layout/site-shell";
 import { Eyebrow } from "@/components/shared/ui";
@@ -22,6 +22,7 @@ export default async function ContatoPage({ searchParams }: { searchParams?: Pro
             <h2>Como podemos ajudar?</h2>
             <p>A estrutura abaixo organiza demandas comerciais, projetos, artistas, imprensa e parcerias. Os campos mudam conforme sua escolha.</p>
             <a href="mailto:ceo@afroparceiros.com"><Mail size={20} /><div><small>E-mail</small><strong>ceo@afroparceiros.com</strong></div><ArrowUpRight size={18} /></a>
+            <a href="https://wa.me/5571996424293" target="_blank" rel="noopener noreferrer"><MessageCircle size={20} /><div><small>WhatsApp oficial</small><strong>+55 71 99642-4293</strong></div><ArrowUpRight size={18} /></a>
           </Reveal>
           <Reveal delay={0.08}><CommercialContactForm initialTopic={params?.assunto} /></Reveal>
         </div>
