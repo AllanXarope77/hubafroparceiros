@@ -796,14 +796,10 @@ main { overflow: hidden; }
 /* AFROPARCEIROS HUB — arquitetura institucional */
 .hub-home-hero { min-height: 860px; padding: 190px 0 105px; display: flex; align-items: center; position: relative; overflow: hidden; background: radial-gradient(circle at 82% 28%, rgba(165,31,40,.28), transparent 24%), radial-gradient(circle at 74% 68%, rgba(212,175,55,.12), transparent 30%), #070707; }
 .hub-home-grid { position: absolute; inset: 0; opacity: .17; background-image: linear-gradient(rgba(255,255,255,.08) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.08) 1px, transparent 1px); background-size: 78px 78px; mask-image: linear-gradient(90deg, #000, transparent 80%); }
-.hub-home-hero-inner { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) 190px; gap: 90px; align-items: end; }
+.hub-home-hero-inner { position: relative; }
 .hub-home-hero h1 { max-width: 1100px; margin: 35px 0 30px; font-size: clamp(56px, 6.6vw, 104px); font-weight: 590; line-height: .92; letter-spacing: -.065em; text-transform: uppercase; }
 .hub-home-hero h1 span, .hub-inner-hero h1 span, .person-intro h1 span, .book-editorial-copy h1 span { color: var(--gold); }
 .hub-home-hero p { max-width: 720px; color: #c0bdb6; font-size: 18px; line-height: 1.75; }
-.hub-home-signature { padding-left: 24px; display: grid; grid-template-columns: auto 1fr auto; gap: 12px; align-items: center; border-left: 1px solid var(--gold); }
-.hub-home-signature > span { font-family: var(--font-space); color: var(--gold); font-size: 30px; }
-.hub-home-signature > i { height: 1px; background: rgba(255,255,255,.3); }
-.hub-home-signature > small { grid-column: 1 / -1; color: var(--muted); font-size: 9px; line-height: 1.6; letter-spacing: .14em; text-transform: uppercase; }
 .hub-paths-section { background: #0d0d0d; }
 .hub-paths-grid { margin-top: 68px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
 .hub-path-card { min-width: 0; }
@@ -1065,7 +1061,6 @@ main { overflow: hidden; }
 
 @media (max-width: 1050px) {
   .hub-home-hero-inner, .hub-ecosystem-layout, .commercial-contact-layout { grid-template-columns: 1fr; gap: 55px; }
-  .hub-home-signature { max-width: 330px; }
   .experience-concepts-grid, .project-bank-grid, .book-editorial-sections, .about-fronts-grid { grid-template-columns: repeat(2, 1fr); }
   .person-hero-grid, .book-editorial-grid, .content-video-grid { grid-template-columns: 1fr 1fr; gap: 50px; }
   .book-editorial-grid { grid-template-columns: 340px 1fr; }
@@ -1113,7 +1108,6 @@ main { overflow: hidden; }
   .nav-proposal svg { display: none; }
   .hub-home-hero { min-height: 720px; }
   .hub-home-hero h1 { font-size: 45px; }
-  .hub-home-signature { display: none; }
   .hub-path-card > a { min-height: 360px; }
   .hub-path-card h2 { font-size: 31px; }
   .hub-ecosystem-list a { grid-template-columns: 34px minmax(0, 1fr); }
