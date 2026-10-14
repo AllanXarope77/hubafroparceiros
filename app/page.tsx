@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import type { Metadata } from "next";
 import { ArrowRight, BookOpen, BriefcaseBusiness, Landmark, Mic2, ShoppingBag, Sparkles } from "lucide-react";
 import { SiteShell } from "@/components/layout/site-shell";
@@ -30,9 +31,20 @@ const highlights = [
 ] as const;
 
 const connections = [
-  "Petrobras", "Eletrobras", "Caixa Econômica Federal", "Vibra Energia", "Nacional Gás",
-  "Governo do Estado da Bahia", "Embrapa", "Petrobahia", "Petronac", "Sesc", "Olodum",
-  "Top Service", "Grupo Guarmix", "Escola Pan Americana",
+  { name: "Petrobras", logo: "/images/connections/petrobras.svg" },
+  { name: "Eletrobras", logo: "/images/connections/eletrobras.png" },
+  { name: "Caixa Econômica Federal", logo: "/images/connections/caixa.png" },
+  { name: "Vibra Energia", logo: "/images/connections/vibra.png" },
+  { name: "Nacional Gás", logo: "/images/connections/nacional-gas.png" },
+  { name: "Governo do Estado da Bahia", logo: "/images/connections/governo-bahia.png" },
+  { name: "Embrapa", logo: "/images/connections/embrapa.png" },
+  { name: "Petrobahia", logo: "/images/connections/petrobahia.svg" },
+  { name: "Petronac", logo: "/images/connections/petronac.svg" },
+  { name: "Sesc", logo: "/images/connections/sesc.png" },
+  { name: "Olodum", logo: "/images/connections/olodum.png" },
+  { name: "Top Service", logo: "/images/connections/top-service.jpg" },
+  { name: "Grupo Guarmix", logo: "/images/connections/guaramix.jpg" },
+  { name: "Escola Pan Americana", logo: "/images/connections/pan-american-school.webp" },
 ] as const;
 
 export default function Home() {
@@ -41,7 +53,7 @@ export default function Home() {
     <section className="section hub-ecosystem-section" id="ecossistema"><div className="container hub-ecosystem-layout"><SectionHeading eyebrow="O ecossistema" title={<>Uma marca-mãe.<br /><span className="gold-text">Frentes conectadas.</span></>} copy="Cada frente tem função própria e se conecta às demais para ampliar possibilidades de atuação, parceria e impacto." /><div className="hub-ecosystem-list">{ecosystem.map((item, index) => <Reveal key={item.title} delay={index * .06}><Link href={item.href}><span>0{index + 1}</span><div><h3>{item.title}</h3><p>{item.copy}</p></div><ArrowRight size={20} /></Link></Reveal>)}</div></div></section>
     <section className="section hub-paths-section"><div className="container"><SectionHeading eyebrow="Por onde começar" title={<>Escolha o caminho que<br /><span className="gold-text">faz sentido agora.</span></>} /><div className="hub-paths-grid">{paths.map((item, index) => { const Icon = item.icon; return <Reveal key={item.href} className="hub-path-card" delay={index * .05}><Link href={item.href}><span>0{index + 1}</span><Icon size={30} strokeWidth={1.25} /><h2>{item.title}</h2><p>{item.copy}</p><strong>Explorar <ArrowRight size={16} /></strong></Link></Reveal>; })}</div></div></section>
     <section className="section hub-highlights-section"><div className="container"><SectionHeading eyebrow="Explore o HUB" title={<>Encontre pessoas, ideias<br />e caminhos para <span className="gold-text">agir.</span></>} /><div className="hub-highlights-grid">{highlights.map((item, index) => { const Icon = item.icon; return <Reveal key={item.href} delay={index * .04}><Link href={item.href}><Icon size={22} /><span>{item.title}</span><ArrowRight size={16} /></Link></Reveal>; })}</div></div></section>
-    <section className="section connections-section"><div className="container"><SectionHeading eyebrow="Nossas conexões" title={<>Relações que ampliam<br /><span className="gold-text">possibilidades.</span></>} copy="Nomes apresentados conforme o acervo comercial autorizado da AFROPARCEIROS." /><div className="connections-grid">{connections.map(name => <Reveal key={name} className="connection-name"><span>{name}</span></Reveal>)}</div></div></section>
+    <section className="section connections-section"><div className="container"><SectionHeading eyebrow="Nossas conexões" title={<>Relações que ampliam<br /><span className="gold-text">possibilidades.</span></>} copy="Nomes apresentados conforme o acervo comercial autorizado da AFROPARCEIROS." /><div className="connections-grid">{connections.map(({ name, logo }) => <Reveal key={name} className="connection-name"><div className="connection-logo-wrap"><Image className="connection-logo" src={logo} alt={`Logo ${name}`} width={220} height={90} sizes="(max-width: 520px) 70vw, (max-width: 1050px) 30vw, 220px" /></div><span>{name}</span></Reveal>)}</div></div></section>
     <section className="hub-commercial-cta"><div className="container"><Reveal><Eyebrow>Central de relacionamento</Eyebrow><h2>Vamos construir algo juntos?</h2><p>Conte-nos o que sua organização precisa e encontre o caminho certo dentro do ecossistema.</p><ButtonLink href="/contato">Fale com a gente</ButtonLink></Reveal></div></section>
   </SiteShell>;
 }
