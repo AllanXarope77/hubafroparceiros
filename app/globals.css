@@ -834,7 +834,9 @@ main { overflow: hidden; }
 .connection-name { min-height: 165px; padding: 24px; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 16px; text-align: center; background: #0d0d0d; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
 .connection-logo-wrap { width: 100%; height: 78px; display: flex; align-items: center; justify-content: center; }
 .connection-logo { width: auto; height: auto; max-width: min(220px, 90%); max-height: 78px; object-fit: contain; }
+.connection-logo--light { filter: brightness(0) invert(1); }
 .connection-name span { color: #a9a59d; font-size: 10px; line-height: 1.4; letter-spacing: .1em; text-transform: uppercase; }
+.connection-text-logo { max-width: 240px; color: #fff; font-size: clamp(16px, 1.5vw, 22px); font-weight: 700; line-height: 1.15; letter-spacing: -.02em; }
 .hub-home-banner-section { background: #000; }
 .hub-home-banner-section img { width: 100%; height: auto; display: block; }
 .hub-commercial-cta { padding: 112px 0; color: #080808; background: var(--gold); }
