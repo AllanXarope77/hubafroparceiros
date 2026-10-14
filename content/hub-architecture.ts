@@ -61,7 +61,7 @@ export const commercialTopics = [
   ["evento-corporativo", "Realizar evento corporativo"],
   ["solucao-sob-medida", "Soluções sob medida"],
   ["experiencia", "Contratar experiência"],
-  ["artista", "Contratar artista"],
+  ["artista", "Contratar talento"],
   ["patrocinio", "Patrocinar projeto"],
   ["levar-projeto", "Levar projeto para minha cidade/empresa"],
   ["loja", "DNA Guetos/Loja"],

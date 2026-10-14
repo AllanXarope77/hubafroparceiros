@@ -20,7 +20,7 @@ export default async function ContatoPage({ searchParams }: { searchParams?: Pro
           <Reveal className="commercial-contact-aside">
             <span className="eyebrow"><i />Contato direto</span>
             <h2>Como podemos ajudar?</h2>
-            <p>A estrutura abaixo organiza demandas comerciais, projetos, artistas, imprensa e parcerias. Os campos mudam conforme sua escolha.</p>
+            <p>Escolha uma opção para direcionarmos sua solicitação a soluções, projetos, talentos, imprensa ou parcerias.</p>
             <a href="mailto:ceo@afroparceiros.com"><Mail size={20} /><div><small>E-mail</small><strong>ceo@afroparceiros.com</strong></div><ArrowUpRight size={18} /></a>
             <a href="https://wa.me/5571996424293" target="_blank" rel="noopener noreferrer"><MessageCircle size={20} /><div><small>WhatsApp oficial</small><strong>+55 71 99642-4293</strong></div><ArrowUpRight size={18} /></a>
           </Reveal>

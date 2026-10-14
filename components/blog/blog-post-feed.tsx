@@ -34,7 +34,7 @@ export function BlogPostFeed() {
         if (!response.ok) throw new Error("Não foi possível carregar os posts.");
         setPosts(data.posts ?? []);
       })
-      .catch(() => setError("Os conteúdos estarão disponíveis novamente em breve."))
+      .catch(() => setError("Não foi possível carregar os conteúdos agora. Tente novamente."))
       .finally(() => setLoading(false));
   }, []);
 
@@ -42,7 +42,7 @@ export function BlogPostFeed() {
     <div className="article-grid" aria-live="polite">
       {loading && <p className="blog-feed-status blog-feed-status--full">Carregando posts publicados...</p>}
       {error && <p className="blog-feed-status blog-feed-status--error blog-feed-status--full">{error}</p>}
-      {!loading && !error && !posts.length && <p className="blog-feed-status blog-feed-status--full">Novos conteúdos serão publicados em breve.</p>}
+      {!loading && !error && !posts.length && <p className="blog-feed-status blog-feed-status--full">Acompanhe o Blog AFROPARCEIROS para artigos, análises, entrevistas e histórias do ecossistema.</p>}
       {!loading && posts.map((post, index) => (
         <Reveal className="article-card published-article-card" key={post.id} delay={(index % 2) * .06}>
           <div className={`article-art ${post.image ? "article-art--custom" : artStyles[index % artStyles.length]}`} style={post.image ? { backgroundImage: `linear-gradient(rgba(0,0,0,.15), rgba(0,0,0,.45)), url("${post.image.replace(/["')]/g, "")}")` } : undefined} role="img" aria-label={`Imagem do post ${post.title}`}><span>{String(index + 1).padStart(2, "0")}</span></div>

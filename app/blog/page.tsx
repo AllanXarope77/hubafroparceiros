@@ -8,7 +8,7 @@ export const metadata: Metadata = { title: "Blog AFROPARCEIROS", description: "I
 export default function BlogPage() {
   return (
     <SiteShell>
-      <PageHero index="02" eyebrow="Editorial Hub Afro" title={<>Pensamento<br /><span className="gold-text">em movimento.</span></>} copy="Um território de ideias, análises e histórias para quem quer compreender o presente e participar da construção do próximo capítulo." />
+      <PageHero index="02" eyebrow="Blog AFROPARCEIROS" title={<>Pensamento<br /><span className="gold-text">em movimento.</span></>} copy="Um território de ideias, análises e histórias para quem quer compreender o presente e participar da construção do próximo capítulo." />
       <section className="section blog-section">
         <div className="container">
           <div className="blog-toolbar">
