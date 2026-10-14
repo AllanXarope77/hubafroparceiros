@@ -797,7 +797,7 @@ main { overflow: hidden; }
 .hub-home-hero { min-height: 860px; padding: 190px 0 105px; display: flex; align-items: center; position: relative; overflow: hidden; background: radial-gradient(circle at 82% 28%, rgba(165,31,40,.28), transparent 24%), radial-gradient(circle at 74% 68%, rgba(212,175,55,.12), transparent 30%), #070707; }
 .hub-home-grid { position: absolute; inset: 0; opacity: .17; background-image: linear-gradient(rgba(255,255,255,.08) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.08) 1px, transparent 1px); background-size: 78px 78px; mask-image: linear-gradient(90deg, #000, transparent 80%); }
 .hub-home-hero-inner { position: relative; }
-.hub-home-hero h1 { max-width: 1250px; margin: 35px 0 30px; font-size: clamp(52px, 5.2vw, 82px); font-weight: 590; line-height: .95; letter-spacing: -.06em; text-transform: uppercase; }
+.hub-home-hero h1 { max-width: 1250px; margin: 35px 0 30px; font-size: clamp(40px, 4.2vw, 68px); font-weight: 590; line-height: .98; letter-spacing: -.05em; text-transform: uppercase; }
 .hub-home-hero h1 span, .hub-inner-hero h1 span, .person-intro h1 span, .book-editorial-copy h1 span { color: var(--gold); }
 .hub-home-hero p { max-width: 720px; color: #c0bdb6; font-size: 18px; line-height: 1.75; }
 .hub-paths-section { background: #0d0d0d; }
@@ -1080,7 +1080,7 @@ main { overflow: hidden; }
   .mobile-nav, .navbar:not(.navbar--scrolled) .mobile-nav { inset: 72px 0 auto; min-height: calc(100vh - 72px); max-height: calc(100vh - 72px); }
   .nav-proposal { min-height: 34px; padding-inline: 10px; font-size: 8px; }
   .hub-home-hero { min-height: 760px; padding: 145px 0 80px; }
-  .hub-home-hero h1 { font-size: clamp(48px, 12vw, 74px); }
+  .hub-home-hero h1 { font-size: clamp(38px, 8vw, 56px); }
   .hub-home-hero p { font-size: 16px; }
   .hub-paths-grid, .hub-service-grid, .content-doors-grid, .about-presence-grid, .hub-proof-grid { grid-template-columns: 1fr; }
   .hub-path-card > a, .hub-service-card { min-height: 340px; padding: 30px; }
@@ -1111,7 +1111,7 @@ main { overflow: hidden; }
   .nav-proposal { width: 86px; text-align: center; line-height: 1.2; }
   .nav-proposal svg { display: none; }
   .hub-home-hero { min-height: 720px; }
-  .hub-home-hero h1 { font-size: 45px; }
+  .hub-home-hero h1 { font-size: 36px; }
   .hub-path-card > a { min-height: 360px; }
   .hub-path-card h2 { font-size: 31px; }
   .hub-ecosystem-list a { grid-template-columns: 34px minmax(0, 1fr); }
