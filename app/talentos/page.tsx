@@ -10,7 +10,7 @@ export const metadata: Metadata = { title: "Talentos", description: "Curadoria a
 
 export default function TalentosPage() {
   return <SiteShell>
-    <section className="hub-inner-hero"><div className="container"><Reveal><Eyebrow>Curadoria artística</Eyebrow><h1>Talentos que criam<br /><span>experiências.</span></h1><p>Artistas, criadores e profissionais conectados ao ecossistema, apresentados somente com conteúdo autorizado.</p><div className="hero-actions"><ButtonLink href="/contato?assunto=artista">Consultar disponibilidade / contratar</ButtonLink></div></Reveal></div></section>
+    <section className="hub-inner-hero"><div className="container"><Reveal><Eyebrow>Curadoria artística</Eyebrow><h1>Talentos que criam<br /><span>experiências.</span></h1><p>Artistas, criadores e profissionais conectados ao ecossistema, apresentados somente com conteúdo autorizado.</p><div className="hero-actions"><ButtonLink href="/contato?assunto=artista">Consultar formato e disponibilidade</ButtonLink></div></Reveal></div></section>
     <section className="section artist-directory-section"><div className="container"><SectionHeading eyebrow="Talentos cadastrados" title={<>Pessoas conectadas<br /><span className="gold-text">ao ecossistema.</span></>} /><div className="artist-directory-grid">
       <Reveal className="artist-card"><Link href="/talentos/sergio-carvalho"><div className="artist-card-image"><Image src="/images/palestras/sergio-carvalho.png" alt="Sergio Carvalho" width={900} height={1100} /></div><small>Empresário · produtor cultural · artista</small><h2>Sergio Carvalho</h2><p>Conheça suas conexões com palestras, livro, projetos e conteúdos.</p><strong>Conhecer perfil <ArrowRight size={16} /></strong></Link></Reveal>
     </div></div></section>

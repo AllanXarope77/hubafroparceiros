@@ -90,8 +90,8 @@ export default function PalestrasPage() {
                   equipes éticas, conscientes e preparadas.
                 </p>
                 <div className="hero-actions">
-                  <ButtonLink href="https://api.whatsapp.com/send/?phone=5511900000000&text=Ol%C3%A1%21+Vim+pelo+site+e+gostaria+de+saber+mais+sobre+as+palestras+corporativas+e+forma%C3%A7%C3%B5es+da+Afroparceiros+para+a+minha+equipe.&type=phone_number&app_absent=0">
-                    Agendar uma palestra
+                  <ButtonLink href="/contato?assunto=palestra">
+                    Quero levar esta conversa para minha organização
                   </ButtonLink>
                   <ButtonLink href="#formacoes" variant="ghost">
                     Conhecer formações
@@ -165,7 +165,7 @@ export default function PalestrasPage() {
                       {formation.audience}
                     </div>
                     <ButtonLink href="/contato" variant="ghost">
-                      Solicitar proposta
+                      Falar sobre esta formação
                     </ButtonLink>
                   </Reveal>
                 );
@@ -255,7 +255,7 @@ export default function PalestrasPage() {
             </Reveal>
             <Reveal className="closing-action" delay={0.1}>
               <Scale size={36} strokeWidth={1.1} />
-              <ButtonLink href="/contato">Falar com nossos consultores</ButtonLink>
+              <ButtonLink href="/contato?assunto=palestra">Quero levar esta conversa para minha organização</ButtonLink>
             </Reveal>
           </div>
         </section>

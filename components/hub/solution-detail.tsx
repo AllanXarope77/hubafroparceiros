@@ -5,7 +5,7 @@ import { Reveal } from "@/components/shared/reveal";
 
 type Detail = { label: string; value: string };
 
-export function SolutionDetail({ eyebrow, title, copy, problem, audience, details, topic, cta = "Solicitar proposta" }: {
+export function SolutionDetail({ eyebrow, title, copy, problem, audience, details, topic, cta = "Fale com a Afroparceiros" }: {
   eyebrow: string;
   title: string;
   copy: string;
