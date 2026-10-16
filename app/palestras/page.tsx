@@ -26,7 +26,7 @@ const formations = [
   {
     number: "01",
     title: "Treinamento corporativo",
-    copy: "Formação prática para construir ambientes de trabalho saudáveis e respeitosos. O letramento racial é aplicado à convivência diária, oferecendo ferramentas para reconhecer e enfrentar situações discriminatórias.",
+    copy: "Formação prática para fortalecer ambientes de trabalho saudáveis, diversos e respeitosos. Aborda comunicação inclusiva, colaboração, pertencimento, prevenção de discriminações e relações profissionais mais conscientes.",
     audience: "Colaboradores e lideranças",
     icon: Building2,
   },
