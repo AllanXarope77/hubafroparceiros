@@ -15,7 +15,7 @@ const doors = [
 
 export default function ConteudoPage() {
   return <SiteShell>
-    <section className="hub-inner-hero"><div className="container"><Reveal><Eyebrow>Conteúdo AFROPARCEIROS</Eyebrow><h1>Ideias para ler.<br /><span>Vozes para ver e ouvir.</span></h1><p>Conteúdos oficiais do ecossistema reunidos em quatro portas editoriais.</p></Reveal></div></section>
+    <section className="hub-inner-hero"><div className="container"><Reveal><Eyebrow>Conteúdo AFROPARCEIROS</Eyebrow><h1>Ideias para ler.<br /><span>Vozes para ver e ouvir.</span></h1><p>Blog, TV, Podcast e Carta do HUB reunidos para ampliar repertórios, fortalecer autoridade e criar uma relação recorrente com o ecossistema.</p></Reveal></div></section>
     <section className="section content-doors-section"><div className="container content-doors-grid">{doors.map(([eyebrow, title, copy, href, Icon, cta], index) => <Reveal className={`content-door ${index % 2 ? "content-door--watch" : "content-door--read"}`} key={href} delay={(index % 2) * .05}><Icon size={34} strokeWidth={1.2} /><small>{eyebrow}</small><h2>{title}</h2><p>{copy}</p><Link href={href}>{cta} <ArrowRight size={17} /></Link></Reveal>)}</div></section>
   </SiteShell>;
 }

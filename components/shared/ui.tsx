@@ -44,23 +44,23 @@ export function PageHero({ index, eyebrow, title, copy, children }: { index: str
         </Reveal>
         <Reveal className="page-index" delay={0.1}>
           <span>{index}</span>
-          <small>Ecossistema<br />Hub Afro</small>
+          <small>Ecossistema<br />Afroparceiros</small>
         </Reveal>
       </div>
     </section>
   );
 }
 
-export function FinalCta({ title = "Faça parte desse movimento", copy = "A cultura muda quando a gente muda junto." }: { title?: string; copy?: string }) {
+export function FinalCta({ title = "Fale com a Afroparceiros", copy = "Encontre o caminho mais adequado para sua ideia, organização ou parceria.", cta = "Fale com a Afroparceiros", href = "/contato", eyebrow = "Próximo passo" }: { title?: string; copy?: string; cta?: string; href?: string; eyebrow?: string }) {
   return (
     <section className="final-cta">
       <div className="container final-cta-inner">
         <Reveal>
-          <Eyebrow>Próximo capítulo</Eyebrow>
+          <Eyebrow>{eyebrow}</Eyebrow>
           <h2>{title}</h2>
           <p>{copy}</p>
         </Reveal>
-        <Reveal delay={0.1}><ButtonLink href="/contato">Quero fazer parte</ButtonLink></Reveal>
+        <Reveal delay={0.1}><ButtonLink href={href}>{cta}</ButtonLink></Reveal>
       </div>
     </section>
   );

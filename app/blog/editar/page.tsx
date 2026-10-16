@@ -4,8 +4,8 @@ import { SiteShell } from "@/components/layout/site-shell";
 import { PageHero } from "@/components/shared/ui";
 
 export const metadata: Metadata = {
-  title: "Editar Blog | Hub Afro",
-  description: "Publique novos posts no Blog do Hub Afro.",
+  title: "Editar Blog | AFROPARCEIROS",
+  description: "Publique novos posts no Blog Afroparceiros.",
   robots: { index: false, follow: false },
 };
 

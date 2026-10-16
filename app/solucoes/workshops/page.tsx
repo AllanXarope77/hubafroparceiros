@@ -9,6 +9,7 @@ export default function WorkshopsPage() {
     { label: "Modalidade", value: "Presencial, on-line ou híbrida, conforme viabilidade e contexto." },
     { label: "Duração", value: "Definida na proposta de acordo com o conteúdo e a profundidade necessária." },
     { label: "Customização", value: "Briefing, linguagem e recortes alinhados com a organização." },
+    { label: "Temas", value: "Diversidade, pertencimento, cultura organizacional, liderança, ESG, impacto social e outros desafios definidos no briefing." },
   ]} />;
 }
 

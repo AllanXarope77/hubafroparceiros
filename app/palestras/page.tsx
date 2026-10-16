@@ -19,7 +19,7 @@ import { Reveal } from "@/components/shared/reveal";
 export const metadata: Metadata = {
   title: "Palestras Corporativas",
   description:
-    "Palestras e formações corporativas sobre letramento racial, diversidade, ESG, cultura organizacional e prevenção.",
+    "Palestras e formações corporativas sobre diversidade, cultura organizacional, liderança, pertencimento, ESG e prevenção de discriminações.",
 };
 
 const formations = [
@@ -79,15 +79,15 @@ export default function PalestrasPage() {
           <div className="container">
             <div className="corporate-hero-layout">
               <Reveal>
-                <Eyebrow>Educação corporativa · ESG · Diversidade</Eyebrow>
+                <Eyebrow>Conhecimento · Cultura organizacional · Diversidade</Eyebrow>
                 <h1>
-                  Transforme a cultura da sua empresa com
-                  <span> letramento racial e prevenção.</span>
+                  Conhecimento que amplia repertórios e
+                  <span> transforma relações.</span>
                 </h1>
                 <p>
-                  Palestras e treinamentos que unem educação, responsabilidade
-                  social e enfrentamento às desigualdades para fortalecer
-                  equipes éticas, conscientes e preparadas.
+                  Palestras e encontros formativos para organizações que querem
+                  desenvolver lideranças, fortalecer a cultura interna e ampliar
+                  a compreensão sobre diversidade em suas múltiplas dimensões.
                 </p>
                 <div className="hero-actions">
                   <ButtonLink href="/contato?assunto=palestra">

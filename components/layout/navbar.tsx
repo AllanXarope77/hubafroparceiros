@@ -26,7 +26,7 @@ export function Navbar() {
   return (
     <header className={`navbar ${scrolled ? "navbar--scrolled" : ""}`}>
       <div className="nav-inner">
-        <Link href="/" className="brand" aria-label="Hub Afroparceiros — início">
+        <Link href="/" className="brand" aria-label="AFROPARCEIROS — início">
           <Image
             className="brand-logo"
             src="/images/afroparceiros-oficial.png"

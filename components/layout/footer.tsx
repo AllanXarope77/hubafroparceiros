@@ -9,7 +9,7 @@ export function Footer() {
     <footer className="footer">
       <div className="container footer-grid">
         <div>
-          <Link href="/" className="brand brand--footer" aria-label="Hub Afroparceiros — início">
+          <Link href="/" className="brand brand--footer" aria-label="AFROPARCEIROS — início">
             <Image
               className="brand-logo brand-logo--footer"
               src="/images/afroparceiros-oficial.png"
@@ -18,7 +18,7 @@ export function Footer() {
               height={1000}
             />
           </Link>
-          <p className="footer-intro">AFROPARCEIROS é o HUB que conecta cultura, conhecimento, experiências, projetos e negócios.</p>
+          <p className="footer-intro">Afrocentrada na identidade. Plural na diversidade. Nacional e internacional na atuação.</p>
         </div>
         <div>
           <span className="footer-label">Explore</span>
@@ -49,7 +49,7 @@ export function Footer() {
                 href={social.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label={`${social.label} do Hub Afroparceiros`}
+                aria-label={`${social.label} da Afroparceiros`}
               >
                 {social.label} <ArrowUpRight size={14} />
               </a>

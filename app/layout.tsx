@@ -18,13 +18,13 @@ const montserrat = localFont({
 export const metadata: Metadata = {
   metadataBase: new URL(getSiteUrl()),
   title: {
-    default: "AFROPARCEIROS — Cultura, conhecimento e negócios",
+    default: "AFROPARCEIROS — Cultura, diversidade, conhecimento e negócios",
     template: "%s · AFROPARCEIROS",
   },
-  description: "HUB afrocentrado que conecta cultura, conhecimento, experiências e projetos para empresas, instituições, territórios e pessoas.",
+  description: "Soluções para empresas, instituições e territórios por meio de conhecimento, experiências, eventos, projetos, arte, literatura e iniciativas de impacto.",
   keywords: ["cultura afro-brasileira", "literatura", "educação", "podcast", "moda", "impacto social"],
   openGraph: {
-    title: "AFROPARCEIROS — Cultura, conhecimento e negócios",
+    title: "AFROPARCEIROS — Cultura, diversidade, conhecimento e negócios",
     description: "Conheça o ecossistema AFROPARCEIROS.",
     type: "website",
     locale: "pt_BR",

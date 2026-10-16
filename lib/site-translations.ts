@@ -187,7 +187,6 @@ export const siteTranslations: Record<string, Translation> = {
   "Finalizar compra": { en: "Proceed to checkout", es: "Finalizar compra" },
   "Abrindo pagamento...": { en: "Opening payment...", es: "Abriendo el pago..." },
   "Continuar comprando": { en: "Continue shopping", es: "Seguir comprando" },
-  "Editorial Hub Afro": { en: "Hub Afro Editorial", es: "Editorial Hub Afro" },
   "Pensamento": { en: "Thought", es: "Pensamiento" },
   "em movimento.": { en: "in motion.", es: "en movimiento." },
   "Um território de ideias, análises e histórias para quem quer compreender o presente e participar da construção do próximo capítulo.": {
@@ -202,7 +201,7 @@ export const siteTranslations: Record<string, Translation> = {
   "Ler post": { en: "Read post", es: "Leer publicación" },
   "Voltar para o Blog": { en: "Back to the Blog", es: "Volver al Blog" },
   "Carregando post...": { en: "Loading post...", es: "Cargando publicación..." },
-  "Podcast Hub Afro": { en: "Hub Afro Podcast", es: "Podcast Hub Afro" },
+  "Afroparceiros Podcast": { en: "Afroparceiros Podcast", es: "Afroparceiros Podcast" },
   "Vozes que": { en: "Voices that", es: "Voces que" },
   "fazem eco.": { en: "echo.", es: "resuenan." },
   "Conversas sem pressa com pessoas que transformam cultura, negócios, educação e sociedade a partir de novas perspectivas.": {

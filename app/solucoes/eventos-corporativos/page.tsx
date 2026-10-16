@@ -8,6 +8,9 @@ export default function EventsPage() {
     { label: "Escopo", value: "Curadoria, conteúdo, programação e articulação de formatos adequados ao evento." },
     { label: "Modalidade", value: "Presencial, on-line ou híbrida, conforme o projeto." },
     { label: "Temática", value: "Eventos convencionais ou temáticos, sem limitar a atuação a uma única pauta." },
+    { label: "Ocasiões", value: "Confraternizações, Natal, festas juninas, Dia das Mães ou dos Pais, SIPAT/CIPAT, convenções, ativações, semanas temáticas e encontros de liderança." },
+    { label: "Escala e duração", value: "Pequenos e grandes encontros, com duração definida conforme o objetivo, o público e a programação." },
+    { label: "Customização", value: "Conceito, linguagem, curadoria e programação construídos para o contexto de cada organização." },
     { label: "Produção", value: "Responsabilidades e estrutura técnica são definidas no escopo comercial." },
   ]} />;
 }

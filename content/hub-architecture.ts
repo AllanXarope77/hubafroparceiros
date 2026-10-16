@@ -21,16 +21,6 @@ export const solutionAreas = [
   },
 ] as const;
 
-export const experienceAreas = [
-  "Experiências musicais",
-  "Talk shows e conversas",
-  "Arte + conhecimento",
-  "Intervenções culturais",
-  "Experiências afrocentradas",
-  "Vivências para equipes",
-  "Programações para datas e agendas corporativas",
-] as const;
-
 export const projectFilters = [
   "Cultura",
   "Educação",

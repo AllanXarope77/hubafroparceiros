@@ -19,7 +19,7 @@ export default function BlogPage() {
           </div>
         </div>
       </section>
-      <FinalCta title="Continue a conversa" copy="Compartilhe uma ideia, proponha uma pauta ou venha criar com a gente." />
+      <FinalCta eyebrow="Carta do HUB" title="Conteúdo para acompanhar e levar com você." copy="Receba uma curadoria de ideias, encontros, lançamentos e movimentos do ecossistema." cta="Receba a Carta" href="/conteudo/carta" />
     </SiteShell>
   );
 }

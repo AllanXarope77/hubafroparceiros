@@ -4,7 +4,7 @@ import { SiteShell } from "@/components/layout/site-shell";
 import { ButtonLink, FinalCta, PageHero, SectionHeading } from "@/components/shared/ui";
 import { Reveal } from "@/components/shared/reveal";
 
-export const metadata: Metadata = { title: "Clube do Livro | Hub Afro", description: "Uma comunidade de leitura, conversa e transformação." };
+export const metadata: Metadata = { title: "Clube do Livro | AFROPARCEIROS", description: "Uma comunidade de leitura, conversa e transformação." };
 
 export default function ClubePage() {
   return (
